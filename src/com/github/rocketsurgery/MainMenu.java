@@ -66,12 +66,12 @@ public class MainMenu extends BasicGameState {
 		}
 
 		if (onStart) {
-			selectionWidth += (selectionWidth >= gc.getWidth() / 2) ? 0 : selectionGrowSpeed;
+			selectionWidth += (selectionWidth >= gc.getWidth() / 2) ? 0 : selectionGrowSpeed * delta;
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 				sbg.enterState(UncrossTheWires.GAMEPLAY);
 			}
 		} else {
-			selectionWidth -= (selectionWidth <= 0) ? 0 : selectionGrowSpeed;
+			selectionWidth -= (selectionWidth <= 0) ? 0 : selectionGrowSpeed * delta;
 		}
 	}
 
