@@ -1,23 +1,18 @@
 package com.github.rocketsurgery;
 
 import org.newdawn.slick.*;
+import org.newdawn.slick.state.StateBasedGame;
 
-public class UncrossTheWires extends BasicGame {
+public class UncrossTheWires extends StateBasedGame {
 	
 	public UncrossTheWires(String title) {
 		super(title);
 	}
 
 	@Override
-	public void render(GameContainer arg0, Graphics g) throws SlickException {
-	}
-
-	@Override
-	public void init(GameContainer arg0) throws SlickException {
-	}
-
-	@Override
-	public void update(GameContainer arg0, int arg1) throws SlickException {
+	public void initStatesList(GameContainer arg0) throws SlickException {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public static void main(String[] args) throws SlickException {
