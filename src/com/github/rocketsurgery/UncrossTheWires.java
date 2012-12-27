@@ -10,8 +10,11 @@ public class UncrossTheWires extends StateBasedGame {
 	public static final int MAIN_MENU = 0;
 	public static final int GAMEPLAY = 1;
 	
-	public UncrossTheWires(String title) {
-		super(title);
+	public static final int screenX = 800;
+	public static final int screenY = 600;
+	
+	public UncrossTheWires() {
+		super("Uncross the Wires");
 	}
 
 	@Override
@@ -21,9 +24,9 @@ public class UncrossTheWires extends StateBasedGame {
 	}
 
 	public static void main(String[] args) throws SlickException {
-		AppGameContainer app = new AppGameContainer(new UncrossTheWires("Uncross"));
+		AppGameContainer app = new AppGameContainer(new UncrossTheWires());
 
-		app.setDisplayMode(800, 600, false);
+		app.setDisplayMode(screenX, screenY, false);
 		app.start();
 	}
 
