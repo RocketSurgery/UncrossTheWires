@@ -47,6 +47,20 @@ public class Gameplay extends BasicGameState {
 			nodes.add(first);
 			nodes.add(second);
 			wires.add(wire);
+			
+			first = new Node(50f, 100f);
+			second = new Node(600f, 80f);
+			wire = new Wire(first, second);
+			nodes.add(first);
+			nodes.add(second);
+			wires.add(wire);
+			
+			first = new Node(50f, 100f);
+			second = new Node(600f, 80f);
+			wire = new Wire(first, second);
+			nodes.add(first);
+			nodes.add(second);
+			wires.add(wire);
 			break;
 		default:
 			// whatisthisidonteven

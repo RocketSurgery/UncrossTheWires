@@ -11,7 +11,7 @@ public class Node {
 	private float xPos, yPos;
 	private Wire attachedWire;
 	
-	private static final float sizeOnScreen = 20;
+	private static final float sizeOnScreen = 50f;
 	private static final Color nodeColor = Color.blue;
 	
 	public Node(float x, float y) {
@@ -28,7 +28,8 @@ public class Node {
 	
 	public void Render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(nodeColor);
-		g.fillOval(xPos, yPos, sizeOnScreen, sizeOnScreen);
+		g.setAntiAlias(true);
+		g.fillOval(xPos - sizeOnScreen / 2, yPos - sizeOnScreen / 2, sizeOnScreen, sizeOnScreen);
 	}
 	
 	public boolean isOver(int x, int y) {

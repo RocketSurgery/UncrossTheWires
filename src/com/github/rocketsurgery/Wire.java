@@ -21,6 +21,7 @@ public class Wire {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(wireColor);
 		g.setLineWidth(wireWidth);
+		g.setAntiAlias(true);
 		g.drawLine(end1.x(), end1.y(), end2.x(), end2.y());
 	}
 	
