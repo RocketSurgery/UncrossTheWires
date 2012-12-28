@@ -37,6 +37,16 @@ public class Gameplay extends BasicGameState {
 	private float maxHoverSize = .5f * Node.sizeOnScreen;
 
 	@Override
+	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
+		System.out.println("Entering state " + getID());
+	}
+
+	@Override
+	public void leave(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
+		System.out.println("Leaving state " + getID());
+	}
+
+	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		startLevel(1);
 	}
@@ -143,23 +153,23 @@ public class Gameplay extends BasicGameState {
 					selected = null;
 					lastSelected = null;
 				} else { // nodes on same wire
-					
+
 					// deselect nodes
 					selected = null;
 					lastSelected = null;
 				}
 			}
-			
+
 			// animate selectionCircle
 			if (selected != null) {
 				selectionCircle = (selectionCircle < maxSelectionSize) ? selectionCircle + growSpeed * delta : maxSelectionSize;
 			} else {
 				selectionCircle = (selectionCircle > 0) ? selectionCircle - growSpeed * delta : 0;
 			}
-			
+
 			// animate lastSelectionCircle
 			lastSelectionCircle = (lastSelectionCircle > 0) ? lastSelectionCircle - growSpeed * delta : 0;
-			
+
 			// test if any wires intersect
 			levelComplete = true;
 			for (int i = 0; i < wires.size() - 1; i++) {

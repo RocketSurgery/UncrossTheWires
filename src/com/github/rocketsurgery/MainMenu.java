@@ -21,6 +21,16 @@ public class MainMenu extends BasicGameState {
 	float selectionWidth = 0f;
 	float selectionGrowSpeed = 5f;
 
+	@Override
+	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
+		System.out.println("Entering state " + getID());
+	}
+
+	@Override
+	public void leave(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
+		System.out.println("Leaving state " + getID());
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
