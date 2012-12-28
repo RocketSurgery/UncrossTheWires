@@ -21,6 +21,19 @@ public class Wire extends Line {
 		this.end2 = second;
 	}
 	
+	public boolean setNode(Node oldNode, Node newNode) {
+		if (end1 == oldNode) {
+			end1 = newNode;
+			this.set(end1.getX(), end1.getY(), end2.getX(), end2.getY());
+			return true;
+		} else if (end2 == oldNode) {
+			end2 = newNode;
+			this.set(end1.getX(), end1.getY(), end2.getX(), end2.getY());
+			return true;
+		}
+		return false;
+	}
+	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(wireColor);
 		g.setLineWidth(wireWidth);
