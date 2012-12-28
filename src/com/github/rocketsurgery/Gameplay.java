@@ -2,10 +2,12 @@ package com.github.rocketsurgery;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -20,9 +22,11 @@ public class Gameplay extends BasicGameState {
 	private float maxSelectionSize = 2 * Node.sizeOnScreen;
 	private Node hovered;
 	private Node lastHovered;
-	private float hoverCircle;
+	private float hoverCircle = 0f;
+	private float lastCircle = 0f;
 	private float maxHoverSize = .5f * Node.sizeOnScreen;
-	private float growSpeed = 1f;
+	private float growSpeed = 0.5f;
+	private Color selectionColor = Color.yellow;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -32,11 +36,19 @@ public class Gameplay extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		// Draw Background
-
+		
 		// Draw Nodes
 		for (Node node : nodes)
 			node.Render(gc, sbg, g);
 
+		// Draw Hovered Node
+		g.setColor(selectionColor);
+		g.setAntiAlias(false);
+		if (hovered != null)
+			g.fill(new Circle(hovered.getX(), hovered.getY(), hoverCircle));
+		if (lastHovered != null)
+			g.fill(new Circle(lastHovered.getX(), lastHovered.getY(), hoverCircle));
+		
 		// Draw Wires
 		for (Wire wire : wires)
 			wire.render(gc, sbg, g);
@@ -50,7 +62,7 @@ public class Gameplay extends BasicGameState {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 
-		lastHovered = hovered;
+		Node temp = hovered;
 		hovered = null;
 		for (Node node : nodes) {
 			if (node.isOver(mouseX, mouseY)) {
@@ -59,10 +71,22 @@ public class Gameplay extends BasicGameState {
 			}
 		}
 		
+		if (temp != hovered)
+			lastHovered = temp;
+		
 		if (hovered != null) {
+			if (hovered != selected)
+				hoverCircle = (hoverCircle < maxHoverSize) ? hoverCircle + growSpeed * delta : maxHoverSize;
+			lastCircle = (lastCircle > 0) ? lastCircle - growSpeed * delta : 0;
+			if (lastCircle == 0)
+				lastHovered = null;
 			
+			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+				selected = hovered;
+			}
 		} else {
-			
+			hoverCircle = 0f;
+			lastCircle = hoverCircle;
 		}
 
 		boolean intersections = false;
