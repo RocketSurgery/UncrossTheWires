@@ -23,6 +23,8 @@ public class Wire {
 		g.setLineWidth(wireWidth);
 		g.setAntiAlias(true);
 		g.drawLine(end1.x(), end1.y(), end2.x(), end2.y());
+		g.fillOval(end1.x() - wireWidth / 2, end1.y() - wireWidth / 2, wireWidth, wireWidth);
+		g.fillOval(end2.x() - wireWidth / 2, end2.y() - wireWidth / 2, wireWidth, wireWidth);
 	}
 	
 }
