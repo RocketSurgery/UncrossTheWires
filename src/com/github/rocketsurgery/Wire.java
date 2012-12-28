@@ -27,4 +27,16 @@ public class Wire {
 		g.fillOval(end2.x() - wireWidth / 2, end2.y() - wireWidth / 2, wireWidth, wireWidth);
 	}
 	
+	public boolean overlaps (Wire wire) {
+		
+		
+		
+		
+		
+		
+		
+		
+		return true;
+	}
+	
 }
