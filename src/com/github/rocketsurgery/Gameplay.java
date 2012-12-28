@@ -18,21 +18,14 @@ public class Gameplay extends BasicGameState {
 	private Node selected;
 	private float selectionCircle;
 	private float maxSelectionSize = 2 * Node.sizeOnScreen;
-	Node hovered;
+	private Node hovered;
+	private Node lastHovered;
 	private float hoverCircle;
 	private float maxHoverSize = .5f * Node.sizeOnScreen;
 	private float growSpeed = 1f;
-	
-	boolean anyIntersections = false;
-	
-	int wireGenerationTimer = 0;
-	final int WIRE_GENERATION_INTERVAL = 2000;
-	
-	
+
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		nodes = new ArrayList<Node>();
-		wires = new ArrayList<Wire>();
 		startLevel(1);
 	}
 
@@ -47,13 +40,6 @@ public class Gameplay extends BasicGameState {
 		// Draw Wires
 		for (Wire wire : wires)
 			wire.render(gc, sbg, g);
-		
-		if (anyIntersections) {
-			g.drawString("Some lines intersecting",30, 30);
-		} else {
-			g.drawString("No lines intersecting",30, 30);
-		}
-		
 
 	}
 
@@ -63,8 +49,8 @@ public class Gameplay extends BasicGameState {
 		Input input = gc.getInput();
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
-		
 
+		lastHovered = hovered;
 		hovered = null;
 		for (Node node : nodes) {
 			if (node.isOver(mouseX, mouseY)) {
@@ -73,26 +59,27 @@ public class Gameplay extends BasicGameState {
 			}
 		}
 		
-		
-		wireGenerationTimer += delta;
-		
-		anyIntersections = false;
-		
-		for (int i = 0; i < wires.size() - 1; i++) {
-			for (int j = i + 1; j < wires.size(); j++) {
-				if (wires.get(i).intersects(wires.get(j))) {
-					anyIntersections = true;
-				}				
-			}
+		if (hovered != null) {
+			
+		} else {
+			
 		}
-		
-		
-		
-		
 
+		boolean intersections = false;
+
+		for (int i = 0; i < wires.size() - 1; i++)
+			for (int j = i + 1; j < wires.size(); j++)
+				if (wires.get(i).intersects(wires.get(j)))
+					intersections = true;
+
+		if (!intersections)
+			System.out.println("game complete");
 	}
 
 	private void startLevel(int level) {
+		nodes = new ArrayList<Node>();
+		wires = new ArrayList<Wire>();
+		
 		switch (level) {
 		case 1:
 			Node first = new Node(400f, 40f);
@@ -113,8 +100,8 @@ public class Gameplay extends BasicGameState {
 			nodes.add(second);
 			wires.add(wire);
 
-			first = new Node(50f, 100f);
-			second = new Node(600f, 80f);
+			first = new Node(50f, 500f);
+			second = new Node(600f, 430f);
 			wire = new Wire(first, second);
 			first.attach(wire);
 			second.attach(wire);
