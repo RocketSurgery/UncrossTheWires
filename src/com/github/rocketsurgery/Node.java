@@ -36,11 +36,11 @@ public class Node {
 		return Math.sqrt(Math.pow(xPos - x, 2) + Math.pow(yPos - y, 2)) < sizeOnScreen;
 	}
 	
-	public float x() {
+	public float getX() {
 		return xPos;
 	}
 	
-	public float y() {
+	public float getY() {
 		return yPos;
 	}
 	
