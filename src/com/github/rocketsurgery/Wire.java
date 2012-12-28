@@ -7,6 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.geom.Line;
 
+@SuppressWarnings("serial")
 public class Wire extends Line {
 
 	private Node end1, end2;

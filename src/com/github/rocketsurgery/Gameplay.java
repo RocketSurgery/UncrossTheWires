@@ -16,17 +16,21 @@ public class Gameplay extends BasicGameState {
 	private ArrayList<Node> nodes;
 	private ArrayList<Wire> wires;
 
-	// variable for selected nodes
+	// variables for selected nodes
 	private Node selected;
-	private float selectionCircle;
-	private float maxSelectionSize = 2 * Node.sizeOnScreen;
+	private Node lastSelected;
+	private float selectionCircle = .5f * Node.sizeOnScreen;
+	private float lastSelectionCircle;
+	private float maxSelectionSize = 1.5f * Node.sizeOnScreen;
+	private float growSpeed = 0.5f;
+	private Color selectionColor = Color.yellow;
+	
+	// variables for hovered node
 	private Node hovered;
 	private Node lastHovered;
 	private float hoverCircle = 0f;
-	private float lastCircle = 0f;
+	private float lastHoveredCircle = 0f;
 	private float maxHoverSize = .5f * Node.sizeOnScreen;
-	private float growSpeed = 0.5f;
-	private Color selectionColor = Color.yellow;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -35,21 +39,29 @@ public class Gameplay extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		// Draw Background
+		// draw background
+
+		// draw selection
+		g.setColor(selectionColor);
+		g.setAntiAlias(false);
+		if (selected != null)
+			g.fill(new Circle(selected.getX(), selected.getY(), selectionCircle));
+		if (lastSelected != null)
+			g.fill(new Circle(lastSelected.getX(), lastSelected.getY(), lastSelectionCircle));
 		
-		// Draw Nodes
+		// draw nodes
 		for (Node node : nodes)
 			node.Render(gc, sbg, g);
 
-		// Draw Hovered Node
+		// draw hovered node
 		g.setColor(selectionColor);
 		g.setAntiAlias(false);
 		if (hovered != null)
 			g.fill(new Circle(hovered.getX(), hovered.getY(), hoverCircle));
 		if (lastHovered != null)
 			g.fill(new Circle(lastHovered.getX(), lastHovered.getY(), hoverCircle));
-		
-		// Draw Wires
+
+		// draw wires
 		for (Wire wire : wires)
 			wire.render(gc, sbg, g);
 
@@ -57,12 +69,13 @@ public class Gameplay extends BasicGameState {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-		// Create Input
+		// create input
 		Input input = gc.getInput();
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 
-		Node temp = hovered;
+		// find if mouse if hovering over a node
+		Node previousHovered = hovered;
 		hovered = null;
 		for (Node node : nodes) {
 			if (node.isOver(mouseX, mouseY)) {
@@ -70,40 +83,73 @@ public class Gameplay extends BasicGameState {
 				break;
 			}
 		}
+
+		// if currently hovered node is different than previously hovered node
+		// setup lastHovered and hoverCircle
+		if (previousHovered != hovered) {
+			lastHovered = previousHovered;
+			lastHoveredCircle = hoverCircle;
+			hoverCircle = 0f;
+		}
 		
-		if (temp != hovered)
-			lastHovered = temp;
-		
+		// animate lastCircle
+		lastHoveredCircle = (lastHoveredCircle > 0) ? lastHoveredCircle - growSpeed * delta : 0;
+		if (lastHoveredCircle == 0)
+			lastHovered = null;
+
 		if (hovered != null) {
+			
+			// if not hovering over selected
+			// animate hoverCircle
 			if (hovered != selected)
 				hoverCircle = (hoverCircle < maxHoverSize) ? hoverCircle + growSpeed * delta : maxHoverSize;
-			lastCircle = (lastCircle > 0) ? lastCircle - growSpeed * delta : 0;
-			if (lastCircle == 0)
-				lastHovered = null;
-			
+
+			// if user clicks on hovered
+			// set selected to hovered
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+				lastSelected = selected;
 				selected = hovered;
+				selectionCircle = .5f * Node.sizeOnScreen;
+				hovered = null;
 			}
 		} else {
-			hoverCircle = 0f;
-			lastCircle = hoverCircle;
+			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+				lastSelected = selected;
+				selected = null;
+			}
 		}
 
+		// animate selectionCircle
+		if (selected != null) {
+			selectionCircle = (selectionCircle < maxSelectionSize) ? selectionCircle + growSpeed * delta : maxSelectionSize;
+		} else {
+			selectionCircle = (selectionCircle > 0) ? selectionCircle - growSpeed * delta : 0;
+		}
+		
+		// animate lastSelectionCircle
+		lastSelectionCircle = (lastSelectionCircle > 0) ? lastSelectionCircle - growSpeed * delta : 0;
+		
+		// test if any wires intersect
 		boolean intersections = false;
-
-		for (int i = 0; i < wires.size() - 1; i++)
-			for (int j = i + 1; j < wires.size(); j++)
-				if (wires.get(i).intersects(wires.get(j)))
+		for (int i = 0; i < wires.size() - 1; i++) {
+			for (int j = i + 1; j < wires.size(); j++) {
+				if (wires.get(i).intersects(wires.get(j))) {
 					intersections = true;
+					break;
+				}
+			}
+		}
 
+		// if no wires intersect end level
 		if (!intersections)
 			System.out.println("game complete");
 	}
 
+	// resets level and loads setup for selected level
 	private void startLevel(int level) {
 		nodes = new ArrayList<Node>();
 		wires = new ArrayList<Wire>();
-		
+
 		switch (level) {
 		case 1:
 			Node first = new Node(400f, 40f);
