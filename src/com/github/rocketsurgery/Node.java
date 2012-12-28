@@ -20,8 +20,6 @@ public class Node extends Circle {
 	}
 	
 	public boolean attach(Wire wire) {
-		if (attachedWire != null)
-			return false;
 		attachedWire = wire;
 		return true;
 	}
@@ -36,4 +34,7 @@ public class Node extends Circle {
 		return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2)) < sizeOnScreen;
 	}
 	
+	public Wire getWire() {
+		return attachedWire;
+	}
 }

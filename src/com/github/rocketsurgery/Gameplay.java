@@ -123,6 +123,27 @@ public class Gameplay extends BasicGameState {
 			}
 		}
 
+		// two nodes selected, attempt to switch wires
+		if (lastSelected != null && selected != null && lastSelected != selected) {
+			if (selected.getWire() != lastSelected.getWire()) { // nodes from different wires
+				// switch wires
+				System.out.println("two nodes selected");
+				Wire tempWire = selected.getWire();
+				selected.attach(lastSelected.getWire());
+				selected.getWire().setNode(lastSelected, selected);
+				lastSelected.attach(tempWire);
+				lastSelected.getWire().setNode(selected, lastSelected);
+				
+				// deselect nodes
+				selected = null;
+				lastSelected = null;
+			} else { // nodes on same wire
+				// deselect nodes
+				selected = null;
+				lastSelected = null;
+			}
+		}
+		
 		// animate selectionCircle
 		if (selected != null) {
 			selectionCircle = (selectionCircle < maxSelectionSize) ? selectionCircle + growSpeed * delta : maxSelectionSize;
