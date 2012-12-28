@@ -24,6 +24,7 @@ public class MainMenu extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
 		System.out.println("Entering state " + getID());
+		selectionWidth = 0;
 	}
 
 	@Override

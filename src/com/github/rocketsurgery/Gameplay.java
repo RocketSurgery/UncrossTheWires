@@ -39,6 +39,10 @@ public class Gameplay extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
 		System.out.println("Entering state " + getID());
+		setupLevel(1);
+		winDelay = 2000f;
+		levelComplete = false;
+		hasClicked = false;
 	}
 
 	@Override
@@ -48,7 +52,6 @@ public class Gameplay extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		startLevel(1);
 	}
 
 	@Override
@@ -197,7 +200,7 @@ public class Gameplay extends BasicGameState {
 	}
 
 	// resets level and loads setup for selected level
-	private void startLevel(int level) {
+	private void setupLevel(int level) {
 		nodes = new ArrayList<Node>();
 		wires = new ArrayList<Wire>();
 
