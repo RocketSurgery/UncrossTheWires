@@ -160,7 +160,6 @@ public class Gameplay extends BasicGameState {
 			for (int j = i + 1; j < wires.size(); j++) {
 				if (wires.get(i).intersects(wires.get(j))) {
 					intersections = true;
-					break;
 				}
 			}
 		}
