@@ -11,7 +11,7 @@ public class Node {
 	private float xPos, yPos;
 	private Wire attachedWire;
 	
-	private static final float sizeOnScreen = 50f;
+	public static final float sizeOnScreen = 30f;
 	private static final Color nodeColor = Color.blue;
 	
 	public Node(float x, float y) {
