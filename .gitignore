@@ -2,4 +2,4 @@ bin
 .metadata
 /*.jar
 /deploy
-.classpath
+/.classpath
