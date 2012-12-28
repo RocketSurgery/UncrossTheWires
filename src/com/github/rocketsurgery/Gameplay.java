@@ -15,8 +15,10 @@ public class Gameplay extends BasicGameState {
 
 	private ArrayList<Node> nodes;
 	private ArrayList<Wire> wires;
-	
-	boolean hasClicked = false;
+
+	private boolean hasClicked = false;
+	private boolean levelComplete = false;
+	private float winDelay = 2000f;
 
 	// variables for selected nodes
 	private Node selected;
@@ -26,7 +28,7 @@ public class Gameplay extends BasicGameState {
 	private float maxSelectionSize = 1.5f * Node.sizeOnScreen;
 	private float growSpeed = 0.5f;
 	private Color selectionColor = Color.yellow;
-	
+
 	// variables for hovered node
 	private Node hovered;
 	private Node lastHovered;
@@ -50,7 +52,7 @@ public class Gameplay extends BasicGameState {
 			g.fill(new Circle(selected.getX(), selected.getY(), selectionCircle));
 		if (lastSelected != null)
 			g.fill(new Circle(lastSelected.getX(), lastSelected.getY(), lastSelectionCircle));
-		
+
 		// draw nodes
 		for (Node node : nodes)
 			node.Render(gc, sbg, g);
@@ -76,102 +78,112 @@ public class Gameplay extends BasicGameState {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 
-		// find if mouse if hovering over a node
-		Node previousHovered = hovered;
-		hovered = null;
-		for (Node node : nodes) {
-			if (node.isOver(mouseX, mouseY)) {
-				hovered = node;
-				break;
-			}
-		}
+		// if level complete skip logic
+		if (!levelComplete) {
 
-		// if currently hovered node is different than previously hovered node
-		// setup lastHovered and hoverCircle
-		if (previousHovered != hovered) {
-			lastHovered = previousHovered;
-			lastHoveredCircle = hoverCircle;
-			hoverCircle = 0f;
-		}
-		
-		// animate lastCircle
-		lastHoveredCircle = (lastHoveredCircle > 0) ? lastHoveredCircle - growSpeed * delta : 0;
-		if (lastHoveredCircle == 0)
-			lastHovered = null;
-
-		// logic for clicking on nodes
-		if (hovered != null) {
-			
-			// if not hovering over selected
-			// animate hoverCircle
-			if (hovered != selected)
-				hoverCircle = (hoverCircle < maxHoverSize) ? hoverCircle + growSpeed * delta : maxHoverSize;
-
-			// if user clicks on hovered
-			// set selected to hovered
-			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && !hasClicked) {
-				lastSelected = selected;
-				selected = hovered;
-				selectionCircle = .5f * Node.sizeOnScreen;
-				hovered = null;
-				hasClicked = true;
-			}
-		} else {
-			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-				lastSelected = selected;
-				selected = null;
-			}
-		}
-
-		// two nodes selected, attempt to switch wires
-		if (lastSelected != null && selected != null && lastSelected != selected) {
-			if (selected.getWire() != lastSelected.getWire()) { // nodes from different wires
-				// switch wires
-				System.out.println("two nodes selected");
-				Wire tempWire = selected.getWire();
-				selected.attach(lastSelected.getWire());
-				selected.getWire().setNode(lastSelected, selected);
-				lastSelected.attach(tempWire);
-				lastSelected.getWire().setNode(selected, lastSelected);
-				
-				// deselect nodes
-				selected = null;
-				lastSelected = null;
-			} else { // nodes on same wire
-				// deselect nodes
-				selected = null;
-				lastSelected = null;
-			}
-		}
-		
-		// animate selectionCircle
-		if (selected != null) {
-			selectionCircle = (selectionCircle < maxSelectionSize) ? selectionCircle + growSpeed * delta : maxSelectionSize;
-		} else {
-			selectionCircle = (selectionCircle > 0) ? selectionCircle - growSpeed * delta : 0;
-		}
-		
-		// animate lastSelectionCircle
-		lastSelectionCircle = (lastSelectionCircle > 0) ? lastSelectionCircle - growSpeed * delta : 0;
-		
-		// test if any wires intersect
-		boolean intersections = false;
-		for (int i = 0; i < wires.size() - 1; i++) {
-			for (int j = i + 1; j < wires.size(); j++) {
-				if (wires.get(i).intersects(wires.get(j))) {
-					intersections = true;
+			// find if mouse if hovering over a node
+			Node previousHovered = hovered;
+			hovered = null;
+			for (Node node : nodes) {
+				if (node.isOver(mouseX, mouseY)) {
+					hovered = node;
+					break;
 				}
+			}
+			// if currently hovered node is different than previously hovered
+			// node
+			// setup lastHovered and hoverCircle
+			if (previousHovered != hovered) {
+				lastHovered = previousHovered;
+				lastHoveredCircle = hoverCircle;
+				hoverCircle = 0f;
+			}
+			// animate lastCircle
+			lastHoveredCircle = (lastHoveredCircle > 0) ? lastHoveredCircle - growSpeed * delta : 0;
+			if (lastHoveredCircle == 0)
+				lastHovered = null;
+			// logic for clicking on nodes
+			if (hovered != null) {
+
+				// if not hovering over selected
+				// animate hoverCircle
+				if (hovered != selected)
+					hoverCircle = (hoverCircle < maxHoverSize) ? hoverCircle + growSpeed * delta : maxHoverSize;
+
+				// if user clicks on hovered
+				// set selected to hovered
+				if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && !hasClicked) {
+					lastSelected = selected;
+					selected = hovered;
+					selectionCircle = .5f * Node.sizeOnScreen;
+					hovered = null;
+					hasClicked = true;
+				}
+			} else {
+				if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+					lastSelected = selected;
+					selected = null;
+				}
+			}
+			// two nodes selected, attempt to switch wires
+			if (lastSelected != null && selected != null && lastSelected != selected) {
+				if (selected.getWire() != lastSelected.getWire()) { // nodes
+																	// from
+																	// different
+																	// wires
+					// switch wires
+					System.out.println("two nodes selected");
+					Wire tempWire = selected.getWire();
+					selected.attach(lastSelected.getWire());
+					selected.getWire().setNode(lastSelected, selected);
+					lastSelected.attach(tempWire);
+					lastSelected.getWire().setNode(selected, lastSelected);
+
+					// deselect nodes
+					selected = null;
+					lastSelected = null;
+				} else { // nodes on same wire
+					
+					// deselect nodes
+					selected = null;
+					lastSelected = null;
+				}
+			}
+			
+			// animate selectionCircle
+			if (selected != null) {
+				selectionCircle = (selectionCircle < maxSelectionSize) ? selectionCircle + growSpeed * delta : maxSelectionSize;
+			} else {
+				selectionCircle = (selectionCircle > 0) ? selectionCircle - growSpeed * delta : 0;
+			}
+			
+			// animate lastSelectionCircle
+			lastSelectionCircle = (lastSelectionCircle > 0) ? lastSelectionCircle - growSpeed * delta : 0;
+			
+			// test if any wires intersect
+			levelComplete = true;
+			for (int i = 0; i < wires.size() - 1; i++) {
+				for (int j = i + 1; j < wires.size(); j++) {
+					if (wires.get(i).intersects(wires.get(j))) {
+						levelComplete = false;
+						break;
+					}
+				}
+			}
+
+			// reset hasClicked
+			if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+				hasClicked = false;
 			}
 		}
 
 		// if no wires intersect end level
-		if (!intersections)
-			System.out.println("game complete");
-		
-		// reset hasClicked
-		if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			hasClicked = false;
+		if (levelComplete) {
+			winDelay -= delta;
+			if (winDelay <= 0)
+				sbg.enterState(UncrossTheWires.MAIN_MENU);
 		}
+
 	}
 
 	// resets level and loads setup for selected level
