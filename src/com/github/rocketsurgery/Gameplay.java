@@ -22,7 +22,13 @@ public class Gameplay extends BasicGameState {
 	private float hoverCircle;
 	private float maxHoverSize = .5f * Node.sizeOnScreen;
 	private float growSpeed = 1f;
-
+	
+	boolean anyIntersections = false;
+	
+	int wireGenerationTimer = 0;
+	final int WIRE_GENERATION_INTERVAL = 2000;
+	
+	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		nodes = new ArrayList<Node>();
@@ -41,6 +47,14 @@ public class Gameplay extends BasicGameState {
 		// Draw Wires
 		for (Wire wire : wires)
 			wire.render(gc, sbg, g);
+		
+		if (anyIntersections) {
+			g.drawString("Some lines intersecting",30, 30);
+		} else {
+			g.drawString("No lines intersecting",30, 30);
+		}
+		
+
 	}
 
 	@Override
@@ -60,6 +74,22 @@ public class Gameplay extends BasicGameState {
 		}
 		
 		
+		wireGenerationTimer += delta;
+		
+		anyIntersections = false;
+		
+		for (int i = 0; i < wires.size() - 1; i++) {
+			for (int j = i + 1; j < wires.size(); j++) {
+				if (wires.get(i).intersects(wires.get(j))) {
+					anyIntersections = true;
+				}				
+			}
+		}
+		
+		
+		
+		
+
 	}
 
 	private void startLevel(int level) {

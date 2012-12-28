@@ -5,8 +5,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.geom.Line;
 
-public class Wire {
+public class Wire extends Line{
 
 	private Node end1, end2;
 	
@@ -14,6 +15,7 @@ public class Wire {
 	private float wireWidth = 5f;
 	
 	public Wire(Node first, Node second) {
+		super(first.getX(), first.getY(), second.getX(), second.getY());
 		this.end1 = first;
 		this.end2 = second;
 	}
@@ -22,9 +24,9 @@ public class Wire {
 		g.setColor(wireColor);
 		g.setLineWidth(wireWidth);
 		g.setAntiAlias(true);
-		g.drawLine(end1.x(), end1.y(), end2.x(), end2.y());
-		g.fillOval(end1.x() - wireWidth / 2, end1.y() - wireWidth / 2, wireWidth, wireWidth);
-		g.fillOval(end2.x() - wireWidth / 2, end2.y() - wireWidth / 2, wireWidth, wireWidth);
+		g.drawLine(end1.getX(), end1.getY(), end2.getX(), end2.getY());
+		g.fillOval(end1.getX() - wireWidth / 2, end1.getY() - wireWidth / 2, wireWidth, wireWidth);
+		g.fillOval(end2.getX() - wireWidth / 2, end2.getY() - wireWidth / 2, wireWidth, wireWidth);
 	}
 	
 }
