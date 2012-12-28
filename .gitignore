@@ -1,4 +1,8 @@
 bin
-.metadata
+.
+metadata
+
 /*.jar
+
 /deploy
+.classpath
