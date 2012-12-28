@@ -15,6 +15,8 @@ public class Gameplay extends BasicGameState {
 
 	private ArrayList<Node> nodes;
 	private ArrayList<Wire> wires;
+	
+	boolean hasClicked = false;
 
 	// variables for selected nodes
 	private Node selected;
@@ -97,6 +99,7 @@ public class Gameplay extends BasicGameState {
 		if (lastHoveredCircle == 0)
 			lastHovered = null;
 
+		// logic for clicking on nodes
 		if (hovered != null) {
 			
 			// if not hovering over selected
@@ -106,11 +109,12 @@ public class Gameplay extends BasicGameState {
 
 			// if user clicks on hovered
 			// set selected to hovered
-			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && !hasClicked) {
 				lastSelected = selected;
 				selected = hovered;
 				selectionCircle = .5f * Node.sizeOnScreen;
 				hovered = null;
+				hasClicked = true;
 			}
 		} else {
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
@@ -143,6 +147,11 @@ public class Gameplay extends BasicGameState {
 		// if no wires intersect end level
 		if (!intersections)
 			System.out.println("game complete");
+		
+		// reset hasClicked
+		if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			hasClicked = false;
+		}
 	}
 
 	// resets level and loads setup for selected level
