@@ -26,8 +26,8 @@ public class Level {
 				next = scan.next();
 			} while (!next.equalsIgnoreCase(title));
 			
-			ArrayList<Node> nodes = new ArrayList<>();
-			ArrayList<Wire> wires = new ArrayList<>();
+			ArrayList<Node> nodes = new ArrayList<Node>();
+			ArrayList<Wire> wires = new ArrayList<Wire>();
 			
 			// until the next header is reached
 			while (scan.hasNextInt()) {
@@ -40,23 +40,32 @@ public class Level {
 				
 				// create nodes and wire
 				Node node1 = null;
-				for (Node node : nodes)
-					if (node.isOver(x1, y1))
+				for (Node node : nodes) {
+					if (node.contains(x1, y1)) {
 						node1 = node;
-				if (node1 == null)
-					node1 = new SingleNode(x1, y1);
+						System.out.println("node1 already exists");
+					}
+				}
+				// node doesn't already exist
+				if (node1 == null) {
+					node1 = new MultiNode(x1, y1);
+					System.out.println("creating new node1");
+				}
 				
 				Node node2 = null;
 				for (Node node : nodes)
-					if (node.isOver(x2, y2))
+					if (node.contains(x2, y2))
 						node2 = node;
 				if (node2 == null)
-					node2 = new SingleNode(x2, y2);
+					node2 = new MultiNode(x2, y2);
+				
 				Wire wire = new Wire(node1, node2);
 				
 				// add nodes and wires to temp list
-				if (!nodes.contains(node1))
+				if (!nodes.contains(node1)) {
 					nodes.add(node1);
+					System.out.println("adding node1 to nodes");
+				}
 				if (!nodes.contains(node2))
 					nodes.add(node2);
 				wires.add(wire);

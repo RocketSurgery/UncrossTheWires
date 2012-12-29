@@ -185,6 +185,7 @@ public class Gameplay extends BasicGameState {
 			if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 				hasClicked = false;
 			}
+			
 		}
 
 		// if no wires intersect end level
