@@ -41,7 +41,7 @@ public class Level {
 				// create nodes and wire
 				Node node1 = null;
 				for (Node node : nodes) {
-					if (node.contains(x1, y1)) {
+					if (x1 == node.getCenterX() && y1 == node.getCenterY()) {
 						node1 = node;
 						System.out.println("node1 already exists");
 					}
@@ -49,12 +49,11 @@ public class Level {
 				// node doesn't already exist
 				if (node1 == null) {
 					node1 = new MultiNode(x1, y1);
-					System.out.println("creating new node1");
 				}
 				
 				Node node2 = null;
 				for (Node node : nodes)
-					if (node.contains(x2, y2))
+					if (x2 == node.getCenterX() && y2 == node.getCenterY())
 						node2 = node;
 				if (node2 == null)
 					node2 = new MultiNode(x2, y2);
@@ -64,7 +63,6 @@ public class Level {
 				// add nodes and wires to temp list
 				if (!nodes.contains(node1)) {
 					nodes.add(node1);
-					System.out.println("adding node1 to nodes");
 				}
 				if (!nodes.contains(node2))
 					nodes.add(node2);
