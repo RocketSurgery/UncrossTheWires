@@ -1,28 +1,17 @@
 package com.github.rocketsurgery;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
+import java.util.List;
+
 import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.state.StateBasedGame;
 
 @SuppressWarnings("serial")
-public class Node extends Circle {
+public abstract class Node extends Circle implements DisplayElement {
 
-	private Wire attachedWire;
-	
-	public static final float sizeOnScreen = 30f;
-	private static final Color nodeColor = Color.blue;
-	
-	public Node(float x, float y) {
-		super(x, y, sizeOnScreen);
+	public Node(float centerPointX, float centerPointY, float radius) {
+		super(centerPointX, centerPointY, radius);
 	}
 	
-	public boolean attach(Wire wire) {
-		attachedWire = wire;
-		return true;
-	}
+	public abstract boolean attach(Wire wire);
 	
 	public void swapLocations(Node other) {
 		float tempX = this.x;
@@ -31,21 +20,10 @@ public class Node extends Circle {
 		this.y = other.getY();
 		other.setX(tempX);
 		other.setY(tempY);
-		this.attachedWire.resetEnds();
-		other.getWire().resetEnds();
 	}
 	
-	public void Render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.setColor(nodeColor);
-		g.setAntiAlias(true);
-		g.fillOval(x - sizeOnScreen / 2, y - sizeOnScreen / 2, sizeOnScreen, sizeOnScreen);
-	}
+	public abstract boolean isOver(int x, int y);
 	
-	public boolean isOver(int x, int y) {
-		return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2)) < sizeOnScreen;
-	}
-	
-	public Wire getWire() {
-		return attachedWire;
-	}
+	public abstract List<Wire> getWires();
+
 }

@@ -10,12 +10,12 @@ import org.newdawn.slick.geom.Line;
 @SuppressWarnings("serial")
 public class Wire extends Line {
 
-	private Node end1, end2;
+	private SingleNode end1, end2;
 	
 	private Color wireColor = Color.red;
 	private float wireWidth = 5f;
 	
-	public Wire(Node first, Node second) {
+	public Wire(SingleNode first, SingleNode second) {
 		super(first.getX(), first.getY(), second.getX(), second.getY());
 		first.attach(this);
 		second.attach(this);

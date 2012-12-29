@@ -10,11 +10,11 @@ import java.util.Scanner;
 public class Level {
 
 	private List<Wire> wires;
-	private List<Node> nodes;
+	private List<SingleNode> singleNodes;
 	
-	private Level(List<Wire> wires, List<Node> nodes) {
+	private Level(List<Wire> wires, List<SingleNode> singleNodes) {
 		this.wires = wires;
-		this.nodes = nodes;
+		this.singleNodes = singleNodes;
 	}
 	
 	public static Level loadLevel(String title) {
@@ -26,7 +26,7 @@ public class Level {
 				next = scan.next();
 			} while (!next.equalsIgnoreCase(title));
 			
-			ArrayList<Node> nodes = new ArrayList<>();
+			ArrayList<SingleNode> singleNodes = new ArrayList<>();
 			ArrayList<Wire> wires = new ArrayList<>();
 			
 			// until the next header is reached
@@ -39,18 +39,18 @@ public class Level {
 				int y2 = scan.nextInt();
 				
 				// create nodes and wire
-				Node node1 = new Node(x1, y1);
-				Node node2 = new Node(x2, y2);
-				Wire wire = new Wire(node1, node2);
+				SingleNode singleNode1 = new SingleNode(x1, y1);
+				SingleNode singleNode2 = new SingleNode(x2, y2);
+				Wire wire = new Wire(singleNode1, singleNode2);
 				
 				// add nodes and wires to temp list
-				nodes.add(node1);
-				nodes.add(node2);
+				singleNodes.add(singleNode1);
+				singleNodes.add(singleNode2);
 				wires.add(wire);
 			}
 			
 			// create level and return it
-			return new Level(wires, nodes);
+			return new Level(wires, singleNodes);
 			
 		} catch (FileNotFoundException e) {
 			System.out.println("wha... how? the file is RIGHT THERE");
@@ -65,8 +65,8 @@ public class Level {
 		return this.wires;
 	}
 	
-	public List<Node> getNodes() {
-		return this.nodes;
+	public List<SingleNode> getSingleNodes() {
+		return this.singleNodes;
 	}
 	
 }

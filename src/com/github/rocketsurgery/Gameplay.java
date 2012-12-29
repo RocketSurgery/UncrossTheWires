@@ -13,7 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Gameplay extends BasicGameState {
 
-	private List<Node> nodes;
+	private List<SingleNode> singleNodes;
 	private List<Wire> wires;
 
 	private boolean hasClicked = false;
@@ -21,26 +21,26 @@ public class Gameplay extends BasicGameState {
 	private float winDelay = 2000f;
 
 	// variables for selected nodes
-	private Node selected;
-	private Node lastSelected;
-	private float selectionCircle = .5f * Node.sizeOnScreen;
+	private SingleNode selected;
+	private SingleNode lastSelected;
+	private float selectionCircle = .5f * SingleNode.sizeOnScreen;
 	private float lastSelectionCircle;
-	private float maxSelectionSize = 1.5f * Node.sizeOnScreen;
+	private float maxSelectionSize = 1.5f * SingleNode.sizeOnScreen;
 	private float growSpeed = 0.5f;
 	private Color selectionColor = Color.yellow;
 
 	// variables for hovered node
-	private Node hovered;
-	private Node lastHovered;
+	private SingleNode hovered;
+	private SingleNode lastHovered;
 	private float hoverCircle = 0f;
 	private float lastHoveredCircle = 0f;
-	private float maxHoverSize = .5f * Node.sizeOnScreen;
+	private float maxHoverSize = .5f * SingleNode.sizeOnScreen;
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
 		System.out.println("Entering state " + getID());
 		Level level = Level.loadLevel("TEST");
-		nodes = level.getNodes();
+		singleNodes = level.getSingleNodes();
 		wires = level.getWires();
 		winDelay = 2000f;
 		levelComplete = false;
@@ -69,8 +69,8 @@ public class Gameplay extends BasicGameState {
 			g.fill(new Circle(lastSelected.getX(), lastSelected.getY(), lastSelectionCircle));
 
 		// draw nodes
-		for (Node node : nodes)
-			node.Render(gc, sbg, g);
+		for (SingleNode singleNode : singleNodes)
+			singleNode.Render(gc, sbg, g);
 
 		// draw hovered node
 		g.setColor(selectionColor);
@@ -97,11 +97,11 @@ public class Gameplay extends BasicGameState {
 		if (!levelComplete) {
 
 			// find if mouse if hovering over a node
-			Node previousHovered = hovered;
+			SingleNode previousHovered = hovered;
 			hovered = null;
-			for (Node node : nodes) {
-				if (node.isOver(mouseX, mouseY)) {
-					hovered = node;
+			for (SingleNode singleNode : singleNodes) {
+				if (singleNode.isOver(mouseX, mouseY)) {
+					hovered = singleNode;
 					break;
 				}
 			}
@@ -131,7 +131,7 @@ public class Gameplay extends BasicGameState {
 				if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && !hasClicked) {
 					lastSelected = selected;
 					selected = hovered;
-					selectionCircle = .5f * Node.sizeOnScreen;
+					selectionCircle = .5f * SingleNode.sizeOnScreen;
 					hovered = null;
 					hasClicked = true;
 				}
@@ -144,7 +144,7 @@ public class Gameplay extends BasicGameState {
 			
 			// two nodes selected, attempt to switch wires
 			if (lastSelected != null && selected != null && lastSelected != selected) {
-				if (selected.getWire() != lastSelected.getWire()) { // nodes from different wires
+				if (selected.getWires() != lastSelected.getWires()) { // nodes from different wires
 					
 					// switch nodes
 					selected.swapLocations(lastSelected);
