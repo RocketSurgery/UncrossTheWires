@@ -24,6 +24,17 @@ public class Node extends Circle {
 		return true;
 	}
 	
+	public void swapLocations(Node other) {
+		float tempX = this.x;
+		float tempY = this.y;
+		this.x = other.getX();
+		this.y = other.getY();
+		other.setX(tempX);
+		other.setY(tempY);
+		this.attachedWire.resetEnds();
+		other.getWire().resetEnds();
+	}
+	
 	public void Render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(nodeColor);
 		g.setAntiAlias(true);

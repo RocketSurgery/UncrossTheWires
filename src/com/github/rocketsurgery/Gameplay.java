@@ -1,6 +1,6 @@
 package com.github.rocketsurgery;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -13,8 +13,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Gameplay extends BasicGameState {
 
-	private ArrayList<Node> nodes;
-	private ArrayList<Wire> wires;
+	private List<Node> nodes;
+	private List<Wire> wires;
 
 	private boolean hasClicked = false;
 	private boolean levelComplete = false;
@@ -39,7 +39,9 @@ public class Gameplay extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
 		System.out.println("Entering state " + getID());
-		setupLevel(1);
+		Level level = Level.loadLevel("TEST");
+		nodes = level.getNodes();
+		wires = level.getWires();
 		winDelay = 2000f;
 		levelComplete = false;
 		hasClicked = false;
@@ -103,6 +105,7 @@ public class Gameplay extends BasicGameState {
 					break;
 				}
 			}
+			
 			// if currently hovered node is different than previously hovered
 			// node
 			// setup lastHovered and hoverCircle
@@ -138,19 +141,13 @@ public class Gameplay extends BasicGameState {
 					selected = null;
 				}
 			}
+			
 			// two nodes selected, attempt to switch wires
 			if (lastSelected != null && selected != null && lastSelected != selected) {
-				if (selected.getWire() != lastSelected.getWire()) { // nodes
-																	// from
-																	// different
-																	// wires
-					// switch wires
-					System.out.println("two nodes selected");
-					Wire tempWire = selected.getWire();
-					selected.attach(lastSelected.getWire());
-					selected.getWire().setNode(lastSelected, selected);
-					lastSelected.attach(tempWire);
-					lastSelected.getWire().setNode(selected, lastSelected);
+				if (selected.getWire() != lastSelected.getWire()) { // nodes from different wires
+					
+					// switch nodes
+					selected.swapLocations(lastSelected);
 
 					// deselect nodes
 					selected = null;
@@ -197,47 +194,6 @@ public class Gameplay extends BasicGameState {
 				sbg.enterState(UncrossTheWires.MAIN_MENU);
 		}
 
-	}
-
-	// resets level and loads setup for selected level
-	private void setupLevel(int level) {
-		nodes = new ArrayList<Node>();
-		wires = new ArrayList<Wire>();
-
-		switch (level) {
-		case 1:
-			Node first = new Node(400f, 40f);
-			Node second = new Node(500f, 520f);
-			Wire wire = new Wire(first, second);
-			first.attach(wire);
-			second.attach(wire);
-			nodes.add(first);
-			nodes.add(second);
-			wires.add(wire);
-
-			first = new Node(50f, 100f);
-			second = new Node(600f, 80f);
-			wire = new Wire(first, second);
-			first.attach(wire);
-			second.attach(wire);
-			nodes.add(first);
-			nodes.add(second);
-			wires.add(wire);
-
-			first = new Node(50f, 500f);
-			second = new Node(600f, 430f);
-			wire = new Wire(first, second);
-			first.attach(wire);
-			second.attach(wire);
-			nodes.add(first);
-			nodes.add(second);
-			wires.add(wire);
-
-			break;
-		default:
-			System.out.println("how did you do that?");
-			break;
-		}
 	}
 
 	@Override
