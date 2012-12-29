@@ -35,7 +35,7 @@ public class MainMenu extends BasicGameState {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		font = new UnicodeFont("res/cubic.ttf", 40, false, false);
+		font = new UnicodeFont("cubic.ttf", 40, false, false);
 		font.addAsciiGlyphs();
 		font.getEffects().add(new ColorEffect()); // Create a default white
 		font.loadGlyphs();

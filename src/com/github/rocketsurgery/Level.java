@@ -18,7 +18,7 @@ public class Level {
 	}
 	
 	public static Level loadLevel(String title) {
-		try (Scanner scan = new Scanner(new File("res/levels.dat"))) {
+		try (Scanner scan = new Scanner(new File("levels.dat"))) {
 			
 			// find header for level
 			String next;
