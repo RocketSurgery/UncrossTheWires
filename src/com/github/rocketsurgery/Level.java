@@ -10,11 +10,11 @@ import java.util.Scanner;
 public class Level {
 
 	private List<Wire> wires;
-	private List<SingleNode> singleNodes;
+	private List<Node> nodes;
 	
-	private Level(List<Wire> wires, List<SingleNode> singleNodes) {
+	private Level(List<Wire> wires, List<Node> nodes) {
 		this.wires = wires;
-		this.singleNodes = singleNodes;
+		this.nodes = nodes;
 	}
 	
 	public static Level loadLevel(String title) {
@@ -26,31 +26,44 @@ public class Level {
 				next = scan.next();
 			} while (!next.equalsIgnoreCase(title));
 			
-			ArrayList<SingleNode> singleNodes = new ArrayList<>();
+			ArrayList<Node> nodes = new ArrayList<>();
 			ArrayList<Wire> wires = new ArrayList<>();
 			
 			// until the next header is reached
 			while (scan.hasNextInt()) {
 				
-				// load in coordinates
+				// load in end points
 				int x1 = scan.nextInt();
 				int y1 = scan.nextInt();
 				int x2 = scan.nextInt();
 				int y2 = scan.nextInt();
 				
 				// create nodes and wire
-				SingleNode singleNode1 = new SingleNode(x1, y1);
-				SingleNode singleNode2 = new SingleNode(x2, y2);
-				Wire wire = new Wire(singleNode1, singleNode2);
+				Node node1 = null;
+				for (Node node : nodes)
+					if (node.isOver(x1, y1))
+						node1 = node;
+				if (node1 == null)
+					node1 = new SingleNode(x1, y1);
+				
+				Node node2 = null;
+				for (Node node : nodes)
+					if (node.isOver(x2, y2))
+						node2 = node;
+				if (node2 == null)
+					node2 = new SingleNode(x2, y2);
+				Wire wire = new Wire(node1, node2);
 				
 				// add nodes and wires to temp list
-				singleNodes.add(singleNode1);
-				singleNodes.add(singleNode2);
+				if (!nodes.contains(node1))
+					nodes.add(node1);
+				if (!nodes.contains(node2))
+					nodes.add(node2);
 				wires.add(wire);
 			}
 			
 			// create level and return it
-			return new Level(wires, singleNodes);
+			return new Level(wires, nodes);
 			
 		} catch (FileNotFoundException e) {
 			System.out.println("wha... how? the file is RIGHT THERE");
@@ -65,8 +78,8 @@ public class Level {
 		return this.wires;
 	}
 	
-	public List<SingleNode> getSingleNodes() {
-		return this.singleNodes;
+	public List<Node> getNodes() {
+		return this.nodes;
 	}
 	
 }
