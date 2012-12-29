@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.geom.Line;
+import org.newdawn.slick.geom.Shape;
 
 @SuppressWarnings("serial")
 public class Wire extends Line {
@@ -34,6 +35,21 @@ public class Wire extends Line {
 		g.drawLine(end1.getX(), end1.getY(), end2.getX(), end2.getY());
 		g.fillOval(end1.getX() - wireWidth / 2, end1.getY() - wireWidth / 2, wireWidth, wireWidth);
 		g.fillOval(end2.getX() - wireWidth / 2, end2.getY() - wireWidth / 2, wireWidth, wireWidth);
+	}
+	
+	@Override
+	public boolean intersects(Shape shape) {
+		if (!(shape instanceof Wire))
+			throw new IllegalArgumentException();
+		Wire wire = (Wire) shape;
+		if (super.intersects(wire)) {
+			return !(wire.hasEnd(end1) || wire.hasEnd(end2));
+		}
+		return false;
+	}
+	
+	public boolean hasEnd(Node node) {
+		return end1 == node || end2 == node;
 	}
 	
 }
