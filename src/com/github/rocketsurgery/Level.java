@@ -1,7 +1,5 @@
 package com.github.rocketsurgery;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -18,7 +16,7 @@ public class Level {
 	}
 	
 	public static Level loadLevel(String title) {
-		try (Scanner scan = new Scanner(new File("res/levels.dat"))) {
+		try (Scanner scan = new Scanner(Level.class.getClassLoader().getResourceAsStream("levels.dat"))) {
 			
 			// find header for level
 			String next;
@@ -72,13 +70,9 @@ public class Level {
 			// create level and return it
 			return new Level(wires, nodes);
 			
-		} catch (FileNotFoundException e) {
-			System.out.println("wha... how? the file is RIGHT THERE");
 		} catch (NoSuchElementException e) {
 			throw new IllegalArgumentException();
 		}
-		
-		return null;
 	}
 	
 	public List<Wire> getWires() {
