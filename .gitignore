@@ -1,14 +1,6 @@
-<<<<<<< HEAD
 bin
-.metadata
-/*.jar
-=======
-bin
-.
-metadata
-
-/*.jar
-
->>>>>>> refs/heads/zac_working
-/deploy
+/*
+*.jar
 .classpath
+
+.settings/*
