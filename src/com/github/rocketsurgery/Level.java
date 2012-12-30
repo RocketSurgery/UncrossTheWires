@@ -67,6 +67,30 @@ public class Level {
 		// create level and return it
 		return new Level(wires, nodes);
 	}
+	
+	public static String[] loadLevelNames() {
+		Scanner scan = new Scanner(Level.class.getClassLoader().getResourceAsStream("levels.dat"));
+
+		ArrayList<String> tempLevels = new ArrayList<>();
+
+		while (scan.hasNext()) {
+			String temp = scan.next();
+			System.out.println(temp);
+			tempLevels.add(temp);
+			scan.next();
+			scan.next();
+			scan.next();
+			while (scan.hasNextInt())
+				scan.next();
+			scan.next();
+			while (scan.hasNextInt())
+				scan.next();
+		}
+
+		scan.close();
+
+		return tempLevels.toArray(new String[0]);
+	}
 
 	public List<Wire> getWires() {
 		return this.wires;

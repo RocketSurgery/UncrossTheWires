@@ -14,7 +14,7 @@ public class Wire extends Line {
 	private Node end1, end2;
 	
 	private Color wireColor = Color.red;
-	private float wireWidth = 10f;
+	private float wireWidth = 5f;
 	
 	public Wire(Node first, Node second) {
 		super(first.getX(), first.getY(), second.getX(), second.getY());
@@ -32,9 +32,9 @@ public class Wire extends Line {
 		g.setColor(wireColor);
 		g.setLineWidth(wireWidth);
 		g.setAntiAlias(true);
-		g.drawLine(end1.getCenterX(), end1.getCenterY(), end2.getCenterX(), end2.getCenterY());
-		g.fillOval(end1.getCenterX() - wireWidth / 2, end1.getCenterY() - wireWidth / 2, wireWidth, wireWidth);
-		g.fillOval(end2.getCenterX() - wireWidth / 2, end2.getCenterY() - wireWidth / 2, wireWidth, wireWidth);
+		g.drawLine(end1.getX(), end1.getY(), end2.getX(), end2.getY());
+		g.fillOval(end1.getX() - wireWidth / 2, end1.getY() - wireWidth / 2, wireWidth, wireWidth);
+		g.fillOval(end2.getX() - wireWidth / 2, end2.getY() - wireWidth / 2, wireWidth, wireWidth);
 	}
 	
 	@Override
