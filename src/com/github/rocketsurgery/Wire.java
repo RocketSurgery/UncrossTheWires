@@ -1,7 +1,5 @@
 package com.github.rocketsurgery;
 
-import java.util.Random;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

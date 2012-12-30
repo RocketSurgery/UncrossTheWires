@@ -91,7 +91,7 @@ public class Level {
 		
 		//generate width and height between the constants. inclusive.
 		float xSize = rand.nextInt(maximumXResolution - minimumXResolution + 1) + minimumXResolution; 
-		float ySize = rand.nextInt(maximumYResolution - minimumXResolution + 1) + minimumXResolution;
+		float ySize = rand.nextInt(maximumYResolution - minimumYResolution + 1) + minimumYResolution;
 		
 		int numNodes = rand.nextInt(5) + 6;// 6-10 inclusive;
 		
