@@ -1,7 +1,5 @@
 package com.github.rocketsurgery;
 
-import java.util.List;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -13,14 +11,13 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Gameplay extends BasicGameState {
 
-	private List<Node> nodes;
-	private List<Wire> wires;
+	private Level level;
 
 	private boolean hasClicked = false;
 	private boolean levelComplete = false;
 	private float winDelay = 2000f;
 
-	// variables for selected nodes
+	// variables for selected level.getNodes()
 	private Node selected;
 	private Node lastSelected;
 	private float selectionCircle = .5f * Node.sizeOnScreen;
@@ -45,9 +42,7 @@ public class Gameplay extends BasicGameState {
 		winDelay = 2000f;
 		
 		// generate level
-		Level level = Level.generateLevel(MainMenu.selectedLevel, gc);
-		nodes = level.getNodes();
-		wires = level.getWires();
+		level = Level.generateLevel(MainMenu.selectedLevel, gc);
 	}
 
 	@Override
@@ -71,9 +66,9 @@ public class Gameplay extends BasicGameState {
 		if (lastSelected != null)
 			g.fill(new Circle(lastSelected.getCenterX(), lastSelected.getCenterY(), lastSelectionCircle));
 
-		// draw nodes
-		for (Node node : nodes)
-			node.Render(gc, sbg, g);
+		// draw level.getNodes()
+		for (Node node : level.getNodes())
+			node.render(gc, sbg, g);
 
 		// draw hovered node
 		g.setColor(selectionColor);
@@ -83,8 +78,8 @@ public class Gameplay extends BasicGameState {
 		if (lastHovered != null)
 			g.fill(new Circle(lastHovered.getCenterX(), lastHovered.getCenterY(), hoverCircle));
 
-		// draw wires
-		for (Wire wire : wires)
+		// draw level.getWires()
+		for (Wire wire : level.getWires())
 			wire.render(gc, sbg, g);
 
 	}
@@ -102,7 +97,7 @@ public class Gameplay extends BasicGameState {
 			// find if mouse if hovering over a node
 			Node previousHovered = hovered;
 			hovered = null;
-			for (Node node : nodes) {
+			for (Node node : level.getNodes()) {
 				if (node.isOver(mouseX, mouseY)) {
 					hovered = node;
 					break;
@@ -121,7 +116,7 @@ public class Gameplay extends BasicGameState {
 			lastHoveredCircle = (lastHoveredCircle > 0) ? lastHoveredCircle - growSpeed * delta : 0;
 			if (lastHoveredCircle == 0)
 				lastHovered = null;
-			// logic for clicking on nodes
+			// logic for clicking on level.getNodes()
 			if (hovered != null) {
 
 				// if not hovering over selected
@@ -145,19 +140,19 @@ public class Gameplay extends BasicGameState {
 				}
 			}
 			
-			// two nodes selected, attempt to switch wires
+			// two level.getNodes() selected, attempt to switch level.getWires()
 			if (lastSelected != null && selected != null && lastSelected != selected) {
-				if (selected.getWires() != lastSelected.getWires()) { // nodes from different wires
+				if (selected.getWires() != lastSelected.getWires()) { // level.getNodes() from different level.getWires()
 					
-					// switch nodes
+					// switch level.getNodes()
 					selected.swapLocations(lastSelected);
 
-					// deselect nodes
+					// deselect level.getNodes()
 					selected = null;
 					lastSelected = null;
-				} else { // nodes on same wire
+				} else { // level.getNodes() on same wire
 
-					// deselect nodes
+					// deselect level.getNodes()
 					selected = null;
 					lastSelected = null;
 				}
@@ -173,11 +168,11 @@ public class Gameplay extends BasicGameState {
 			// animate lastSelectionCircle
 			lastSelectionCircle = (lastSelectionCircle > 0) ? lastSelectionCircle - growSpeed * delta : 0;
 
-			// test if any wires intersect
+			// test if any level.getWires() intersect
 			levelComplete = true;
-			for (int i = 0; i < wires.size() - 1; i++) {
-				for (int j = i + 1; j < wires.size(); j++) {
-					if (wires.get(i).intersects(wires.get(j))) {
+			for (int i = 0; i < level.getWires().size() - 1; i++) {
+				for (int j = i + 1; j < level.getWires().size(); j++) {
+					if (level.getWires().get(i).intersects(level.getWires().get(j))) {
 						levelComplete = false;
 						break;
 					}

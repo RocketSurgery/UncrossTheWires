@@ -24,7 +24,7 @@ public class Node extends Circle implements DisplayElement {
 	}
 	
 	@Override
-	public void Render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(nodeColor);
 		g.setAntiAlias(false);
 		g.fill(this);

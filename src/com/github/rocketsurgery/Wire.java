@@ -11,7 +11,7 @@ import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Shape;
 
 @SuppressWarnings("serial")
-public class Wire extends Line {
+public class Wire extends Line implements DisplayElement {
 
 	private Node end1, end2;
 	
@@ -39,6 +39,7 @@ public class Wire extends Line {
 		this.set(end1.getCenterX(), end1.getCenterY(), end2.getCenterX(), end2.getCenterY());
 	}
 	
+	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(wireColor);
 		g.setLineWidth(wireWidth);

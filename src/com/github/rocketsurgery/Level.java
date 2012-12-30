@@ -11,6 +11,8 @@ public class Level {
 
 	private List<Wire> wires;
 	private List<Node> nodes;
+	private float internalWidth;
+	private float internalHeight;
 
 	private static final int MAX_WIDTH = 12;
 	private static final int MIN_WIDTH = 8;
@@ -28,65 +30,11 @@ public class Level {
 
 	private static final int PADDING = 50;
 
-	private Level(List<Wire> wires, List<Node> nodes) {
+	private Level(List<Wire> wires, List<Node> nodes, float width, float height) {
 		this.wires = wires;
 		this.nodes = nodes;
-	}
-
-	@Deprecated
-	public static Level loadLevel(String title, GameContainer gc) {
-
-		ArrayList<Node> nodes = new ArrayList<Node>();
-		ArrayList<Wire> wires = new ArrayList<Wire>();
-
-		float xSize, ySize;
-
-		Scanner scan = new Scanner(Level.class.getClassLoader().getResourceAsStream("levels.dat"));
-		// find header for level
-		String next;
-		do {
-			next = scan.next();
-		} while (!next.equalsIgnoreCase(title));
-
-		xSize = scan.nextInt();
-		ySize = scan.nextInt();
-
-		// find "nodes" header
-		scan.next();
-
-		// parse nodes
-		while (scan.hasNextInt()) {
-			if (scan.nextInt() != nodes.size()) {
-				scan.close();
-				throw new IllegalArgumentException();
-			}
-			nodes.add(new Node(scan.nextFloat() * (gc.getWidth() - 2 * PADDING) / xSize + PADDING, scan.nextFloat() / ySize
-					* (gc.getHeight() - 2 * PADDING) + PADDING));
-
-		}
-
-		System.out.println(gc.getWidth() + " " + gc.getHeight());
-
-		for (Node node : nodes)
-			System.out.println(node.getCenterX() + " " + node.getCenterY());
-
-		// skip "connections" header
-		scan.next();
-
-		while (scan.hasNextInt()) {
-			// read in values from next line
-			String[] values = scan.nextLine().split(" ");
-
-			// create wires from values
-			for (int i = 1; i < values.length; i++)
-				wires.add(new Wire(nodes.get(Integer.parseInt(values[0])), nodes.get(Integer.parseInt(values[i]))));
-		}
-
-		// close scan
-		scan.close();
-
-		// create level and return it
-		return new Level(wires, nodes);
+		this.internalWidth = width;
+		this.internalHeight = height;
 	}
 
 	public static Level generateLevel(int difficulty, GameContainer gc) {
@@ -163,9 +111,66 @@ public class Level {
 		if (levelComplete)
 			return generateLevel(difficulty, gc);
 		else
-			return new Level(wires, nodes); // create level and return it
+			return new Level(wires, nodes, xSize, ySize); // create level and return it
 	}
 
+	@Deprecated
+	public static Level loadLevel(String title, GameContainer gc) {
+
+		ArrayList<Node> nodes = new ArrayList<Node>();
+		ArrayList<Wire> wires = new ArrayList<Wire>();
+
+		float xSize, ySize;
+
+		Scanner scan = new Scanner(Level.class.getClassLoader().getResourceAsStream("levels.dat"));
+		// find header for level
+		String next;
+		do {
+			next = scan.next();
+		} while (!next.equalsIgnoreCase(title));
+
+		xSize = scan.nextInt();
+		ySize = scan.nextInt();
+
+		// find "nodes" header
+		scan.next();
+
+		// parse nodes
+		while (scan.hasNextInt()) {
+			if (scan.nextInt() != nodes.size()) {
+				scan.close();
+				throw new IllegalArgumentException();
+			}
+			nodes.add(new Node(scan.nextFloat() * (gc.getWidth() - 2 * PADDING) / xSize + PADDING, scan.nextFloat() / ySize
+					* (gc.getHeight() - 2 * PADDING) + PADDING));
+
+		}
+
+		System.out.println(gc.getWidth() + " " + gc.getHeight());
+
+		for (Node node : nodes)
+			System.out.println(node.getCenterX() + " " + node.getCenterY());
+
+		// skip "connections" header
+		scan.next();
+
+		while (scan.hasNextInt()) {
+			// read in values from next line
+			String[] values = scan.nextLine().split(" ");
+
+			// create wires from values
+			for (int i = 1; i < values.length; i++)
+				wires.add(new Wire(nodes.get(Integer.parseInt(values[0])), nodes.get(Integer.parseInt(values[i]))));
+		}
+
+		// close scan
+		scan.close();
+
+		// create level and return it
+		return new Level(wires, nodes, xSize, ySize);
+	}
+	
+	@Deprecated
 	public static String[] loadLevelNames() {
 		Scanner scan = new Scanner(Level.class.getClassLoader().getResourceAsStream("levels.dat"));
 
@@ -198,4 +203,12 @@ public class Level {
 		return this.nodes;
 	}
 
+	public float getWidth() {
+		return internalWidth;
+	}
+	
+	public float getHeight() {
+		return internalHeight;
+	}
+	
 }

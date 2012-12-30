@@ -7,6 +7,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public interface DisplayElement {
 
-	public void Render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException;
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException;
 	
 }
