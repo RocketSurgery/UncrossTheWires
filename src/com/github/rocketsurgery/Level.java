@@ -28,6 +28,7 @@ public class Level {
 		
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		ArrayList<Wire> wires = new ArrayList<Wire>();
+
 		float xSize, ySize;
 		
 		if (title.equals("RANDOM")) {
@@ -49,7 +50,7 @@ public class Level {
 				x *= gc.getWidth() / xSize;
 				y *= gc.getHeight() / ySize;;
 				
-				nodes.add(new MultiNode(x, y));
+				nodes.add(new Node(x, y));
 			}
 			
 			for (Node node : nodes) {
@@ -100,7 +101,7 @@ public class Level {
 					scan.close();
 					throw new IllegalArgumentException();
 				}
-				nodes.add(new MultiNode(scan.nextFloat() * (gc.getWidth() - 200) / xSize + 100, scan.nextFloat() / ySize * (gc.getHeight() - 200) + 100));
+				nodes.add(new Node(scan.nextFloat() * (gc.getWidth() - 200) / xSize + 100, scan.nextFloat() / ySize * (gc.getHeight() - 200) + 100));
 	
 			}
 	
