@@ -13,6 +13,13 @@ public class Level {
 	public static List<Node> nodes;
 	public static float xSize;
 	public static float ySize;
+	public static final String[] difficulties = 	{ 
+											"easy", 
+											"medium", 
+											"hard", 
+											"whaaaaaaaaat" 
+											};
+	public static int selectedDifficulty = 0;
 
 	private static final int MAX_WIDTH = 12;
 	private static final int MIN_WIDTH = 8;
@@ -40,8 +47,8 @@ public class Level {
 		ySize = rand.nextInt(MAX_HEIGHT - MIN_HEIGHT + 1) + MIN_HEIGHT;
 		
 		// generate a number of nodes between the limits in NODE_LIMITS inclusive
-		int numNodes = rand.nextInt(NODE_LIMITS[MainMenu.selectedLevel][1] - NODE_LIMITS[MainMenu.selectedLevel][0])
-				+ NODE_LIMITS[MainMenu.selectedLevel][0];
+		int numNodes = rand.nextInt(NODE_LIMITS[selectedDifficulty][1] - NODE_LIMITS[selectedDifficulty][0])
+				+ NODE_LIMITS[selectedDifficulty][0];
 
 		for (int i = 0; i < numNodes; i++) {
 

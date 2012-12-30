@@ -36,7 +36,7 @@ public class MostSolved extends Gameplay {
 	}
 	
 	private void reset() {
-		Level.generateLevel(MainMenu.selectedLevel, Gameplay.gameContainer);
+		Level.generateLevel(Level.selectedDifficulty, Gameplay.gameContainer);
 		winDelay = 500;
 		levelComplete = false;
 	}

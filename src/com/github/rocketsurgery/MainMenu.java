@@ -22,18 +22,16 @@ public class MainMenu extends BasicGameState {
 	private UnicodeFont font;
 	private float selectionWidth = 0f;
 	private boolean hasPressedKey = false;
-	public static int selectedLevel = -1;
-	public static final String[] levels = { "easy", "medium", "hard", "whaaaaaaaaat" };
 
 	// preventing accidental restart from score menu
-	private boolean everReleased = false;
+	private boolean hasReleased = false;
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
 		System.out.println("Entering state " + getID());
 		selectionWidth = 0;
 
-		everReleased = false;
+		hasReleased = false;
 	}
 
 	@Override
@@ -50,9 +48,6 @@ public class MainMenu extends BasicGameState {
 		font.addAsciiGlyphs();
 		font.getEffects().add(new ColorEffect()); // Create a default white
 		font.loadGlyphs();
-
-		// load list of levels
-		selectedLevel = 0;
 	}
 
 	@Override
@@ -69,7 +64,8 @@ public class MainMenu extends BasicGameState {
 
 		// draw level select
 		g.setColor(textColor);
-		g.drawString("Level: " + levels[selectedLevel], (gc.getWidth() / 2) - (font.getWidth("Level: " + levels[selectedLevel]) / 2),
+		g.drawString("Level: " + Level.difficulties[Level.selectedDifficulty],
+				(gc.getWidth() / 2) - (font.getWidth("Level: " + Level.difficulties[Level.selectedDifficulty]) / 2),
 				(gc.getHeight() / 4) - (font.getHeight("Level: ") / 2) + 20);
 
 		// draw selection rect
@@ -109,17 +105,17 @@ public class MainMenu extends BasicGameState {
 		}
 
 		if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			everReleased = true;
+			hasReleased = true;
 		}
 
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
 			if (!hasPressedKey) {
-				selectedLevel = ++selectedLevel % levels.length;
+				Level.selectedDifficulty = ++Level.selectedDifficulty % Level.difficulties.length;
 				hasPressedKey = true;
 			}
 		} else if (input.isKeyDown(Input.KEY_LEFT)) {
 			if (!hasPressedKey) {
-				selectedLevel = (selectedLevel > 0) ? selectedLevel - 1 : levels.length - 1;
+				Level.selectedDifficulty = (Level.selectedDifficulty > 0) ? Level.selectedDifficulty - 1 : Level.difficulties.length - 1;
 				hasPressedKey = true;
 			}
 		} else {
