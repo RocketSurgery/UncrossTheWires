@@ -39,7 +39,7 @@ public class Gameplay extends BasicGameState {
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		System.out.println("Entering state " + getID());
-		Level level = Level.loadLevel("BOXNEW", gc);
+		Level level = Level.loadLevel("DAVIDSTAR", gc);
 		nodes = level.getNodes();
 		wires = level.getWires();
 		winDelay = 2000f;
@@ -64,9 +64,9 @@ public class Gameplay extends BasicGameState {
 		g.setColor(selectionColor);
 		g.setAntiAlias(false);
 		if (selected != null)
-			g.fill(new Circle(selected.getX(), selected.getY(), selectionCircle));
+			g.fill(new Circle(selected.getCenterX(), selected.getCenterY(), selectionCircle));
 		if (lastSelected != null)
-			g.fill(new Circle(lastSelected.getX(), lastSelected.getY(), lastSelectionCircle));
+			g.fill(new Circle(lastSelected.getCenterX(), lastSelected.getCenterY(), lastSelectionCircle));
 
 		// draw nodes
 		for (Node node : nodes)
@@ -76,9 +76,9 @@ public class Gameplay extends BasicGameState {
 		g.setColor(selectionColor);
 		g.setAntiAlias(false);
 		if (hovered != null)
-			g.fill(new Circle(hovered.getX(), hovered.getY(), hoverCircle));
+			g.fill(new Circle(hovered.getCenterX(), hovered.getCenterY(), hoverCircle));
 		if (lastHovered != null)
-			g.fill(new Circle(lastHovered.getX(), lastHovered.getY(), hoverCircle));
+			g.fill(new Circle(lastHovered.getCenterX(), lastHovered.getCenterY(), hoverCircle));
 
 		// draw wires
 		for (Wire wire : wires)

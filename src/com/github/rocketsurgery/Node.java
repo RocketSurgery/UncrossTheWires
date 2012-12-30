@@ -22,8 +22,8 @@ public abstract class Node extends Circle implements DisplayElement {
 	@Override
 	public void Render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(nodeColor);
-		g.setAntiAlias(true);
-		g.fillOval(x - sizeOnScreen / 2, y - sizeOnScreen / 2, sizeOnScreen, sizeOnScreen);
+		g.setAntiAlias(false);
+		g.fill(this);
 	}
 	
 	public abstract boolean attach(Wire wire);
@@ -38,7 +38,7 @@ public abstract class Node extends Circle implements DisplayElement {
 	}
 	
 	public boolean isOver(int x, int y) {
-		return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2)) < sizeOnScreen;
+		return Math.sqrt(Math.pow(getCenterX() - x, 2) + Math.pow(getCenterY() - y, 2)) < sizeOnScreen;
 	}
 	
 	public abstract List<Wire> getWires();
