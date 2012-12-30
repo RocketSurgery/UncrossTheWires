@@ -25,10 +25,15 @@ public class MainMenu extends BasicGameState {
 	public static int selectedLevel = -1;
 	public static final String[] levels = { "easy", "medium", "hard", "whaaaaaaaaat" };
 
+	//preventing accidental restart from score menu
+	private boolean everReleased = false;
+	
 	@Override
 	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
 		System.out.println("Entering state " + getID());
 		selectionWidth = 0;
+		
+		everReleased = false;
 	}
 
 	@Override
@@ -94,12 +99,17 @@ public class MainMenu extends BasicGameState {
 		if (onStart) {
 			selectionWidth = (selectionWidth >= gc.getWidth() / 2) ? gc.getWidth() / 2 : selectionWidth + selectionGrowSpeed * delta;
 
-			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && everReleased) {
 				sbg.enterState(UncrossTheWires.GAMEPLAY);
 			}
 		} else {
 			selectionWidth = (selectionWidth <= 0) ? 0 : selectionWidth - selectionGrowSpeed * delta;
 		}
+		
+		if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			everReleased = true;
+		}
+		
 
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
 			if (!hasPressedKey) {
