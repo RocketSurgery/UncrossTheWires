@@ -5,6 +5,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -34,6 +36,9 @@ public class Gameplay extends BasicGameState {
 	private float hoverCircle = 0f;
 	private float lastHoveredCircle = 0f;
 	private float maxHoverSize = 1f * Node.sizeOnScreen;
+	
+	//font 
+	private UnicodeFont font;
 
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -42,6 +47,12 @@ public class Gameplay extends BasicGameState {
 		// initialize variables
 		levelComplete = false;
 		winDelay = 2000f;
+		
+		// load font
+		font = new UnicodeFont("cubic.ttf", 40, false, false);
+		font.addAsciiGlyphs();
+		font.getEffects().add(new ColorEffect()); // Create a default white
+		font.loadGlyphs();
 		
 		// generate level
 		level = Level.generateLevel(MainMenu.selectedLevel, gc);
@@ -72,7 +83,12 @@ public class Gameplay extends BasicGameState {
 		// draw level.getNodes()
 		for (Node node : level.getNodes())
 			node.render(gc, sbg, g);
-
+		
+		//test print
+		g.setColor(Color.red);
+		g.setFont(font);
+		g.drawString("test", (gc.getWidth() / 2) - (font.getWidth("test") / 2), (gc.getHeight() / 2) - (font.getHeight("test") / 2));
+	
 		// draw hovered node
 		g.setColor(selectionColor);
 		g.setAntiAlias(false);
@@ -93,7 +109,7 @@ public class Gameplay extends BasicGameState {
 		Input input = gc.getInput();
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
-
+		
 		// if level complete skip logic
 		if (!levelComplete) {
 
