@@ -14,7 +14,7 @@ public class Wire extends Line {
 	private Node end1, end2;
 	
 	private Color wireColor = Color.red;
-	private float wireWidth = 5f;
+	private float wireWidth = 10f;
 	
 	public Wire(Node first, Node second) {
 		super(first.getX(), first.getY(), second.getX(), second.getY());

@@ -29,10 +29,10 @@ public abstract class Node extends Circle implements DisplayElement {
 	public abstract boolean attach(Wire wire);
 	
 	public void swapLocations(Node other) {
-		float tempX = this.x;
-		float tempY = this.y;
-		this.x = other.getX();
-		this.y = other.getY();
+		float tempX = this.getCenterX();
+		float tempY = this.getCenterY();
+		this.setCenterX(other.getCenterX());
+		this.setCenterY(other.getCenterY());
 		other.setX(tempX);
 		other.setY(tempY);
 	}
