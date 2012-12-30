@@ -1,7 +1,5 @@
 package com.github.rocketsurgery;
 
-import java.util.Random;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -18,6 +16,8 @@ public class Wire extends Line implements DisplayElement {
 	private Color wireColor = Color.red;
 	private float wireWidth = 5f;
 	
+	private static int colorIterator = 0;
+	
 	public Wire(Node first, Node second) {
 		super(first.getCenterX(), first.getCenterY(), second.getCenterX(), second.getCenterY());
 		first.attach(this);
@@ -25,13 +25,18 @@ public class Wire extends Line implements DisplayElement {
 		this.end1 = first;
 		this.end2 = second;
 		
-		Random rand = new Random();
-		int colorIndex = rand.nextInt(3);
-		switch (colorIndex) {
+		/*Random rand = new Random();
+		int colorIndex = rand.nextInt(3);*/		
+		
+		switch (colorIterator) {
 		case 0: wireColor = Color.red; break;
 		case 1: wireColor = Color.blue; break;
 		case 2: wireColor = Color.green; break;
 		}
+		
+		colorIterator++;
+		colorIterator %= 3;
+		
 		//wireColor = new Color ((float)Math.random(),(float)Math.random(),(float)Math.random());
 	}
 	
@@ -45,8 +50,8 @@ public class Wire extends Line implements DisplayElement {
 		g.setLineWidth(wireWidth);
 		g.setAntiAlias(true);
 		g.drawLine(end1.scaleX(), end1.scaleY(), end2.scaleX(), end2.scaleY());
-		g.fillOval(end1.scaleX() - wireWidth / 2, end1.scaleY() - wireWidth / 2, wireWidth, wireWidth);
-		g.fillOval(end2.scaleX() - wireWidth / 2, end2.scaleY() - wireWidth / 2, wireWidth, wireWidth);
+		g.fillOval(end1.scaleX() - wireWidth * 3 / 2, end1.scaleY() - wireWidth * 3 / 2, wireWidth * 3, wireWidth * 3);
+		g.fillOval(end2.scaleX() - wireWidth * 3 / 2, end2.scaleY() - wireWidth * 3 / 2, wireWidth * 3, wireWidth * 3);
 	}
 	
 	@Override
