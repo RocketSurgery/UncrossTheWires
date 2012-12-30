@@ -43,6 +43,7 @@ public class Gameplay extends BasicGameState {
 	//timer stuff
 	private String timeString = "";
 
+	@SuppressWarnings("unchecked") // because font.getEffects() is dumb
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		System.out.println("Entering state " + getID());
@@ -212,12 +213,19 @@ public class Gameplay extends BasicGameState {
 		
 		timeString = "" + (float)Timer.getTime() / 1000;
 		
+		if (Timer.isDone()) {
+			Timer.reset();
+			sbg.enterState(UncrossTheWires.SCORE_MENU);
+		}
+		
 
 		// if no wires intersect end level
 		if (levelComplete) {
-			winDelay -= delta;
-			if (winDelay <= 0)
+			/*winDelay -= delta;
+			if (winDelay <= 0) {*/
+				Score.update(1);
 				sbg.enterState(UncrossTheWires.GAMEPLAY);
+			//}
 		}
 
 	}

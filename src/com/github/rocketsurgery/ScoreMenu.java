@@ -12,8 +12,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class ScoreMenu extends BasicGameState {
 
-	private static final String title = "Uncross The Wires";
-	private static final String start = "Start";
+	private static final String gameOver = "Game Over";
+	private static final String mainMenu = "Main Menu";
 	public static final Color bgColor = Color.black;
 	public static final Color textColor = Color.white;
 	public static final Color selectionColor = Color.blue;
@@ -21,14 +21,17 @@ public class ScoreMenu extends BasicGameState {
 
 	private UnicodeFont font;
 	private float selectionWidth = 0f;
-	private boolean hasPressedKey = false;
 	public static int selectedLevel = -1;
-	public static final String[] levels = { "easy", "medium", "hard", "whaaaaaaaaat" };
+	
+	private static int score = 0;
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
 		System.out.println("Entering state " + getID());
 		selectionWidth = 0;
+		
+		score = Score.getScore();
+		Score.reset();
 	}
 
 	@Override
@@ -59,21 +62,21 @@ public class ScoreMenu extends BasicGameState {
 		// draw title
 		g.setColor(textColor);
 		g.setFont(font);
-		g.drawString(title, (gc.getWidth() / 2) - (font.getWidth(title) / 2), 20);
+		g.drawString(gameOver, (gc.getWidth() / 2) - (font.getWidth(gameOver) / 2), 20);
 
 		// draw level select
 		g.setColor(textColor);
-		g.drawString("Level: " + levels[selectedLevel], (gc.getWidth() / 2) - (font.getWidth("Level: " + levels[selectedLevel]) / 2),
-				(gc.getHeight() / 4) - (font.getHeight("Level: ") / 2) + 20);
+		g.drawString("Score: " + score, (gc.getWidth() / 2) - (font.getWidth("Score: " + score) / 2),
+				(gc.getHeight() / 4) - (font.getHeight("Score: ") / 2) + 20);
 
 		// draw selection rect
 		g.setColor(selectionColor);
-		g.fillRect((gc.getWidth() / 2) - selectionWidth, gc.getHeight() / 2 - ((font.getHeight(start) * 2) / 2), selectionWidth * 2,
-				font.getHeight(start) * 2);
+		g.fillRect((gc.getWidth() / 2) - selectionWidth, gc.getHeight() / 2 - ((font.getHeight(mainMenu) * 2) / 2), selectionWidth * 2,
+				font.getHeight(mainMenu) * 2);
 
 		// draw start
 		g.setColor(textColor);
-		g.drawString(start, (gc.getWidth() / 2) - (font.getWidth(start) / 2), (gc.getHeight() / 2) - (font.getHeight(start) / 2));
+		g.drawString(mainMenu, (gc.getWidth() / 2) - (font.getWidth(mainMenu) / 2), (gc.getHeight() / 2) - (font.getHeight(mainMenu) / 2));
 	}
 
 	@Override
@@ -85,9 +88,9 @@ public class ScoreMenu extends BasicGameState {
 
 		boolean onStart = false;
 
-		// If Mouse Is On Start
-		if (mouseX > (gc.getWidth() / 2) - (font.getWidth(start) / 2) && mouseX < (gc.getWidth() / 2) + (font.getWidth(start) / 2)
-				&& mouseY > (gc.getHeight() / 2) - (font.getHeight(start) / 2) && mouseY < (gc.getHeight() / 2) + (font.getHeight(start) / 2)) {
+		// If Mouse Is On Main Menu
+		if (mouseX > (gc.getWidth() / 2) - (font.getWidth(mainMenu) / 2) && mouseX < (gc.getWidth() / 2) + (font.getWidth(mainMenu) / 2)
+				&& mouseY > (gc.getHeight() / 2) - (font.getHeight(mainMenu) / 2) && mouseY < (gc.getHeight() / 2) + (font.getHeight(mainMenu) / 2)) {
 			onStart = true;
 		}
 
@@ -95,25 +98,12 @@ public class ScoreMenu extends BasicGameState {
 			selectionWidth = (selectionWidth >= gc.getWidth() / 2) ? gc.getWidth() / 2 : selectionWidth + selectionGrowSpeed * delta;
 
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-				sbg.enterState(UncrossTheWires.GAMEPLAY);
+				sbg.enterState(UncrossTheWires.MAIN_MENU);
 			}
 		} else {
 			selectionWidth = (selectionWidth <= 0) ? 0 : selectionWidth - selectionGrowSpeed * delta;
 		}
 
-		if (input.isKeyDown(Input.KEY_RIGHT)) {
-			if (!hasPressedKey) {
-				selectedLevel = ++selectedLevel % levels.length;
-				hasPressedKey = true;
-			}
-		} else if (input.isKeyDown(Input.KEY_LEFT)) {
-			if (!hasPressedKey) {
-				selectedLevel = (selectedLevel > 0) ? selectedLevel - 1 : levels.length - 1;
-				hasPressedKey = true;
-			}
-		} else {
-			hasPressedKey = false;
-		}
 	}
 
 	@Override

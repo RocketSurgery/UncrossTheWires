@@ -22,6 +22,7 @@ public class UncrossTheWires extends StateBasedGame {
 	public void initStatesList(GameContainer arg0) throws SlickException {
 		this.addState(new MainMenu());
 		this.addState(new Gameplay());
+		this.addState(new ScoreMenu());
 	}
 
 	public static void main(String[] args) throws SlickException {
