@@ -39,6 +39,9 @@ public class Gameplay extends BasicGameState {
 	
 	//font 
 	private UnicodeFont font;
+	
+	//timer stuff
+	private String timeString = "";
 
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -87,7 +90,7 @@ public class Gameplay extends BasicGameState {
 		//test print
 		g.setColor(Color.red);
 		g.setFont(font);
-		g.drawString("test", (gc.getWidth() / 2) - (font.getWidth("test") / 2), (gc.getHeight() / 2) - (font.getHeight("test") / 2));
+		g.drawString(timeString, gc.getWidth() - (font.getWidth("." + Timer.getStartingTime())), font.getHeight("" + Timer.getStartingTime()) / 2);
 	
 		// draw hovered node
 		g.setColor(selectionColor);
@@ -204,6 +207,11 @@ public class Gameplay extends BasicGameState {
 			}
 			
 		}
+		
+		Timer.update(delta);
+		
+		timeString = "" + (float)Timer.getTime() / 1000;
+		
 
 		// if no wires intersect end level
 		if (levelComplete) {
