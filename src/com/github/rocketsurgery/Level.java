@@ -18,8 +18,13 @@ public class Level {
 	private static final int MAX_HEIGHT = 11;
 	private static final int MIN_HEIGHT = 7;
 
-	private static final int MAX_NODES = 30;
-	private static final int MIN_NODES = 20;
+	// min and max node counts for each difficulty
+	private static final int[][] NODE_LIMITS = 	{ 
+												{ 5, 12 }, // easy
+												{ 12, 20 }, // medium
+												{ 20, 30 }, // hard
+												{ 30, 40 } // whaaaaaaaaaat
+												};
 
 	private static final int PADDING = 50;
 
@@ -28,6 +33,7 @@ public class Level {
 		this.nodes = nodes;
 	}
 
+	@Deprecated
 	public static Level loadLevel(String title, GameContainer gc) {
 
 		ArrayList<Node> nodes = new ArrayList<Node>();
@@ -83,7 +89,7 @@ public class Level {
 		return new Level(wires, nodes);
 	}
 
-	public static Level generateLevel(GameContainer gc) {
+	public static Level generateLevel(int difficulty, GameContainer gc) {
 
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		ArrayList<Wire> wires = new ArrayList<Wire>();
@@ -95,7 +101,8 @@ public class Level {
 		float ySize = rand.nextInt(MAX_HEIGHT - MIN_HEIGHT + 1) + MIN_HEIGHT;
 
 		// generate 6 - 10 nodes inclusive
-		int numNodes = rand.nextInt(MAX_NODES - MIN_NODES) + MIN_NODES;
+		int numNodes = rand.nextInt(NODE_LIMITS[MainMenu.selectedLevel][1] - NODE_LIMITS[MainMenu.selectedLevel][0])
+				+ NODE_LIMITS[MainMenu.selectedLevel][0];
 
 		for (int i = 0; i < numNodes; i++) {
 
@@ -125,7 +132,6 @@ public class Level {
 			do {
 
 				// make sure randomly picked node isn't the same as the first
-				// node
 				do {
 					otherNode = nodes.get(rand.nextInt(numNodes));
 				} while (otherNode == node);
@@ -155,7 +161,7 @@ public class Level {
 		}
 
 		if (levelComplete)
-			return generateLevel(gc);
+			return generateLevel(difficulty, gc);
 		else
 			return new Level(wires, nodes); // create level and return it
 	}

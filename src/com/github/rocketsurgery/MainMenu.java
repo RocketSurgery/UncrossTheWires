@@ -23,7 +23,7 @@ public class MainMenu extends BasicGameState {
 	private float selectionWidth = 0f;
 	private boolean hasPressedKey = false;
 	public static int selectedLevel = -1;
-	public static String[] levels = null;
+	public static final String[] levels = { "easy", "medium", "hard", "whaaaaaaaaat" };
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
@@ -36,7 +36,7 @@ public class MainMenu extends BasicGameState {
 		System.out.println("Leaving state " + getID());
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // because font.getEffects() is dumb
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		// load font
@@ -46,7 +46,6 @@ public class MainMenu extends BasicGameState {
 		font.loadGlyphs();
 
 		// load list of levels
-		levels = Level.loadLevelNames();
 		selectedLevel = 0;
 	}
 

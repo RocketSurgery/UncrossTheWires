@@ -34,23 +34,20 @@ public class Gameplay extends BasicGameState {
 	private Node lastHovered;
 	private float hoverCircle = 0f;
 	private float lastHoveredCircle = 0f;
-	private float maxHoverSize = .5f * Node.sizeOnScreen;
+	private float maxHoverSize = 1f * Node.sizeOnScreen;
 
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		System.out.println("Entering state " + getID());
-		Level level;
-		if (MainMenu.levels[MainMenu.selectedLevel].equals("RANDOM")) {
-			level = Level.generateLevel( gc);
-		} else {
-			level = Level.loadLevel(MainMenu.levels[MainMenu.selectedLevel], gc);
-		}
-
+		
+		// initialize variables
+		levelComplete = false;
+		winDelay = 2000f;
+		
+		// generate level
+		Level level = Level.generateLevel(MainMenu.selectedLevel, gc);
 		nodes = level.getNodes();
 		wires = level.getWires();
-		winDelay = 2000f;
-		levelComplete = false;
-		hasClicked = false;
 	}
 
 	@Override
