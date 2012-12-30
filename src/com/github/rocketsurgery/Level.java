@@ -131,9 +131,22 @@ public class Level {
 			
 			wires.add(new Wire(node, otherNode));
 		}
-	
-		// create level and return it
-		return new Level(wires, nodes);
+		
+		//test if it's already solved
+		boolean levelComplete = true;
+		for (int i = 0; i < wires.size() - 1; i++) {
+			for (int j = i + 1; j < wires.size(); j++) {
+				if (wires.get(i).intersects(wires.get(j))) {
+					levelComplete = false;
+					break;
+				}
+			}
+		}
+		
+		if (levelComplete)
+			return generateLevel(gc);
+		else
+			return new Level(wires, nodes); // create level and return it
 	}
 	
 	public static String[] loadLevelNames() {
