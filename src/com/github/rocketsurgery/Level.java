@@ -32,44 +32,50 @@ public class Level {
 			ArrayList<Node> nodes = new ArrayList<Node>();
 			ArrayList<Wire> wires = new ArrayList<Wire>();
 			
-			// until the next header is reached
-			while (scan.hasNextInt()) {
+			//find "nodes" header
+			do {
+				next = scan.nextLine();
+			} while (!next.equalsIgnoreCase("nodes"));
+			
+			//skip the blank line
+			scan.nextLine();
+			
+			//read in the first line of node info
+			String line = scan.nextLine();
+			
+			while (!line.equals("")) {
+				Scanner lineScanner = new Scanner (line);
 				
-				// load in end points
-				float x1 = scan.nextInt() * gc.getWidth() / xSize;
-				float y1 = scan.nextInt() * gc.getHeight() / ySize;
-				float x2 = scan.nextInt() * gc.getWidth() / xSize;
-				float y2 = scan.nextInt()* gc.getHeight() / ySize;
+				int index = lineScanner.nextInt();
+				float x = lineScanner.nextInt() * gc.getWidth() / xSize;
+				float y = lineScanner.nextInt() * gc.getHeight() / ySize;;
 				
-				// create nodes and wire
-				Node node1 = null;
-				for (Node node : nodes) {
-					if (x1 == node.getCenterX() && y1 == node.getCenterY()) {
-						node1 = node;
-						System.out.println("node1 already exists");
-					}
+				nodes.add(new MultiNode(x, y));
+				
+				line = scan.nextLine();
+			}
+			
+			//find "connections" header
+			do {
+				next = scan.nextLine();
+			} while (!next.equalsIgnoreCase("connections"));
+			
+			//skip the blank line
+			scan.nextLine();
+			
+			//read in the first line of wire info
+			line = scan.nextLine();
+			
+			while (!line.equals("")) {
+				Scanner lineScanner = new Scanner (line);
+				
+				int index = lineScanner.nextInt();
+				
+				while (lineScanner.hasNextInt()) {
+					wires.add(new Wire(nodes.get(index),nodes.get(lineScanner.nextInt())));
 				}
-				// node doesn't already exist
-				if (node1 == null) {
-					node1 = new MultiNode(x1, y1);
-				}
 				
-				Node node2 = null;
-				for (Node node : nodes)
-					if (x2 == node.getCenterX() && y2 == node.getCenterY())
-						node2 = node;
-				if (node2 == null)
-					node2 = new MultiNode(x2, y2);
-				
-				Wire wire = new Wire(node1, node2);
-				
-				// add nodes and wires to temp list
-				if (!nodes.contains(node1)) {
-					nodes.add(node1);
-				}
-				if (!nodes.contains(node2))
-					nodes.add(node2);
-				wires.add(wire);
+				line = scan.nextLine();
 			}
 			
 			// create level and return it
