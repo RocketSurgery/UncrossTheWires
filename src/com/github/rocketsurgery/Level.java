@@ -43,10 +43,12 @@ public class Level {
 			//read in the first line of node info
 			String line = scan.nextLine();
 			
+			Scanner lineScanner = new Scanner("");
+			
 			while (!line.equals("")) {
-				Scanner lineScanner = new Scanner (line);
+				lineScanner = new Scanner (line);
 				
-				int index = lineScanner.nextInt();
+				//int index = lineScanner.nextInt();
 				float x = lineScanner.nextInt() * gc.getWidth() / xSize;
 				float y = lineScanner.nextInt() * gc.getHeight() / ySize;;
 				
@@ -67,7 +69,7 @@ public class Level {
 			line = scan.nextLine();
 			
 			while (!line.equals("")) {
-				Scanner lineScanner = new Scanner (line);
+				lineScanner = new Scanner (line);
 				
 				int index = lineScanner.nextInt();
 				
@@ -77,6 +79,8 @@ public class Level {
 				
 				line = scan.nextLine();
 			}
+			
+			lineScanner.close();
 			
 			// create level and return it
 			return new Level(wires, nodes);
