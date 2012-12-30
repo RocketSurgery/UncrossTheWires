@@ -40,7 +40,7 @@ public class Level {
 				scan.close();
 				throw new IllegalArgumentException();
 			}
-			nodes.add(new MultiNode(scan.nextFloat() * (gc.getWidth() - 200) / xSize + 100, scan.nextFloat() / ySize * (gc.getHeight() - 200) + 100));
+			nodes.add(new Node(scan.nextFloat() * (gc.getWidth() - 200) / xSize + 100, scan.nextFloat() / ySize * (gc.getHeight() - 200) + 100));
 
 		}
 
