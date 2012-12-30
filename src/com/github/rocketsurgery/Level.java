@@ -113,33 +113,29 @@ public class Level {
 		}
 		
 		for (Node node : nodes) {
-			
 			Node otherNode;
-			
 			boolean wireDuplicated;
-			
 			do {
 				
-				//make sure randomly picked node isnt the same as the first node
+				// make sure randomly picked node isn't the same as the first node
 				do {
 					otherNode = nodes.get(rand.nextInt(numNodes));
-				} while (node == otherNode);
+				} while (otherNode == node);
 				
+				// test if the wire is a duplicate
 				wireDuplicated = false;
-				
 				for (Wire wire : wires) {
 					if (wire.hasEnds(node, otherNode)) {
 						wireDuplicated = true;
 						break;
 					}
 				}
-				
 			} while (wireDuplicated);
 			
 			wires.add(new Wire(node, otherNode));
 		}
 		
-		//test if it's already solved
+		// test if it's already solved
 		boolean levelComplete = true;
 		for (int i = 0; i < wires.size() - 1; i++) {
 			for (int j = i + 1; j < wires.size(); j++) {
