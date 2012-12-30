@@ -14,14 +14,13 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Gameplay extends BasicGameState {
 
 	public static GameContainer gameContainer = null;
-	
-	private Level level;
+	public static final int PADDING = 50;
 
 	private boolean hasClicked = false;
 	private boolean levelComplete = false;
 	private float winDelay = 500f;
 
-	// variables for selected level.getNodes()
+	// variables for selected Level.getNodes()
 	private Node selected;
 	private Node lastSelected;
 	private float selectionCircle = .5f * Node.sizeOnScreen;
@@ -58,8 +57,8 @@ public class Gameplay extends BasicGameState {
 		font.getEffects().add(new ColorEffect()); // Create a default white
 		font.loadGlyphs();
 		
-		// generate level
-		level = Level.generateLevel(MainMenu.selectedLevel, gc);
+		// generate Level
+		Level.generateLevel(MainMenu.selectedLevel, gc);
 	}
 
 	@Override
@@ -84,8 +83,8 @@ public class Gameplay extends BasicGameState {
 		if (lastSelected != null)
 			g.fill(new Circle(lastSelected.scaleX(), lastSelected.scaleY(), lastSelectionCircle));
 
-		// draw level.getNodes()
-		for (Node node : level.getNodes())
+		// draw Level.getNodes()
+		for (Node node : Level.nodes)
 			node.render(gc, sbg, g);
 		
 		//test print
@@ -101,8 +100,8 @@ public class Gameplay extends BasicGameState {
 		if (lastHovered != null)
 			g.fill(new Circle(lastHovered.scaleX(), lastHovered.scaleY(), hoverCircle));
 
-		// draw level.getWires()
-		for (Wire wire : level.getWires())
+		// draw Level.getWires()
+		for (Wire wire : Level.wires)
 			wire.render(gc, sbg, g);
 
 	}
@@ -114,13 +113,13 @@ public class Gameplay extends BasicGameState {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 		
-		// if level complete skip logic
+		// if Level complete skip logic
 		if (!levelComplete) {
 
 			// find if mouse if hovering over a node
 			Node previousHovered = hovered;
 			hovered = null;
-			for (Node node : level.getNodes()) {
+			for (Node node : Level.nodes) {
 				if (node.contains(mouseX, mouseY)) {
 					hovered = node;
 					break;
@@ -139,7 +138,7 @@ public class Gameplay extends BasicGameState {
 			lastHoveredCircle = (lastHoveredCircle > 0) ? lastHoveredCircle - growSpeed * delta : 0;
 			if (lastHoveredCircle == 0)
 				lastHovered = null;
-			// logic for clicking on level.getNodes()
+			// logic for clicking on Level.getNodes()
 			if (hovered != null) {
 
 				// if not hovering over selected
@@ -163,19 +162,19 @@ public class Gameplay extends BasicGameState {
 				}
 			}
 			
-			// two level.getNodes() selected, attempt to switch level.getWires()
+			// two Level.getNodes() selected, attempt to switch Level.getWires()
 			if (lastSelected != null && selected != null && lastSelected != selected) {
-				if (selected.getWires() != lastSelected.getWires()) { // level.getNodes() from different level.getWires()
+				if (selected.getWires() != lastSelected.getWires()) { // Level.getNodes() from different Level.getWires()
 					
-					// switch level.getNodes()
+					// switch Level.getNodes()
 					selected.swapLocations(lastSelected);
 
-					// deselect level.getNodes()
+					// deselect Level.getNodes()
 					selected = null;
 					lastSelected = null;
-				} else { // level.getNodes() on same wire
+				} else { // Level.getNodes() on same wire
 
-					// deselect level.getNodes()
+					// deselect Level.getNodes()
 					selected = null;
 					lastSelected = null;
 				}
@@ -191,11 +190,11 @@ public class Gameplay extends BasicGameState {
 			// animate lastSelectionCircle
 			lastSelectionCircle = (lastSelectionCircle > 0) ? lastSelectionCircle - growSpeed * delta : 0;
 
-			// test if any level.getWires() intersect
+			// test if any Level.getWires() intersect
 			levelComplete = true;
-			for (int i = 0; i < level.getWires().size() - 1; i++) {
-				for (int j = i + 1; j < level.getWires().size(); j++) {
-					if (level.getWires().get(i).intersects(level.getWires().get(j))) {
+			for (int i = 0; i < Level.wires.size() - 1; i++) {
+				for (int j = i + 1; j < Level.wires.size(); j++) {
+					if (Level.wires.get(i).intersects(Level.wires.get(j))) {
 						levelComplete = false;
 						break;
 					}
@@ -219,7 +218,7 @@ public class Gameplay extends BasicGameState {
 		}
 		
 
-		// if no wires intersect end level
+		// if no wires intersect end Level
 		if (levelComplete) {
 			/*winDelay -= delta;
 			if (winDelay <= 0) {*/

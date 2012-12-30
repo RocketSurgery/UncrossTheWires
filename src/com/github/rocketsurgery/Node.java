@@ -15,7 +15,6 @@ public class Node extends Circle implements DisplayElement {
 	
 	public static final float sizeOnScreen = 15f;
 	public static final Color nodeColor = Color.white;
-	public static final int PADDING = 50;
 	
 	private ArrayList<Wire> wires;
 	
@@ -64,11 +63,11 @@ public class Node extends Circle implements DisplayElement {
 	}
 	
 	public float scaleX() {
-		return getCenterX() / Level.internalWidth * (Gameplay.gameContainer.getWidth() - 2 * PADDING) + PADDING;
+		return getCenterX() / Level.xSize * (Gameplay.gameContainer.getWidth() - 2 * Gameplay.PADDING) + Gameplay.PADDING;
 	}
 	
 	public float scaleY() {
-		return getCenterY() / Level.internalHeight * (Gameplay.gameContainer.getHeight() - 2 * PADDING) + PADDING;
+		return getCenterY() / Level.xSize * (Gameplay.gameContainer.getHeight() - 2 * Gameplay.PADDING) + Gameplay.PADDING;
 	}
 
 }
