@@ -81,14 +81,12 @@ public class Level {
 		
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		ArrayList<Wire> wires = new ArrayList<Wire>();
-
-		float xSize, ySize;
 		
 		Random rand = new Random();
 		
 		//generate width and height between the constants. inclusive.
-		xSize = rand.nextInt(MAX_RANDOM_WIDTH - MIN_RANDOM_WIDTH + 1) + MIN_RANDOM_WIDTH; 
-		ySize = rand.nextInt(MAX_RANDOM_HEIGHT - MIN_RANDOM_HEIGHT + 1) + MIN_RANDOM_HEIGHT;
+		float xSize = rand.nextInt(MAX_RANDOM_WIDTH - MIN_RANDOM_WIDTH + 1) + MIN_RANDOM_WIDTH; 
+		float ySize = rand.nextInt(MAX_RANDOM_HEIGHT - MIN_RANDOM_HEIGHT + 1) + MIN_RANDOM_HEIGHT;
 		
 		int numNodes = rand.nextInt(3) + 6;// 4-6 inclusive;
 		
@@ -102,7 +100,16 @@ public class Level {
 			x *= gc.getWidth() / xSize;
 			y *= gc.getHeight() / ySize;;
 			
-			nodes.add(new Node(x, y));
+			// test to see if node already exists
+			boolean alreadyExists = false;
+			for (Node node : nodes)
+				if (node.getCenterX() == x && node.getCenterY() == y)
+					alreadyExists = true;
+			
+			if (alreadyExists) {
+				i--;
+			} else	
+				nodes.add(new Node(x, y));
 		}
 		
 		for (Node node : nodes) {
