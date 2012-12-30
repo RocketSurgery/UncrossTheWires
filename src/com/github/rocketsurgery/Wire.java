@@ -56,4 +56,8 @@ public class Wire extends Line {
 		return (end1 == n1 && end2 == n2) || (end1 == n2 && end2 == n1);
 	}
 	
+	public boolean matches(Wire wire) {
+		return hasEnds(end1, end2);
+	}
+	
 }
