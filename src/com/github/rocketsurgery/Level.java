@@ -12,11 +12,11 @@ public class Level {
 	private List<Wire> wires;
 	private List<Node> nodes;
 	
-	private static final int MAX_RANDOM_WIDTH = 9;
-	private static final int MIN_RANDOM_WIDTH = 5;
+	private static final int MAX_RANDOM_WIDTH = 12;
+	private static final int MIN_RANDOM_WIDTH = 8;
 	
-	private static final int MAX_RANDOM_HEIGHT = 8;
-	private static final int MIN_RANDOM_HEIGHT = 4;
+	private static final int MAX_RANDOM_HEIGHT = 11;
+	private static final int MIN_RANDOM_HEIGHT = 7;
 	
 	private Level(List<Wire> wires, List<Node> nodes) {
 		this.wires = wires;
@@ -88,7 +88,7 @@ public class Level {
 		float xSize = rand.nextInt(MAX_RANDOM_WIDTH - MIN_RANDOM_WIDTH + 1) + MIN_RANDOM_WIDTH; 
 		float ySize = rand.nextInt(MAX_RANDOM_HEIGHT - MIN_RANDOM_HEIGHT + 1) + MIN_RANDOM_HEIGHT;
 		
-		int numNodes = rand.nextInt(3) + 6;// 4-6 inclusive;
+		int numNodes = rand.nextInt(5) + 6;// 6-10 inclusive;
 		
 		//does not account for nodes on top of nodes
 		for (int i = 0; i < numNodes; i++) {
@@ -123,7 +123,7 @@ public class Level {
 				//make sure randomly picked node isnt the same as the first node
 				do {
 					otherNode = nodes.get(rand.nextInt(numNodes));
-				} while (node == otherNode);
+				} while (otherNode == node);
 				
 				wireDuplicated = false;
 				

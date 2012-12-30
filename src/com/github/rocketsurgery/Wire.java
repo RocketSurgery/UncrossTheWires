@@ -1,5 +1,7 @@
 package com.github.rocketsurgery;
 
+import java.util.Random;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -22,6 +24,14 @@ public class Wire extends Line {
 		second.attach(this);
 		this.end1 = first;
 		this.end2 = second;
+		
+		Random rand = new Random();
+		int colorIndex = rand.nextInt(3);
+		switch (colorIndex) {
+		case 0: wireColor = Color.red; break;
+		case 1: wireColor = Color.blue; break;
+		case 2: wireColor = Color.green; break;
+		}
 		//wireColor = new Color ((float)Math.random(),(float)Math.random(),(float)Math.random());
 	}
 	
