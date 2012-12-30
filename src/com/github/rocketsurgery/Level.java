@@ -53,50 +53,29 @@ public class Level {
 			
 			for (Node node : nodes) {
 				
-				wires.add(new Wire(node, nodes.get(rand.nextInt(numNodes))));
+				Node otherNode;
 				
-				/*
-				int numWiresWanted = rand.nextInt(2) + 2;
+				boolean wireDuplicated;
 				
-				int numWiresAttached = 0;
-				
-				for (Wire wire : wires) {
-					if (wire.hasEnd(node))
-						numWiresAttached++;
-				}
-				
-				while (numWiresAttached < numWiresWanted) {
+				do {
 					
-					int nodeIndex;
-					Node otherNode = null;
-					boolean wireDuplicated = false;
-					boolean nodeDuplicated = false;
-					
+					//make sure randomly picked node isnt the same as the first node
 					do {
-						nodeIndex = rand.nextInt(numNodes);
-						
-						otherNode = nodes.get(nodeIndex);
-						
-						nodeDuplicated = (node == otherNode);
-						
-					if (!nodeDuplicated) {
-							wireDuplicated = false;
-							
-							for (Wire wire : wires) {
-								if (wire.hasEnds(node, otherNode)) {
-									wireDuplicated = true;
-									break;
-								}
-							}
+						otherNode = nodes.get(rand.nextInt(numNodes));
+					} while (node == otherNode);
+					
+					wireDuplicated = false;
+					
+					for (Wire wire : wires) {
+						if (wire.hasEnds(node, otherNode)) {
+							wireDuplicated = true;
+							break;
 						}
+					}
 					
-					} while (!wireDuplicated && !nodeDuplicated);
-					
-					wires.add(new Wire(node, otherNode));
-					
-					numWiresAttached++;
-				}*/
+				} while (wireDuplicated);
 				
+				wires.add(new Wire(node, otherNode));
 			}
 			
 		} else {
