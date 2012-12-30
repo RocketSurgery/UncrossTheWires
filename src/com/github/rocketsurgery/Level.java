@@ -41,6 +41,7 @@ public class Level {
 				throw new IllegalArgumentException();
 			}
 			nodes.add(new MultiNode(scan.nextInt() * (gc.getWidth() - 200) / xSize + 100, scan.nextInt() / ySize * (gc.getHeight() - 200) + 100));
+
 		}
 
 		System.out.println(gc.getWidth() + " " + gc.getHeight());
