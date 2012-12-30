@@ -39,7 +39,13 @@ public class Gameplay extends BasicGameState {
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		System.out.println("Entering state " + getID());
-		Level level = Level.loadLevel(MainMenu.levels[MainMenu.selectedLevel], gc);
+		Level level;
+		if (MainMenu.levels[MainMenu.selectedLevel].equals("RANDOM")) {
+			level = Level.generateLevel( gc);
+		} else {
+			level = Level.loadLevel(MainMenu.levels[MainMenu.selectedLevel], gc);
+		}
+
 		nodes = level.getNodes();
 		wires = level.getWires();
 		winDelay = 2000f;
