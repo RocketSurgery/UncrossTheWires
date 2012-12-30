@@ -11,6 +11,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Gameplay extends BasicGameState {
 
+	public static GameContainer gameContainer = null;
+	
 	private Level level;
 
 	private boolean hasClicked = false;
@@ -52,6 +54,7 @@ public class Gameplay extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		gameContainer = gc;
 	}
 
 	@Override
@@ -62,9 +65,9 @@ public class Gameplay extends BasicGameState {
 		g.setColor(selectionColor);
 		g.setAntiAlias(false);
 		if (selected != null)
-			g.fill(new Circle(selected.getCenterX(), selected.getCenterY(), selectionCircle));
+			g.fill(new Circle(selected.scaleX(), selected.scaleY(), selectionCircle));
 		if (lastSelected != null)
-			g.fill(new Circle(lastSelected.getCenterX(), lastSelected.getCenterY(), lastSelectionCircle));
+			g.fill(new Circle(lastSelected.scaleX(), lastSelected.scaleY(), lastSelectionCircle));
 
 		// draw level.getNodes()
 		for (Node node : level.getNodes())
@@ -74,9 +77,9 @@ public class Gameplay extends BasicGameState {
 		g.setColor(selectionColor);
 		g.setAntiAlias(false);
 		if (hovered != null)
-			g.fill(new Circle(hovered.getCenterX(), hovered.getCenterY(), hoverCircle));
+			g.fill(new Circle(hovered.scaleX(), hovered.scaleY(), hoverCircle));
 		if (lastHovered != null)
-			g.fill(new Circle(lastHovered.getCenterX(), lastHovered.getCenterY(), hoverCircle));
+			g.fill(new Circle(lastHovered.scaleX(), lastHovered.scaleY(), hoverCircle));
 
 		// draw level.getWires()
 		for (Wire wire : level.getWires())
@@ -98,7 +101,7 @@ public class Gameplay extends BasicGameState {
 			Node previousHovered = hovered;
 			hovered = null;
 			for (Node node : level.getNodes()) {
-				if (node.isOver(mouseX, mouseY)) {
+				if (node.contains(mouseX, mouseY)) {
 					hovered = node;
 					break;
 				}

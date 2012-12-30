@@ -11,8 +11,8 @@ public class Level {
 
 	private List<Wire> wires;
 	private List<Node> nodes;
-	private float internalWidth;
-	private float internalHeight;
+	public static float internalWidth;
+	public static float internalHeight;
 
 	private static final int MAX_WIDTH = 12;
 	private static final int MIN_WIDTH = 8;
@@ -28,13 +28,11 @@ public class Level {
 												{ 30, 40 } // whaaaaaaaaaat
 												};
 
-	private static final int PADDING = 50;
-
 	private Level(List<Wire> wires, List<Node> nodes, float width, float height) {
 		this.wires = wires;
 		this.nodes = nodes;
-		this.internalWidth = width;
-		this.internalHeight = height;
+		internalWidth = width;
+		internalHeight = height;
 	}
 
 	public static Level generateLevel(int difficulty, GameContainer gc) {
@@ -57,10 +55,6 @@ public class Level {
 			// generate random location more than 1 unit from the edges
 			float x = rand.nextInt((int) xSize + 1);
 			float y = rand.nextInt((int) ySize + 1);
-
-			// map the mini-grid to the display window
-			x = x * (gc.getWidth() - 2 * PADDING) / xSize + PADDING;
-			y = y * (gc.getHeight() - 2 * PADDING) / ySize + PADDING;
 
 			// test to see if node already exists
 			boolean alreadyExists = false;
@@ -141,8 +135,7 @@ public class Level {
 				scan.close();
 				throw new IllegalArgumentException();
 			}
-			nodes.add(new Node(scan.nextFloat() * (gc.getWidth() - 2 * PADDING) / xSize + PADDING, scan.nextFloat() / ySize
-					* (gc.getHeight() - 2 * PADDING) + PADDING));
+			nodes.add(new Node(scan.nextFloat(), scan.nextFloat()));
 
 		}
 

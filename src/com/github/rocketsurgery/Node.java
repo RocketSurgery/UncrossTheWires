@@ -15,6 +15,7 @@ public class Node extends Circle implements DisplayElement {
 	
 	public static final float sizeOnScreen = 15f;
 	public static final Color nodeColor = Color.white;
+	public static final int PADDING = 50;
 	
 	private ArrayList<Wire> wires;
 	
@@ -27,7 +28,7 @@ public class Node extends Circle implements DisplayElement {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(nodeColor);
 		g.setAntiAlias(false);
-		g.fill(this);
+		g.fill(new Circle(scaleX(), scaleY(), sizeOnScreen));
 	}
 	
 	public boolean attach(Wire wire) {
@@ -53,12 +54,21 @@ public class Node extends Circle implements DisplayElement {
 			wire.resetEnds();
 	}
 	
-	public boolean isOver(int x, int y) {
-		return Math.sqrt(Math.pow(getCenterX() - x, 2) + Math.pow(getCenterY() - y, 2)) < sizeOnScreen;
+	@Override
+	public boolean contains(float x, float y) {
+		return Math.sqrt(Math.pow(scaleX() - x, 2) + Math.pow(scaleY() - y, 2)) <= sizeOnScreen;
 	}
 	
 	public List<Wire> getWires() {
 		return wires;
+	}
+	
+	public float scaleX() {
+		return getCenterX() / Level.internalWidth * (Gameplay.gameContainer.getWidth() - 2 * PADDING) + PADDING;
+	}
+	
+	public float scaleY() {
+		return getCenterY() / Level.internalHeight * (Gameplay.gameContainer.getHeight() - 2 * PADDING) + PADDING;
 	}
 
 }
