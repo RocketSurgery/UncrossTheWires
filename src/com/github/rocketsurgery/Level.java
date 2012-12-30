@@ -37,15 +37,12 @@ public class Level {
 				next = scan.nextLine();
 			} while (!next.equalsIgnoreCase("nodes"));
 			
-			//skip the blank line
-			scan.nextLine();
-			
 			//read in the first line of node info
 			String line = scan.nextLine();
 			
 			Scanner lineScanner = new Scanner("");
 			
-			while (!line.equals("")) {
+			while (!line.equals("connections")) {
 				lineScanner = new Scanner (line);
 				
 
@@ -59,14 +56,6 @@ public class Level {
 				line = scan.nextLine();
 				lineScanner.close();
 			}
-			
-			//find "connections" header
-			do {
-				next = scan.nextLine();
-			} while (!next.equalsIgnoreCase("connections"));
-			
-			//skip the blank line
-			scan.nextLine();
 			
 			//read in the first line of wire info
 			line = scan.nextLine();
