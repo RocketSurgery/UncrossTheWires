@@ -51,10 +51,10 @@ public class Wire extends Line {
 	
 	@Override
 	public boolean equals(Object object) {
-		
 		if (!(object instanceof Wire))
 			throw new IllegalArgumentException();
-		return hasEnds(end1, end2);
+		Wire other = (Wire) object;
+		return other.hasEnds(end1, end2);
 	}
 	
 	public boolean hasEnd(Node node) {
@@ -63,10 +63,6 @@ public class Wire extends Line {
 	
 	public boolean hasEnds(Node n1, Node n2) {
 		return (end1 == n1 && end2 == n2) || (end1 == n2 && end2 == n1);
-	}
-	
-	public boolean matches(Wire wire) {
-		return hasEnds(end1, end2);
 	}
 	
 }
