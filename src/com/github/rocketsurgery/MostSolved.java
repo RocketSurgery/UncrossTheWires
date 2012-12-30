@@ -15,6 +15,8 @@ public class MostSolved extends Gameplay {
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		super.enter(gc, sbg);
 		
+		Timer.reset();
+		
 		// initialize variables
 		reset();
 	}
