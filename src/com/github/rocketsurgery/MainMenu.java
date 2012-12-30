@@ -95,7 +95,7 @@ public class MainMenu extends BasicGameState {
 			selectionWidth = (selectionWidth >= gc.getWidth() / 2) ? gc.getWidth() / 2 : selectionWidth + selectionGrowSpeed * delta;
 
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-				sbg.enterState(UncrossTheWires.GAMEPLAY);
+				sbg.enterState(UncrossTheWires.MOST_SOLVED);
 			}
 		} else {
 			selectionWidth = (selectionWidth <= 0) ? 0 : selectionWidth - selectionGrowSpeed * delta;

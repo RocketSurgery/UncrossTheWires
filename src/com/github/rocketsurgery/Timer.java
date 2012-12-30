@@ -9,8 +9,12 @@ public abstract class Timer {
 		return STARTING_TIME;
 	}
 	
-	public static void update(int delta) {
-		time = (time - delta < 0) ? 0 : time - delta;
+	public static void decrease(int delta) {
+		time = (time > 0) ? time - delta : 0;
+	}
+	
+	public static void increase(int delta) {
+		time += delta;
 	}
 	
 	public static boolean isDone() {

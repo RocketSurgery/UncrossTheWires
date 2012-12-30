@@ -11,54 +11,46 @@ import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class Gameplay extends BasicGameState {
+public abstract class Gameplay extends BasicGameState {
 
 	public static GameContainer gameContainer = null;
 	public static final int PADDING = 50;
 
-	private boolean hasClicked = false;
-	private boolean levelComplete = false;
-	private float winDelay = 500f;
+	protected boolean hasClicked = false;
+	protected boolean levelComplete = false;
+	protected float winDelay;
 
 	// variables for selected Level.getNodes()
-	private Node selected;
-	private Node lastSelected;
-	private float selectionCircle = .5f * Node.sizeOnScreen;
-	private float lastSelectionCircle;
-	private float maxSelectionSize = 1.5f * Node.sizeOnScreen;
-	private float growSpeed = 0.5f;
-	private Color selectionColor = Color.orange;
+	protected Node selected;
+	protected Node lastSelected;
+	protected float selectionCircle = .5f * Node.sizeOnScreen;
+	protected float lastSelectionCircle;
+	protected float maxSelectionSize = 1.5f * Node.sizeOnScreen;
+	protected float growSpeed = 0.5f;
+	protected Color selectionColor = Color.orange;
 
 	// variables for hovered node
-	private Node hovered;
-	private Node lastHovered;
-	private float hoverCircle = 0f;
-	private float lastHoveredCircle = 0f;
-	private float maxHoverSize = 1f * Node.sizeOnScreen;
-	
-	//font 
-	private UnicodeFont font;
-	
-	//timer stuff
-	private String timeString = "";
+	protected Node hovered;
+	protected Node lastHovered;
+	protected float hoverCircle = 0f;
+	protected float lastHoveredCircle = 0f;
+	protected float maxHoverSize = 1f * Node.sizeOnScreen;
 
-	@SuppressWarnings("unchecked") // because font.getEffects() is dumb
+	// font
+	protected UnicodeFont font;
+
+	@SuppressWarnings("unchecked")
+	// because font.getEffects() is dumb
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		System.out.println("Entering state " + getID());
-		
 		// initialize variables
 		levelComplete = false;
-		winDelay = 2000f;
-		
+
 		// load font
 		font = new UnicodeFont("cubic.ttf", 40, false, false);
 		font.addAsciiGlyphs();
 		font.getEffects().add(new ColorEffect()); // Create a default white
 		font.loadGlyphs();
-		
-		// generate Level
-		Level.generateLevel(MainMenu.selectedLevel, gc);
 	}
 
 	@Override
@@ -86,12 +78,13 @@ public class Gameplay extends BasicGameState {
 		// draw Level.getNodes()
 		for (Node node : Level.nodes)
 			node.render(gc, sbg, g);
-		
-		//test print
+
+		// draw timer
 		g.setColor(Color.red);
 		g.setFont(font);
+		String timeString = "" + (float) Timer.getTime() / 1000;
 		g.drawString(timeString, gc.getWidth() - (font.getWidth("." + Timer.getStartingTime())), font.getHeight("" + Timer.getStartingTime()) / 2);
-	
+
 		// draw hovered node
 		g.setColor(selectionColor);
 		g.setAntiAlias(false);
@@ -112,7 +105,7 @@ public class Gameplay extends BasicGameState {
 		Input input = gc.getInput();
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
-		
+
 		// if Level complete skip logic
 		if (!levelComplete) {
 
@@ -125,9 +118,8 @@ public class Gameplay extends BasicGameState {
 					break;
 				}
 			}
-			
+
 			// if currently hovered node is different than previously hovered
-			// node
 			// setup lastHovered and hoverCircle
 			if (previousHovered != hovered) {
 				lastHovered = previousHovered;
@@ -161,23 +153,15 @@ public class Gameplay extends BasicGameState {
 					selected = null;
 				}
 			}
-			
+
 			// two Level.getNodes() selected, attempt to switch Level.getWires()
 			if (lastSelected != null && selected != null && lastSelected != selected) {
-				if (selected.getWires() != lastSelected.getWires()) { // Level.getNodes() from different Level.getWires()
-					
-					// switch Level.getNodes()
-					selected.swapLocations(lastSelected);
+				// switch nodes
+				selected.swapLocations(lastSelected);
 
-					// deselect Level.getNodes()
-					selected = null;
-					lastSelected = null;
-				} else { // Level.getNodes() on same wire
-
-					// deselect Level.getNodes()
-					selected = null;
-					lastSelected = null;
-				}
+				// deselect nodes
+				selected = null;
+				lastSelected = null;
 			}
 
 			// animate selectionCircle
@@ -200,38 +184,12 @@ public class Gameplay extends BasicGameState {
 					}
 				}
 			}
-
-			// reset hasClicked
-			if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-				hasClicked = false;
-			}
-			
-		}
-		
-		Timer.update(delta);
-		
-		timeString = "" + (float)Timer.getTime() / 1000;
-		
-		if (Timer.isDone()) {
-			Timer.reset();
-			sbg.enterState(UncrossTheWires.SCORE_MENU);
-		}
-		
-
-		// if no wires intersect end Level
-		if (levelComplete) {
-			/*winDelay -= delta;
-			if (winDelay <= 0) {*/
-				Score.update(1);
-				sbg.enterState(UncrossTheWires.GAMEPLAY);
-			//}
 		}
 
-	}
-
-	@Override
-	public int getID() {
-		return UncrossTheWires.GAMEPLAY;
+		// reset hasClicked
+		if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			hasClicked = false;
+		}
 	}
 
 }
