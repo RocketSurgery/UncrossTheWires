@@ -25,6 +25,7 @@ public class MostSolved extends Gameplay {
 		Timer.decrease(delta);
 		
 		if (Timer.isDone()) {
+			Timer.reset();
 			sbg.enterState(UncrossTheWires.SCORE_MENU);
 		}
 		
