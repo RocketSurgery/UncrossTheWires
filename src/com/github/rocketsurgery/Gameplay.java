@@ -37,9 +37,9 @@ public class Gameplay extends BasicGameState {
 	private float maxHoverSize = .5f * Node.sizeOnScreen;
 
 	@Override
-	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
+	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		System.out.println("Entering state " + getID());
-		Level level = Level.loadLevel("SIMPLE");
+		Level level = Level.loadLevel("SIMPLE", gc);
 		nodes = level.getNodes();
 		wires = level.getWires();
 		winDelay = 2000f;

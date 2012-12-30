@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import org.newdawn.slick.GameContainer;
+
 public class Level {
 
 	private List<Wire> wires;
@@ -15,7 +17,7 @@ public class Level {
 		this.nodes = nodes;
 	}
 	
-	public static Level loadLevel(String title) {
+	public static Level loadLevel(String title, GameContainer gc) {
 		try (Scanner scan = new Scanner(Level.class.getClassLoader().getResourceAsStream("levels.dat"))) {
 			
 			// find header for level
@@ -24,6 +26,9 @@ public class Level {
 				next = scan.next();
 			} while (!next.equalsIgnoreCase(title));
 			
+			float xSize = scan.nextInt();
+			float ySize = scan.nextInt();
+			
 			ArrayList<Node> nodes = new ArrayList<Node>();
 			ArrayList<Wire> wires = new ArrayList<Wire>();
 			
@@ -31,10 +36,10 @@ public class Level {
 			while (scan.hasNextInt()) {
 				
 				// load in end points
-				int x1 = scan.nextInt();
-				int y1 = scan.nextInt();
-				int x2 = scan.nextInt();
-				int y2 = scan.nextInt();
+				float x1 = scan.nextInt() * gc.getWidth() / xSize;
+				float y1 = scan.nextInt() * gc.getHeight() / ySize;
+				float x2 = scan.nextInt() * gc.getWidth() / xSize;
+				float y2 = scan.nextInt()* gc.getHeight() / ySize;
 				
 				// create nodes and wire
 				Node node1 = null;
