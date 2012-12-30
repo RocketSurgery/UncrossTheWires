@@ -84,9 +84,14 @@ public class Level {
 		
 		Random rand = new Random();
 		
+		int maximumXResolution = Math.min((int) (gc.getWidth() / Node.sizeOnScreen), MAX_RANDOM_WIDTH);
+		int maximumYResolution = Math.min((int) (gc.getHeight() / Node.sizeOnScreen), MAX_RANDOM_HEIGHT);
+		int minimumXResolution = (int) Math.max(.66 * maximumXResolution, MIN_RANDOM_WIDTH);
+		int minimumYResolution = (int) Math.max(.66 * maximumYResolution, MIN_RANDOM_HEIGHT);
+		
 		//generate width and height between the constants. inclusive.
-		float xSize = rand.nextInt(MAX_RANDOM_WIDTH - MIN_RANDOM_WIDTH + 1) + MIN_RANDOM_WIDTH; 
-		float ySize = rand.nextInt(MAX_RANDOM_HEIGHT - MIN_RANDOM_HEIGHT + 1) + MIN_RANDOM_HEIGHT;
+		float xSize = rand.nextInt(maximumXResolution - minimumXResolution + 1) + minimumXResolution; 
+		float ySize = rand.nextInt(maximumYResolution - minimumXResolution + 1) + minimumXResolution;
 		
 		int numNodes = rand.nextInt(5) + 6;// 6-10 inclusive;
 		

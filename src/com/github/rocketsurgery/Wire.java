@@ -18,6 +18,8 @@ public class Wire extends Line {
 	private Color wireColor = Color.red;
 	private float wireWidth = 5f;
 	
+	private static int colorIterator = 0;
+	
 	public Wire(Node first, Node second) {
 		super(first.getCenterX(), first.getCenterY(), second.getCenterX(), second.getCenterY());
 		first.attach(this);
@@ -25,13 +27,18 @@ public class Wire extends Line {
 		this.end1 = first;
 		this.end2 = second;
 		
-		Random rand = new Random();
-		int colorIndex = rand.nextInt(3);
-		switch (colorIndex) {
+		/*Random rand = new Random();
+		int colorIndex = rand.nextInt(3);*/		
+		
+		switch (colorIterator) {
 		case 0: wireColor = Color.red; break;
 		case 1: wireColor = Color.blue; break;
 		case 2: wireColor = Color.green; break;
 		}
+		
+		colorIterator++;
+		colorIterator %= 3;
+		
 		//wireColor = new Color ((float)Math.random(),(float)Math.random(),(float)Math.random());
 	}
 	
@@ -44,8 +51,9 @@ public class Wire extends Line {
 		g.setLineWidth(wireWidth);
 		g.setAntiAlias(true);
 		g.drawLine(end1.getCenterX(), end1.getCenterY(), end2.getCenterX(), end2.getCenterY());
-		g.fillOval(end1.getCenterX() - wireWidth / 2, end1.getCenterY() - wireWidth / 2, wireWidth, wireWidth);
-		g.fillOval(end2.getCenterX() - wireWidth / 2, end2.getCenterY() - wireWidth / 2, wireWidth, wireWidth);
+		g.fillOval(end1.getCenterX() - wireWidth * 3 / 2, end1.getCenterY() - wireWidth * 3 / 2, wireWidth * 3, wireWidth * 3);
+		g.fillOval(end2.getCenterX() - wireWidth * 3 / 2, end2.getCenterY() - wireWidth * 3 / 2, wireWidth * 3, wireWidth * 3);
+		
 	}
 	
 	@Override
