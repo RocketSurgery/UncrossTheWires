@@ -18,10 +18,10 @@ public class Level {
 	private static final int MAX_HEIGHT = 11;
 	private static final int MIN_HEIGHT = 7;
 
-	private static final int MAX_NODES = 10;
-	private static final int MIN_NODES = 6;
+	private static final int MAX_NODES = 30;
+	private static final int MIN_NODES = 20;
 
-	private static final int PADDING = 100;
+	private static final int PADDING = 50;
 
 	private Level(List<Wire> wires, List<Node> nodes) {
 		this.wires = wires;
