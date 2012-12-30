@@ -13,7 +13,7 @@ public class Wire extends Line {
 
 	private Node end1, end2;
 	
-	private Color wireColor = Color.red;
+	private Color wireColor;// = Color.red;
 	private float wireWidth = 5f;
 	
 	public Wire(Node first, Node second) {
@@ -22,6 +22,7 @@ public class Wire extends Line {
 		second.attach(this);
 		this.end1 = first;
 		this.end2 = second;
+		wireColor = new Color ((float)Math.random(),(float)Math.random(),(float)Math.random());
 	}
 	
 	public void resetEnds() {
@@ -46,6 +47,14 @@ public class Wire extends Line {
 			return !(wire.hasEnd(end1) || wire.hasEnd(end2));
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		
+		if (!(object instanceof Wire))
+			throw new IllegalArgumentException();
+		return hasEnds(end1, end2);
 	}
 	
 	public boolean hasEnd(Node node) {
