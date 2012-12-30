@@ -27,7 +27,7 @@ public class Gameplay extends BasicGameState {
 	private float lastSelectionCircle;
 	private float maxSelectionSize = 1.5f * Node.sizeOnScreen;
 	private float growSpeed = 0.5f;
-	private Color selectionColor = Color.yellow;
+	private Color selectionColor = Color.orange;
 
 	// variables for hovered node
 	private Node hovered;
