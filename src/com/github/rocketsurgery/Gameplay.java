@@ -193,7 +193,7 @@ public class Gameplay extends BasicGameState {
 		if (levelComplete) {
 			winDelay -= delta;
 			if (winDelay <= 0)
-				sbg.enterState(UncrossTheWires.MAIN_MENU);
+				sbg.enterState(UncrossTheWires.GAMEPLAY);
 		}
 
 	}
