@@ -17,7 +17,7 @@ public class Gameplay extends BasicGameState {
 
 	private boolean hasClicked = false;
 	private boolean levelComplete = false;
-	private float winDelay = 2000f;
+	private float winDelay = 500f;
 
 	// variables for selected level.getNodes()
 	private Node selected;
