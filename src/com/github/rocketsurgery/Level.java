@@ -48,13 +48,16 @@ public class Level {
 			while (!line.equals("")) {
 				lineScanner = new Scanner (line);
 				
-				//int index = lineScanner.nextInt();
+
+				lineScanner.nextInt();
+
 				float x = lineScanner.nextInt() * gc.getWidth() / xSize;
 				float y = lineScanner.nextInt() * gc.getHeight() / ySize;;
 				
 				nodes.add(new MultiNode(x, y));
 				
 				line = scan.nextLine();
+				lineScanner.close();
 			}
 			
 			//find "connections" header
@@ -78,6 +81,7 @@ public class Level {
 				}
 				
 				line = scan.nextLine();
+				lineScanner.close();
 			}
 			
 			lineScanner.close();
