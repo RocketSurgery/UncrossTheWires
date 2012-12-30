@@ -5,6 +5,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -18,7 +20,7 @@ public class Gameplay extends BasicGameState {
 
 	private boolean hasClicked = false;
 	private boolean levelComplete = false;
-	private float winDelay = 2000f;
+	private float winDelay = 500f;
 
 	// variables for selected level.getNodes()
 	private Node selected;
@@ -35,7 +37,14 @@ public class Gameplay extends BasicGameState {
 	private float hoverCircle = 0f;
 	private float lastHoveredCircle = 0f;
 	private float maxHoverSize = 1f * Node.sizeOnScreen;
+	
+	//font 
+	private UnicodeFont font;
+	
+	//timer stuff
+	private String timeString = "";
 
+	@SuppressWarnings("unchecked") // because font.getEffects() is dumb
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		System.out.println("Entering state " + getID());
@@ -43,6 +52,12 @@ public class Gameplay extends BasicGameState {
 		// initialize variables
 		levelComplete = false;
 		winDelay = 2000f;
+		
+		// load font
+		font = new UnicodeFont("cubic.ttf", 40, false, false);
+		font.addAsciiGlyphs();
+		font.getEffects().add(new ColorEffect()); // Create a default white
+		font.loadGlyphs();
 		
 		// generate level
 		level = Level.generateLevel(MainMenu.selectedLevel, gc);
@@ -73,7 +88,12 @@ public class Gameplay extends BasicGameState {
 		// draw level.getNodes()
 		for (Node node : level.getNodes())
 			node.render(gc, sbg, g);
-
+		
+		//test print
+		g.setColor(Color.red);
+		g.setFont(font);
+		g.drawString(timeString, gc.getWidth() - (font.getWidth("." + Timer.getStartingTime())), font.getHeight("" + Timer.getStartingTime()) / 2);
+	
 		// draw hovered node
 		g.setColor(selectionColor);
 		g.setAntiAlias(false);
@@ -94,7 +114,7 @@ public class Gameplay extends BasicGameState {
 		Input input = gc.getInput();
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
-
+		
 		// if level complete skip logic
 		if (!levelComplete) {
 
@@ -189,12 +209,24 @@ public class Gameplay extends BasicGameState {
 			}
 			
 		}
+		
+		Timer.update(delta);
+		
+		timeString = "" + (float)Timer.getTime() / 1000;
+		
+		if (Timer.isDone()) {
+			Timer.reset();
+			sbg.enterState(UncrossTheWires.SCORE_MENU);
+		}
+		
 
 		// if no wires intersect end level
 		if (levelComplete) {
-			winDelay -= delta;
-			if (winDelay <= 0)
-				sbg.enterState(UncrossTheWires.MAIN_MENU);
+			/*winDelay -= delta;
+			if (winDelay <= 0) {*/
+				Score.update(1);
+				sbg.enterState(UncrossTheWires.GAMEPLAY);
+			//}
 		}
 
 	}
