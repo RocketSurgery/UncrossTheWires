@@ -13,12 +13,20 @@ public class Level {
 	public static List<Node> nodes;
 	public static float xSize;
 	public static float ySize;
-	public static final String[] difficulties = 	{ 
-											"easy", 
-											"medium", 
-											"hard", 
-											"whaaaaaaaaat" 
-											};
+	
+	// difficulty selections
+	public static final String[] difficulties = {
+												"easy", 
+												"medium", 
+												"hard", 
+												"whaaaaaaaaat" 
+												};
+	private static final int[][] NODE_LIMITS = 	{
+												{ 5, 12 }, // easy
+												{ 12, 20 }, // medium
+												{ 20, 30 }, // hard
+												{ 30, 40 } // whaaaaaaaaaat
+												};
 	public static int selectedDifficulty = 0;
 
 	private static final int MAX_WIDTH = 12;
@@ -28,12 +36,6 @@ public class Level {
 	private static final int MIN_HEIGHT = 7;
 
 	// min and max node counts for each difficulty
-	private static final int[][] NODE_LIMITS = 	{ 
-												{ 5, 12 }, // easy
-												{ 12, 20 }, // medium
-												{ 20, 30 }, // hard
-												{ 30, 40 } // whaaaaaaaaaat
-												};
 
 	public static void generateLevel(int difficulty, GameContainer gc) {
 
