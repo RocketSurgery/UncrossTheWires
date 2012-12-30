@@ -12,6 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Gameplay extends BasicGameState {
 
 	public static GameContainer gameContainer = null;
+	public static final int PADDING = 50;
 	
 	private Level level;
 
