@@ -14,7 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Node extends Circle implements DisplayElement {
 	
 	public static final float sizeOnScreen = 30f;
-	public static final Color nodeColor = Color.blue;
+	public static final Color nodeColor = Color.white;
 	
 	private ArrayList<Wire> wires;
 	
