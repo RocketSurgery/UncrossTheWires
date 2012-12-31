@@ -13,6 +13,7 @@ public class UncrossTheWires extends StateBasedGame {
 	public static final int SCORE_MENU = 3;
 	
 	public static final String[] gameModes = { "Most Solved", "Lowest Score" };
+	public static final int selectedGameMode = 0;
 	
 	public static final int screenX = 800;
 	public static final int screenY = 600;
