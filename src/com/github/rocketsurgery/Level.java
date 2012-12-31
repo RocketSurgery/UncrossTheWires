@@ -11,8 +11,8 @@ public class Level {
 
 	public static List<Wire> wires;
 	public static List<Node> nodes;
-	public static float xSize;
-	public static float ySize;
+	public static final float xSize = 12;
+	public static final float ySize = 10;
 	
 	// difficulty selections
 	public static final String[] difficulties = {
@@ -21,6 +21,8 @@ public class Level {
 												"hard", 
 												"whaaaaaaaaat" 
 												};
+	// min and max node counts for each difficulty
+	// the largest value must be less than xSize * ySize
 	private static final int[][] NODE_LIMITS = 	{
 												{ 5, 12 }, // easy
 												{ 12, 20 }, // medium
@@ -29,24 +31,12 @@ public class Level {
 												};
 	public static int selectedDifficulty = 0;
 
-	private static final int MAX_WIDTH = 12;
-	private static final int MIN_WIDTH = 8;
-
-	private static final int MAX_HEIGHT = 11;
-	private static final int MIN_HEIGHT = 7;
-
-	// min and max node counts for each difficulty
-
 	public static void generateLevel(int difficulty, GameContainer gc) {
 
 		nodes = new ArrayList<Node>();
 		wires = new ArrayList<Wire>();
 
 		Random rand = new Random();
-
-		// generate width and height between the constants inclusive
-		xSize = rand.nextInt(MAX_WIDTH - MIN_WIDTH) + MIN_WIDTH;
-		ySize = rand.nextInt(MAX_HEIGHT - MIN_HEIGHT) + MIN_HEIGHT;
 		
 		// generate a number of nodes between the limits in NODE_LIMITS inclusive
 		int numNodes = rand.nextInt(NODE_LIMITS[selectedDifficulty][1] - NODE_LIMITS[selectedDifficulty][0])
@@ -120,9 +110,6 @@ public class Level {
 		do {
 			next = scan.next();
 		} while (!next.equalsIgnoreCase(title));
-
-		xSize = scan.nextInt();
-		ySize = scan.nextInt();
 
 		// find "nodes" header
 		scan.next();
