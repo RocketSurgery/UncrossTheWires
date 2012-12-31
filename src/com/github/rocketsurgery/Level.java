@@ -13,12 +13,11 @@ public class Level {
 	public static List<Node> nodes;
 	public static float xSize;
 	public static float ySize;
-	public static final String[] difficulties = 	{ 
-											"easy", 
-											"medium", 
-											"hard", 
-											"whaaaaaaaaat" 
-											};
+	public static final String[] difficulties = { "easy", 
+												  "medium", 
+												  "hard", 
+												  "whaaaaaaaaat" 
+												};
 	public static int selectedDifficulty = 0;
 
 	private static final int MAX_WIDTH = 12;
