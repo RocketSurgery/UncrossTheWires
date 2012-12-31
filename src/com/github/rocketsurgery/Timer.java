@@ -21,6 +21,6 @@ public abstract class Timer {
 	}
 	
 	public static void set(long t) {
-		
+		time = t;
 	}
 }

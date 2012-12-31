@@ -6,7 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class MostSolved extends Gameplay {
 	
-	private static final int STARTING_TIME = 30000;
+	private static final int TIME_LIMIT = 30000;
 	
 	@Override
 	public int getID() {
@@ -19,7 +19,7 @@ public class MostSolved extends Gameplay {
 		
 		// initialize variables
 		reset();
-		Timer.set(STARTING_TIME);
+		Timer.set(TIME_LIMIT);
 	}
 	
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
