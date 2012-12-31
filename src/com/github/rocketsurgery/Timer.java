@@ -2,18 +2,13 @@ package com.github.rocketsurgery;
 
 public abstract class Timer {
 
-	private static final int STARTING_TIME = 30000;
-	private static int time = STARTING_TIME;
+	private static long time;
 	
-	public static int getStartingTime() {
-		return STARTING_TIME;
-	}
-	
-	public static void decrease(int delta) {
+	public static void decrease(long delta) {
 		time = (time > 0) ? time - delta : 0;
 	}
 	
-	public static void increase(int delta) {
+	public static void increase(long delta) {
 		time += delta;
 	}
 	
@@ -21,11 +16,11 @@ public abstract class Timer {
 		return time <= 0;
 	}
 	
-	public static int getTime() {
+	public static long getTime() {
 		return time;
 	}
 	
-	public static void reset() {
-		time = STARTING_TIME;
+	public static void set(long t) {
+		
 	}
 }
