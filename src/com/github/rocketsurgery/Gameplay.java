@@ -83,7 +83,7 @@ public abstract class Gameplay extends BasicGameState {
 		g.setColor(Color.red);
 		g.setFont(font);
 		String timeString = "" + (float) Timer.getTime() / 1000;
-		g.drawString(timeString, gc.getWidth() - (font.getWidth("." + Timer.getStartingTime())), font.getHeight("" + Timer.getStartingTime()) / 2);
+		g.drawString(timeString, gc.getWidth() - (font.getWidth("" + Integer.MAX_VALUE)), 10);
 
 		// draw hovered node
 		g.setColor(selectionColor);
