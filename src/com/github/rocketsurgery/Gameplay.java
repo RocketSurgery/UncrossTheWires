@@ -17,10 +17,11 @@ public abstract class Gameplay extends BasicGameState {
 	public static final int PADDING = 50;
 
 	protected boolean hasClicked = false;
+	protected boolean hasSwapped = false;
 	protected boolean levelComplete = false;
 	protected float winDelay;
 
-	// variables for selected Level.getNodes()
+	// variables for selected level
 	protected Node selected;
 	protected Node lastSelected;
 	protected float selectionCircle = .5f * Node.sizeOnScreen;
@@ -39,18 +40,11 @@ public abstract class Gameplay extends BasicGameState {
 	// font
 	protected UnicodeFont font;
 
-	@SuppressWarnings("unchecked")
-	// because font.getEffects() is dumb
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		// initialize variables
 		levelComplete = false;
 
-		// load font
-		font = new UnicodeFont("cubic.ttf", 40, false, false);
-		font.addAsciiGlyphs();
-		font.getEffects().add(new ColorEffect()); // Create a default white
-		font.loadGlyphs();
 	}
 
 	@Override
@@ -58,9 +52,16 @@ public abstract class Gameplay extends BasicGameState {
 		System.out.println("Leaving state " + getID());
 	}
 
+	@SuppressWarnings("unchecked") // because font.getEffects() is dumb
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		gameContainer = gc;
+
+		// load font
+		font = new UnicodeFont("cubic.ttf", 40, false, false);
+		font.addAsciiGlyphs();
+		font.getEffects().add(new ColorEffect()); // Create a default white
+		font.loadGlyphs();
 	}
 
 	@Override
@@ -78,12 +79,6 @@ public abstract class Gameplay extends BasicGameState {
 		// draw Level.getNodes()
 		for (Node node : Level.nodes)
 			node.render(gc, sbg, g);
-
-		// draw timer
-		g.setColor(Color.red);
-		g.setFont(font);
-		String timeString = "" + (float) Timer.getTime() / 1000;
-		g.drawString(timeString, gc.getWidth() - (font.getWidth("." + Integer.MAX_VALUE)), 25);
 
 		// draw hovered node
 		g.setColor(selectionColor);
@@ -158,6 +153,7 @@ public abstract class Gameplay extends BasicGameState {
 			if (lastSelected != null && selected != null && lastSelected != selected) {
 				// switch nodes
 				selected.swapLocations(lastSelected);
+				hasSwapped = true;
 
 				// deselect nodes
 				selected = null;
@@ -190,6 +186,12 @@ public abstract class Gameplay extends BasicGameState {
 		if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 			hasClicked = false;
 		}
+	}
+
+	protected void reset() {
+		Level.generateLevel(Level.selectedDifficulty);
+		winDelay = 500;
+		levelComplete = false;
 	}
 
 }

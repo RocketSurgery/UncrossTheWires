@@ -31,7 +31,7 @@ public class Level {
 												};
 	public static int selectedDifficulty = 0;
 
-	public static void generateLevel(int difficulty, GameContainer gc) {
+	public static void generateLevel(int difficulty) {
 
 		nodes = new ArrayList<Node>();
 		wires = new ArrayList<Wire>();
@@ -95,7 +95,7 @@ public class Level {
 		}
 
 		if (levelComplete)
-			generateLevel(difficulty, gc); //if the level is already solved, generate a new one
+			generateLevel(difficulty); //if the level is already solved, generate a new one
 	}
 
 	@Deprecated
