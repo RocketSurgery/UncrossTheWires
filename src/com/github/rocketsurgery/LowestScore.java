@@ -18,7 +18,7 @@ public class LowestScore extends Gameplay {
 		super.enter(gc, sbg);
 
 		// initialize variables
-		reset();
+		reset(gc);
 		Score.reset();
 	}
 

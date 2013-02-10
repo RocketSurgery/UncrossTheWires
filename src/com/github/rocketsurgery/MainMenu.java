@@ -12,11 +12,12 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class MainMenu extends BasicGameState {
 
-	private static final String[] gameModes = { "Lowest Score", "Most Solved" };
-	private static final Integer[] gameModeStateValues = { UncrossTheWires.LOWEST_SCORE, UncrossTheWires.MOST_SOLVED };
-
 	private static final String titleText = "Uncross The Wires";
+	
+	private static final String[] gameModes = { "Lowest Score", "Most Solved" }; // must match gameModeStateValues
+	private static final Integer[] gameModeStateValues = { UncrossTheWires.LOWEST_SCORE, UncrossTheWires.MOST_SOLVED };
 	private static final String startText = "Start";
+	
 	private static final Color bgColor = Color.black;
 	private static final Color textColor = Color.white;
 	private static final Color selectionColor = Color.blue;
@@ -34,17 +35,6 @@ public class MainMenu extends BasicGameState {
 
 	// preventing accidental restart from score menu
 	private boolean hasReleased = false;
-
-	@Override
-	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
-		System.out.println("Entering state " + getID());
-		hasReleased = false;
-	}
-
-	@Override
-	public void leave(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
-		System.out.println("Leaving state " + getID());
-	}
 
 	@SuppressWarnings("unchecked")
 	// because font.getEffects() is dumb
@@ -65,6 +55,17 @@ public class MainMenu extends BasicGameState {
 		menus[START] = new OptionMenu(startText, vertOffset + vertSize * (float) (START + 1) / (float) (NUM_MENUS + 1));
 		selectedMenu = -1;
 		
+	}
+	
+	@Override
+	public void enter(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
+		System.out.println("Entering state " + getID());
+		hasReleased = false;
+	}
+
+	@Override
+	public void leave(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
+		System.out.println("Leaving state " + getID());
 	}
 
 	@Override

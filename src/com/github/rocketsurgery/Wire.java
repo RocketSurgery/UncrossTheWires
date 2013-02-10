@@ -49,9 +49,9 @@ public class Wire extends Line implements DisplayElement {
 		g.setColor(wireColor);
 		g.setLineWidth(wireWidth);
 		g.setAntiAlias(true);
-		g.drawLine(end1.scaleX(), end1.scaleY(), end2.scaleX(), end2.scaleY());
-		g.fillOval(end1.scaleX() - wireWidth * 3 / 2, end1.scaleY() - wireWidth * 3 / 2, wireWidth * 3, wireWidth * 3);
-		g.fillOval(end2.scaleX() - wireWidth * 3 / 2, end2.scaleY() - wireWidth * 3 / 2, wireWidth * 3, wireWidth * 3);
+		g.drawLine(end1.getCenterX(), end1.getCenterY(), end2.getCenterX(), end2.getCenterY());
+		g.fillOval(end1.getCenterX() - wireWidth * 3 / 2, end1.getCenterY() - wireWidth * 3 / 2, wireWidth * 3, wireWidth * 3);
+		g.fillOval(end2.getCenterX() - wireWidth * 3 / 2, end2.getCenterY() - wireWidth * 3 / 2, wireWidth * 3, wireWidth * 3);
 	}
 	
 	@Override

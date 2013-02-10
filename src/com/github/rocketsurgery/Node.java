@@ -16,18 +16,22 @@ public class Node extends Circle implements DisplayElement {
 	public static final float sizeOnScreen = 15f;
 	public static final Color nodeColor = Color.white;
 	
+	private final float reducedX, reducedY;
+	
 	private ArrayList<Wire> wires;
 	
-	public Node(float centerPointX, float centerPointY) {
-		super(centerPointX, centerPointY, sizeOnScreen);
-		wires = new ArrayList<>();
+	public Node(float reducedCenterX, float reducedCenterY) {
+		super(reducedCenterX, reducedCenterY, sizeOnScreen);
+		this.reducedX = reducedCenterX;
+		this.reducedY = reducedCenterY;
+		this.wires = new ArrayList<>();
 	}
 	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(nodeColor);
 		g.setAntiAlias(false);
-		g.fill(new Circle(scaleX(), scaleY(), sizeOnScreen));
+		g.fill(this);
 	}
 	
 	public boolean attach(Wire wire) {
@@ -53,23 +57,21 @@ public class Node extends Circle implements DisplayElement {
 			wire.resetEnds();
 	}
 	
-	@Override
-	public boolean contains(float x, float y) {
-		return Math.sqrt(Math.pow(scaleX() - x, 2) + Math.pow(scaleY() - y, 2)) <= sizeOnScreen;
-	}
-	
 	public List<Wire> getWires() {
 		return wires;
 	}
 	
-	public float scaleX() {
-		return getCenterX() / Level.xSize * (Gameplay.gameContainer.getWidth() - 2 * Gameplay.PADDING) + Gameplay.PADDING;
+	public void scaleInternalCoords(GameContainer gc) {
+		this.setCenterX(this.reducedX / Level.xSize * (gc.getWidth() - 2 * Gameplay.PADDING) + Gameplay.PADDING);
+		this.setCenterY(this.reducedY / Level.ySize * (gc.getHeight() - 2 * Gameplay.PADDING) + Gameplay.PADDING);
+		this.setRadius(sizeOnScreen);
 	}
 	
-	public float scaleY() {
-		return getCenterY() / Level.xSize * (Gameplay.gameContainer.getHeight() - 2 * Gameplay.PADDING) + Gameplay.PADDING;
+	@Override
+	public boolean contains(float x, float y) {
+		return Math.sqrt(Math.pow(this.getCenterX() - x, 2) + Math.pow(this.getCenterY() - y, 2)) <= sizeOnScreen;
 	}
-
+	
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		// TODO Auto-generated method stub

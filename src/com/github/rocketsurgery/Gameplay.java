@@ -13,7 +13,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public abstract class Gameplay extends BasicGameState {
 
-	public static GameContainer gameContainer = null;
 	public static final int PADDING = 50;
 
 	protected boolean hasClicked = false;
@@ -24,8 +23,8 @@ public abstract class Gameplay extends BasicGameState {
 	// variables for selected level
 	protected Node selected;
 	protected Node lastSelected;
-	protected float selectionCircle = .5f * Node.sizeOnScreen;
-	protected float lastSelectionCircle;
+	protected float selectionCircleSize = .5f * Node.sizeOnScreen;
+	protected float lastSelectionCircleSize;
 	protected float maxSelectionSize = 1.5f * Node.sizeOnScreen;
 	protected float growSpeed = 0.5f;
 	protected Color selectionColor = Color.orange;
@@ -33,8 +32,8 @@ public abstract class Gameplay extends BasicGameState {
 	// variables for hovered node
 	protected Node hovered;
 	protected Node lastHovered;
-	protected float hoverCircle = 0f;
-	protected float lastHoveredCircle = 0f;
+	protected float hoverCircleSize = 0f;
+	protected float lastHoveredCircleSize = 0f;
 	protected float maxHoverSize = 1f * Node.sizeOnScreen;
 
 	// font
@@ -55,8 +54,6 @@ public abstract class Gameplay extends BasicGameState {
 	@SuppressWarnings("unchecked") // because font.getEffects() is dumb
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		gameContainer = gc;
-
 		// load font
 		font = new UnicodeFont("cubic.ttf", 40, false, false);
 		font.addAsciiGlyphs();
@@ -72,9 +69,9 @@ public abstract class Gameplay extends BasicGameState {
 		g.setColor(selectionColor);
 		g.setAntiAlias(false);
 		if (selected != null)
-			g.fill(new Circle(selected.scaleX(), selected.scaleY(), selectionCircle));
+			g.fill(new Circle(selected.getCenterX(), selected.getCenterY(), selectionCircleSize));
 		if (lastSelected != null)
-			g.fill(new Circle(lastSelected.scaleX(), lastSelected.scaleY(), lastSelectionCircle));
+			g.fill(new Circle(lastSelected.getCenterX(), lastSelected.getCenterY(), lastSelectionCircleSize));
 
 		// draw Level.getNodes()
 		for (Node node : Level.nodes)
@@ -84,9 +81,9 @@ public abstract class Gameplay extends BasicGameState {
 		g.setColor(selectionColor);
 		g.setAntiAlias(false);
 		if (hovered != null)
-			g.fill(new Circle(hovered.scaleX(), hovered.scaleY(), hoverCircle));
+			g.fill(new Circle(hovered.getCenterX(), hovered.getCenterY(), hoverCircleSize));
 		if (lastHovered != null)
-			g.fill(new Circle(lastHovered.scaleX(), lastHovered.scaleY(), hoverCircle));
+			g.fill(new Circle(lastHovered.getCenterX(), lastHovered.getCenterY(), hoverCircleSize));
 
 		// draw Level.getWires()
 		for (Wire wire : Level.wires)
@@ -118,12 +115,12 @@ public abstract class Gameplay extends BasicGameState {
 			// setup lastHovered and hoverCircle
 			if (previousHovered != hovered) {
 				lastHovered = previousHovered;
-				lastHoveredCircle = hoverCircle;
-				hoverCircle = 0f;
+				lastHoveredCircleSize = hoverCircleSize;
+				hoverCircleSize = 0f;
 			}
 			// animate lastCircle
-			lastHoveredCircle = (lastHoveredCircle > 0) ? lastHoveredCircle - growSpeed * delta : 0;
-			if (lastHoveredCircle == 0)
+			lastHoveredCircleSize = (lastHoveredCircleSize > 0) ? lastHoveredCircleSize - growSpeed * delta : 0;
+			if (lastHoveredCircleSize == 0)
 				lastHovered = null;
 			// logic for clicking on Level.getNodes()
 			if (hovered != null) {
@@ -131,14 +128,14 @@ public abstract class Gameplay extends BasicGameState {
 				// if not hovering over selected
 				// animate hoverCircle
 				if (hovered != selected)
-					hoverCircle = (hoverCircle < maxHoverSize) ? hoverCircle + growSpeed * delta : maxHoverSize;
+					hoverCircleSize = (hoverCircleSize < maxHoverSize) ? hoverCircleSize + growSpeed * delta : maxHoverSize;
 
 				// if user clicks on hovered
 				// set selected to hovered
 				if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && !hasClicked) {
 					lastSelected = selected;
 					selected = hovered;
-					selectionCircle = .5f * Node.sizeOnScreen;
+					selectionCircleSize = .5f * Node.sizeOnScreen;
 					hovered = null;
 					hasClicked = true;
 				}
@@ -162,13 +159,13 @@ public abstract class Gameplay extends BasicGameState {
 
 			// animate selectionCircle
 			if (selected != null) {
-				selectionCircle = (selectionCircle < maxSelectionSize) ? selectionCircle + growSpeed * delta : maxSelectionSize;
+				selectionCircleSize = (selectionCircleSize < maxSelectionSize) ? selectionCircleSize + growSpeed * delta : maxSelectionSize;
 			} else {
-				selectionCircle = (selectionCircle > 0) ? selectionCircle - growSpeed * delta : 0;
+				selectionCircleSize = (selectionCircleSize > 0) ? selectionCircleSize - growSpeed * delta : 0;
 			}
 
 			// animate lastSelectionCircle
-			lastSelectionCircle = (lastSelectionCircle > 0) ? lastSelectionCircle - growSpeed * delta : 0;
+			lastSelectionCircleSize = (lastSelectionCircleSize > 0) ? lastSelectionCircleSize - growSpeed * delta : 0;
 
 			// test if any Level.getWires() intersect
 			levelComplete = true;
@@ -188,8 +185,10 @@ public abstract class Gameplay extends BasicGameState {
 		}
 	}
 
-	protected void reset() {
+	protected void reset(GameContainer gc) {
 		Level.generateLevel(Level.selectedDifficulty);
+		for (Node node : Level.nodes)
+			node.scaleInternalCoords(gc);
 		winDelay = 500;
 		levelComplete = false;
 	}
