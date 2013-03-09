@@ -9,4 +9,6 @@ public interface DisplayElement {
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException;
 	
+	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException;
+	
 }

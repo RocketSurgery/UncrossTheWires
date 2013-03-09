@@ -70,4 +70,10 @@ public class Node extends Circle implements DisplayElement {
 		return getCenterY() / Level.xSize * (Gameplay.gameContainer.getHeight() - 2 * Gameplay.PADDING) + Gameplay.PADDING;
 	}
 
+	@Override
+	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

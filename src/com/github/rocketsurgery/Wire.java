@@ -80,5 +80,11 @@ public class Wire extends Line implements DisplayElement {
 	public boolean hasEnds(Node n1, Node n2) {
 		return (end1 == n1 && end2 == n2) || (end1 == n2 && end2 == n1);
 	}
+
+	@Override
+	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
