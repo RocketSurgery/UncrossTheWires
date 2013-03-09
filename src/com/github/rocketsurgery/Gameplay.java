@@ -3,6 +3,7 @@ package com.github.rocketsurgery;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
@@ -37,14 +38,15 @@ public abstract class Gameplay extends BasicGameState {
 	protected float lastHoveredCircle = 0f;
 	protected float maxHoverSize = 1f * Node.sizeOnScreen;
 
-	// font
+	// graphics
 	protected UnicodeFont font;
+	protected Image bg;
 
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		// initialize variables
 		levelComplete = false;
-
+		bg = new Image("res/bg.gif");
 	}
 
 	@Override
@@ -67,6 +69,7 @@ public abstract class Gameplay extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		// draw background
+		g.drawImage(bg, 0, 0, (float) gc.getWidth(), (float) gc.getHeight(), 0, 0, 64, 64);
 
 		// draw selection
 		g.setColor(selectionColor);

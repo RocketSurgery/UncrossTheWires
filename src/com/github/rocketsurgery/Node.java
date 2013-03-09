@@ -6,6 +6,7 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.state.StateBasedGame;
@@ -18,16 +19,30 @@ public class Node extends Circle implements DisplayElement {
 	
 	private ArrayList<Wire> wires;
 	
+	boolean hasImage = true;
+	Image img;
+	
 	public Node(float centerPointX, float centerPointY) {
 		super(centerPointX, centerPointY, sizeOnScreen);
 		wires = new ArrayList<>();
+		
+		try {
+			img = new Image("res/nodeSprite.gif");
+		} catch (SlickException e){
+			hasImage = false;
+		}
 	}
 	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(nodeColor);
 		g.setAntiAlias(false);
-		g.fill(new Circle(scaleX(), scaleY(), sizeOnScreen));
+		
+		if (hasImage) {
+			g.drawImage(img, scaleX() - sizeOnScreen, scaleY() - sizeOnScreen);
+		} else {
+			g.fill(new Circle(scaleX(), scaleY(), sizeOnScreen));
+		}
 	}
 	
 	public boolean attach(Wire wire) {
