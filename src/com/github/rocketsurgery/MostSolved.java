@@ -8,7 +8,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class MostSolved extends Gameplay {
 
-	private static final int TIME_LIMIT = 30000;
+	public static int timeLimit = 30000; // in miliseconds
+	public static final int MIN_TIME = 30000;
+	public static boolean changingDifficulty = false;
 
 	@Override
 	public int getID() {
@@ -21,7 +23,7 @@ public class MostSolved extends Gameplay {
 
 		// initialize variables
 		reset(gc);
-		Timer.set(TIME_LIMIT);
+		Timer.set(timeLimit);
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -53,5 +55,5 @@ public class MostSolved extends Gameplay {
 		String timeString = "" + (float) Timer.getTime() / 1000;
 		g.drawString(timeString, gc.getWidth() - (font.getWidth("." + Integer.MAX_VALUE)), 25);
 	}
-	
+
 }

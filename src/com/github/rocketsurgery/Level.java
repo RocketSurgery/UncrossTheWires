@@ -9,44 +9,38 @@ import org.newdawn.slick.GameContainer;
 
 public class Level {
 
-	public static List<Wire> wires;
-	public static List<Node> nodes;
-	public static final float xSize = 12;
-	public static final float ySize = 10;
+	// values for generating the level
+	private static List<Wire> wires;
+	private static List<Node> nodes;
+	private static final float X_SIZE = 12;
+	private static final float Y_SIZE = 10;
 	
-	// difficulty selections
-	public static final String[] difficulties = {
-												"easy", 
-												"medium", 
-												"hard", 
-												"whaaaaaaaaat" 
-												};
-	// min and max node counts for each difficulty
-	// the largest value must be less than xSize * ySize
-	private static final int[][] NODE_LIMITS = 	{
-												{ 5, 12 }, // easy
-												{ 12, 20 }, // medium
-												{ 20, 30 }, // hard
-												{ 30, 40 } // whaaaaaaaaaat
-												};
-	public static int selectedDifficulty = 0;
+	private static final String[] GAME_MODES = 				{ // must match gameModeStateValues
+															"Lowest Score", 
+															"Most Solved"
+															};
+	private static final Integer[] GAME_MODE_STATE_VALUES = 	{ // must match gameModes
+															UncrossTheWires.LOWEST_SCORE,
+															UncrossTheWires.MOST_SOLVED
+															};
+	private static int selectedMode = 0;
+	
+	public static final int MIN_DIFFICULTY = 10;
+	public static final int MAX_DIFFICULTY = 500;
+	private static int difficulty = MIN_DIFFICULTY;
 
-	public static void generateLevel(int difficulty) {
+	public static void generateLevel() {
 
 		nodes = new ArrayList<Node>();
 		wires = new ArrayList<Wire>();
 
 		Random rand = new Random();
 		
-		// generate a number of nodes between the limits in NODE_LIMITS inclusive
-		int numNodes = rand.nextInt(NODE_LIMITS[selectedDifficulty][1] - NODE_LIMITS[selectedDifficulty][0])
-				+ NODE_LIMITS[selectedDifficulty][0];
-
-		for (int i = 0; i < numNodes; i++) {
+		for (int i = 0; i < difficulty; i++) {
 
 			// generates coordinates between 0 and xSize/ySize inclusive
-			float x = rand.nextInt((int) xSize + 1);
-			float y = rand.nextInt((int) ySize + 1);
+			float x = rand.nextInt((int) X_SIZE + 1);
+			float y = rand.nextInt((int) Y_SIZE + 1);
 
 			// test to see if node already exists
 			boolean alreadyExists = false;
@@ -67,7 +61,7 @@ public class Level {
 
 				// make sure randomly picked node isn't the same as the first
 				do {
-					otherNode = nodes.get(rand.nextInt(numNodes));
+					otherNode = nodes.get(rand.nextInt(difficulty));
 				} while (otherNode == node);
 
 				// test if the wire is a duplicate
@@ -95,9 +89,58 @@ public class Level {
 		}
 
 		if (levelComplete)
-			generateLevel(difficulty); //if the level is already solved, generate a new one
+			generateLevel(); //if the level is already solved, generate a new one
+	}
+	
+	// methods for other classes to change data
+	public static List<Wire> getWires() {
+		return wires;
+	}
+	
+	public static List<Node> getNodes() {
+		return nodes;
+	}
+		
+	public static String[] getGameModes() {
+		return GAME_MODES;
+	}
+	
+	public static Integer[] getGameModeStateValues() {
+		return GAME_MODE_STATE_VALUES;
+	}
+	
+	public static float getXSize() {
+		return X_SIZE;
+	}
+	
+	public static float getYSize() {
+		return Y_SIZE;
+	}
+	
+	public static int getDifficulty() {
+		return difficulty;
 	}
 
+	public static void changeDifficulty(int diff) {
+		difficulty += diff;
+		if (difficulty < MIN_DIFFICULTY) {
+			difficulty = MIN_DIFFICULTY;
+		} else if (difficulty > MAX_DIFFICULTY)
+			difficulty = MAX_DIFFICULTY;
+	}
+	
+	public static int getSelectedMode() {
+		return selectedMode;
+	}
+	
+	public static void changeSelectedMode(int diff) {
+		selectedMode += diff;
+		if (selectedMode < 0)
+			selectedMode = GAME_MODES.length - 1;
+		else if (selectedMode > GAME_MODES.length - 1)
+			selectedMode = 0;
+	}
+	
 	@Deprecated
 	public static void loadLevel(String title, GameContainer gc) {
 

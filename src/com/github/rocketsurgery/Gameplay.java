@@ -13,7 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public abstract class Gameplay extends BasicGameState {
 
-	public static final int PADDING = 50;
+	public static final float PADDING = 50;
 
 	protected boolean hasClicked = false;
 	protected boolean hasSwapped = false;
@@ -74,7 +74,7 @@ public abstract class Gameplay extends BasicGameState {
 			g.fill(new Circle(lastSelected.getCenterX(), lastSelected.getCenterY(), lastSelectionCircleSize));
 
 		// draw Level.getNodes()
-		for (Node node : Level.nodes)
+		for (Node node : Level.getNodes())
 			node.render(gc, sbg, g);
 
 		// draw hovered node
@@ -86,7 +86,7 @@ public abstract class Gameplay extends BasicGameState {
 			g.fill(new Circle(lastHovered.getCenterX(), lastHovered.getCenterY(), hoverCircleSize));
 
 		// draw Level.getWires()
-		for (Wire wire : Level.wires)
+		for (Wire wire : Level.getWires())
 			wire.render(gc, sbg, g);
 
 	}
@@ -104,7 +104,7 @@ public abstract class Gameplay extends BasicGameState {
 			// find if mouse if hovering over a node
 			Node previousHovered = hovered;
 			hovered = null;
-			for (Node node : Level.nodes) {
+			for (Node node : Level.getNodes()) {
 				if (node.contains(mouseX, mouseY)) {
 					hovered = node;
 					break;
@@ -169,9 +169,9 @@ public abstract class Gameplay extends BasicGameState {
 
 			// test if any Level.getWires() intersect
 			levelComplete = true;
-			for (int i = 0; i < Level.wires.size() - 1; i++) {
-				for (int j = i + 1; j < Level.wires.size(); j++) {
-					if (Level.wires.get(i).intersects(Level.wires.get(j))) {
+			for (int i = 0; i < Level.getWires().size() - 1; i++) {
+				for (int j = i + 1; j < Level.getWires().size(); j++) {
+					if (Level.getWires().get(i).intersects(Level.getWires().get(j))) {
 						levelComplete = false;
 						break;
 					}
@@ -186,8 +186,8 @@ public abstract class Gameplay extends BasicGameState {
 	}
 
 	protected void reset(GameContainer gc) {
-		Level.generateLevel(Level.selectedDifficulty);
-		for (Node node : Level.nodes)
+		Level.generateLevel();
+		for (Node node : Level.getNodes())
 			node.scaleInternalCoords(gc);
 		winDelay = 500;
 		levelComplete = false;

@@ -62,8 +62,8 @@ public class Node extends Circle implements DisplayElement {
 	}
 	
 	public void scaleInternalCoords(GameContainer gc) {
-		this.setCenterX(this.reducedX / Level.xSize * (gc.getWidth() - 2 * Gameplay.PADDING) + Gameplay.PADDING);
-		this.setCenterY(this.reducedY / Level.ySize * (gc.getHeight() - 2 * Gameplay.PADDING) + Gameplay.PADDING);
+		this.setCenterX(this.reducedX / Level.getXSize() * (gc.getWidth() - 2 * Gameplay.PADDING) + Gameplay.PADDING);
+		this.setCenterY(this.reducedY / Level.getYSize() * (gc.getHeight() - 2 * Gameplay.PADDING) + Gameplay.PADDING);
 		this.setRadius(sizeOnScreen);
 	}
 	
