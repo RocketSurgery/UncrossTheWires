@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.SlickException;
 
 public class Level {
 
@@ -29,7 +30,7 @@ public class Level {
 	public static final int MAX_DIFFICULTY = 500;
 	private static int difficulty = MIN_DIFFICULTY;
 
-	public static void generateLevel() {
+	public static void generateLevel() throws SlickException {
 
 		nodes = new ArrayList<Node>();
 		wires = new ArrayList<Wire>();
@@ -142,7 +143,7 @@ public class Level {
 	}
 	
 	@Deprecated
-	public static void loadLevel(String title, GameContainer gc) {
+	public static void loadLevel(String title, GameContainer gc) throws SlickException {
 
 		nodes = new ArrayList<Node>();
 		wires = new ArrayList<Wire>();

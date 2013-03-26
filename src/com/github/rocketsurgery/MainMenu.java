@@ -15,22 +15,22 @@ public class MainMenu extends Menu {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		super.init(gc, sbg);
 		
-		// TODO create menus
-		options = new Option[NUM_OPTIONS];
-		options[GAME_MODE] = new GameModes((float) (GAME_MODE + 1) / (float) (NUM_OPTIONS + 1));
-		options[DIFFICULTY] = new Difficulty((float) (DIFFICULTY + 1) / (float) (NUM_OPTIONS + 1));
-		options[START] = new Start((float) (START + 1) / (float) (NUM_OPTIONS + 1));
+		// create menus
+		menuOptions = new MenuOption[NUM_OPTIONS];
+		menuOptions[GAME_MODE] = new GameModes(gc);
+		menuOptions[DIFFICULTY] = new Difficulty(gc);
+		menuOptions[START] = new Start(gc);
 	}
 
 	@Override
 	public int getID() {
 		return UncrossTheWires.MAIN_MENU;
 	}
+	
+	private static class GameModes extends MenuOption {
 
-	private static class GameModes extends Option {
-
-		GameModes(float vert) {
-			super(vert, Level.getGameModes(), true);
+		GameModes(GameContainer gc) {
+			super(calcXCenterline(gc), calcYCenterline(GAME_MODE, NUM_OPTIONS, gc), Level.getGameModes(), true);
 		}
 
 		@Override
@@ -55,45 +55,41 @@ public class MainMenu extends Menu {
 		
 	}
 	
-	private static class Difficulty extends Option {
+	private static class Difficulty extends MenuOption {
 
-		Difficulty(float vert) {
-			super(vert, null, true);
+		Difficulty(GameContainer gc) {
+			super(calcXCenterline(gc), calcYCenterline(DIFFICULTY, NUM_OPTIONS, gc), null, true);
 			options = new String[1];
 			options[0] = (new Integer(Level.getDifficulty())).toString();
 		}
 
 		@Override
 		public void nextOption() {
-			// TODO Auto-generated method stub
 			Level.changeDifficulty(1);
 			options[0] = (new Integer(Level.getDifficulty())).toString();
 		}
 
 		@Override
 		public void previousOption() {
-			// TODO Auto-generated method stub
 			Level.changeDifficulty(-1);
 			options[0] = (new Integer(Level.getDifficulty())).toString();
 		}
 
 		@Override
 		public void executeBehavior(int x, int y) {
-			// TODO Auto-generated method stub
 			
 		}
 		
 	}
 
-	private static class Start extends Option {
+	private static class Start extends MenuOption {
 
 		private boolean executeBehavior = false;
 		
 		private static final String[] text = {"Start"};
 		
-		Start(float vert) {
-			super(vert, text, false);
-			// TODO Auto-generated constructor stub
+		Start(GameContainer gc) {
+			super(calcXCenterline(gc), calcYCenterline(START, NUM_OPTIONS, gc), text, false);
 		}
 
 		@Override

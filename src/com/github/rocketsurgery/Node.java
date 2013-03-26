@@ -20,17 +20,14 @@ public class Node extends Circle implements DisplayElement {
 	private ArrayList<Wire> wires;
 	
 	boolean hasImage = true;
-	Image img;
+	private static Image img;
 	
-	public Node(float centerPointX, float centerPointY) {
+	public Node(float centerPointX, float centerPointY) throws SlickException {
 		super(centerPointX, centerPointY, sizeOnScreen);
 		wires = new ArrayList<>();
 		
-		try {
+		if (img == null)
 			img = new Image("res/nodeSprite.gif");
-		} catch (SlickException e){
-			hasImage = false;
-		}
 	}
 	
 	@Override

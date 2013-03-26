@@ -24,9 +24,8 @@ public abstract class Menu extends BasicGameState {
 	public static UnicodeFont font;
 	public boolean hasPressedKey = false;
 
-	protected Option[] options;
+	protected MenuOption[] menuOptions;
 
-	// preventing accidental restart from score menu
 	private boolean hasBeenPressed = true;
 
 	@SuppressWarnings("unchecked") // because loadGlyphs() is dumb
@@ -64,7 +63,7 @@ public abstract class Menu extends BasicGameState {
 		/*
 		 * Menu Render Notes: each menu is
 		 */
-		for (Option op : options)
+		for (MenuOption op : menuOptions)
 			op.render(gc, sbg, g);
 	}
 
@@ -76,40 +75,55 @@ public abstract class Menu extends BasicGameState {
 		int mouseX = input.getMouseX();
 
 		// execute click behavior
-		if (!hasBeenPressed && input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
-			for (Option op : options)
+		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && !hasBeenPressed) {
+			for (MenuOption op : menuOptions) {
 				if (op.contains(mouseX, mouseY))
 					op.executeBehavior(mouseX, mouseY);
+			}
+			hasBeenPressed = true;
+		}
 
 		if (!input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
 			hasBeenPressed = false;
 		
 		// update options
-		for (Option op : options)
+		for (MenuOption op : menuOptions)
 			op.update(gc, sbg, delta);
 
 	}
 
-	protected abstract static class Option implements DisplayElement {
+	protected abstract static class MenuOption implements DisplayElement {
 
 		protected String[] options;
 		protected int optionIndex;
-		protected final float vertPos;
+		protected final float xCenterline, yCenterline;
 		protected final Polygon nextButton, prevButton;
 		protected final boolean hasButtons;
 
-		Option(float vert, String[] ops, boolean buttons) {
+		MenuOption(float xCenter, float yCenter, String[] ops, boolean buttons) {
 			options = ops;
-			vertPos = vert;
+			xCenterline = xCenter;
+			yCenterline = yCenter;
 			optionIndex = 0;
 			hasButtons = buttons;
 			
 			if (hasButtons) {
-				// TODO Option.Option() properly instantiate buttons
 				nextButton = new Polygon();
+				nextButton.addPoint(xCenter + 300, yCenter - 10);
+				nextButton.addPoint(xCenter + 300, yCenter + 10);
+				nextButton.addPoint(xCenter + 320, yCenter);
+				
 				prevButton = new Polygon();
+				prevButton.addPoint(xCenter - 300, yCenter - 10);
+				prevButton.addPoint(xCenter - 300, yCenter + 10);
+				prevButton.addPoint(xCenter - 320, yCenter);
 			} else {
+				// TODO Option.MenuOption() properly instantiate buttonless menu
 				nextButton = new Polygon();
+				nextButton.addPoint(xCenter + 300, yCenter - 10);
+				nextButton.addPoint(xCenter + 300, yCenter + 10);
+				nextButton.addPoint(xCenter + 320, yCenter);
+				
 				prevButton = null;
 			}
 		}
@@ -122,7 +136,12 @@ public abstract class Menu extends BasicGameState {
 			optionIndex = (optionIndex - 1 < 0) ? options.length - 1 : optionIndex - 1;
 		}
 
-		public abstract void executeBehavior(int x, int y);
+		public void executeBehavior(int x, int y) {
+			if (nextButton.contains(x, y))
+				nextOption();
+			else if (hasButtons && prevButton.contains(x, y))
+				previousOption();
+		}
 
 		public boolean contains(float x, float y) {
 			if (hasButtons)
@@ -138,15 +157,15 @@ public abstract class Menu extends BasicGameState {
 			g.setFont(font);
 			
 			// draw text
-			float xCenterLine =  gc.getWidth() / 2f - font.getWidth(options[optionIndex]) / 2f;
-			float yCenterLine = gc.getHeight() * vertPos - font.getHeight(options[optionIndex]) / 2f;
-			g.drawString(options[optionIndex], xCenterLine, yCenterLine);
+			g.drawString(options[optionIndex], xCenterline - font.getWidth(options[optionIndex]) / 2, yCenterline - font.getHeight(options[optionIndex]) / 2);
 			
 			// TODO Menu.Option.render() draw buttons
+			g.setColor(textColor);
 			if (hasButtons) {
-				
+				g.fill(nextButton);
+				g.fill(prevButton);
 			} else {
-				
+				g.fill(nextButton);
 			}
 		}
 
@@ -155,6 +174,23 @@ public abstract class Menu extends BasicGameState {
 			// default implementation is empty
 		}
 
+		// utility methods
+		protected static float calcYCenterline(float relPos, GameContainer gc) {
+			return relPos * gc.getHeight();
+		}
+		
+		protected static float calcYCenterline(int index, int total, GameContainer gc) {
+			return calcYCenterline(calcRelativePos(index, total), gc);
+		}
+		
+		protected static float calcXCenterline(GameContainer gc) {
+			return gc.getWidth() / 2;
+		}
+
+		protected static float calcRelativePos(int index, int total) {
+			return ((float) (index + 1) / (float) (total + 1));
+		}
+		
 	}
 
 }
