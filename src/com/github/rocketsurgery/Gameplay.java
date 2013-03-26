@@ -189,9 +189,7 @@ public abstract class Gameplay extends BasicGameState {
 	}
 
 	protected void reset(GameContainer gc) throws SlickException {
-		Level.generateLevel();
-		for (Node node : Level.getNodes())
-			node.scaleInternalCoords(gc);
+		Level.generateLevel(gc);
 		winDelay = 500;
 		levelComplete = false;
 	}

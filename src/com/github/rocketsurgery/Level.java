@@ -30,7 +30,7 @@ public class Level {
 	public static final int MAX_DIFFICULTY = 500;
 	private static int difficulty = MIN_DIFFICULTY;
 
-	public static void generateLevel() throws SlickException {
+	public static void generateLevel(GameContainer gc) throws SlickException {
 
 		nodes = new ArrayList<Node>();
 		wires = new ArrayList<Wire>();
@@ -52,7 +52,7 @@ public class Level {
 			if (alreadyExists) {
 				i--;
 			} else
-				nodes.add(new Node(x, y));
+				nodes.add(Node.createNode(x, y, X_SIZE, Y_SIZE, gc));
 		}
 
 		for (Node node : nodes) {
@@ -90,7 +90,7 @@ public class Level {
 		}
 
 		if (levelComplete)
-			generateLevel(); //if the level is already solved, generate a new one
+			generateLevel(gc); //if the level is already solved, generate a new one
 	}
 	
 	// methods for other classes to change data
@@ -109,15 +109,7 @@ public class Level {
 	public static Integer[] getGameModeStateValues() {
 		return GAME_MODE_STATE_VALUES;
 	}
-	
-	public static float getXSize() {
-		return X_SIZE;
-	}
-	
-	public static float getYSize() {
-		return Y_SIZE;
-	}
-	
+
 	public static int getDifficulty() {
 		return difficulty;
 	}
@@ -164,7 +156,7 @@ public class Level {
 				scan.close();
 				throw new IllegalArgumentException();
 			}
-			nodes.add(new Node(scan.nextFloat(), scan.nextFloat()));
+			nodes.add(Node.createNode(scan.nextFloat(), scan.nextFloat(), X_SIZE, Y_SIZE, gc));
 
 		}
 

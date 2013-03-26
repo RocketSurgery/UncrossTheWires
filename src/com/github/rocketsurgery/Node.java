@@ -22,12 +22,18 @@ public class Node extends Circle implements DisplayElement {
 	boolean hasImage = true;
 	private static Image img;
 	
-	public Node(float centerPointX, float centerPointY) throws SlickException {
+	private Node(float centerPointX, float centerPointY) throws SlickException {
 		super(centerPointX, centerPointY, sizeOnScreen);
 		wires = new ArrayList<>();
 		
 		if (img == null)
 			img = new Image("res/nodeSprite.gif");
+	}
+	
+	public static Node createNode(float x, float y, float xSize, float ySize, GameContainer gc) throws SlickException {
+		float centerX = x / xSize * (gc.getWidth() - 2 * Gameplay.PADDING) + Gameplay.PADDING;
+		float centerY = y / ySize * (gc.getHeight() - 2 * Gameplay.PADDING) + Gameplay.PADDING;
+		return new Node(centerX, centerY);
 	}
 	
 	@Override
@@ -68,13 +74,7 @@ public class Node extends Circle implements DisplayElement {
 	public List<Wire> getWires() {
 		return wires;
 	}
-	
-	public void scaleInternalCoords(GameContainer gc) {
-		this.setCenterX(this.reducedX / Level.getXSize() * (gc.getWidth() - 2 * Gameplay.PADDING) + Gameplay.PADDING);
-		this.setCenterY(this.reducedY / Level.getYSize() * (gc.getHeight() - 2 * Gameplay.PADDING) + Gameplay.PADDING);
-		this.setRadius(sizeOnScreen);
-	}
-	
+		
 	@Override
 	public boolean contains(float x, float y) {
 		return Math.sqrt(Math.pow(this.getCenterX() - x, 2) + Math.pow(this.getCenterY() - y, 2)) <= sizeOnScreen;
