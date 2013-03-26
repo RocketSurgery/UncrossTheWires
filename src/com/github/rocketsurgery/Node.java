@@ -36,9 +36,9 @@ public class Node extends Circle implements DisplayElement {
 		g.setAntiAlias(false);
 		
 		if (hasImage) {
-			g.drawImage(img, scaleX() - sizeOnScreen, scaleY() - sizeOnScreen);
+			g.drawImage(img, getCenterX() - sizeOnScreen, getCenterY() - sizeOnScreen);
 		} else {
-			g.fill(new Circle(scaleX(), scaleY(), sizeOnScreen));
+			g.fill(this);
 		}
 	}
 	
