@@ -16,10 +16,6 @@ public class LowestScore extends Gameplay {
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		super.enter(gc, sbg);
-
-		// initialize variables
-		reset(gc);
-		Score.reset();
 	}
 
 	@Override
@@ -27,8 +23,11 @@ public class LowestScore extends Gameplay {
 		super.update(gc, sbg, delta);
 
 		// update score
-		if (hasSwapped)
+		if (hasSwapped) {
 			Score.update(1000);
+			hasSwapped = false;
+		}
+		
 		Score.update(delta);
 		
 		// if level complete pause then reset

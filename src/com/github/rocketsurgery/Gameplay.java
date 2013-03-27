@@ -41,18 +41,6 @@ public abstract class Gameplay extends BasicGameState {
 	protected UnicodeFont font;
 	protected Image bg;
 
-	@Override
-	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		// initialize variables
-		levelComplete = false;
-		bg = new Image("res/bg.gif");
-	}
-
-	@Override
-	public void leave(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
-		System.out.println("Leaving state " + getID());
-	}
-
 	@SuppressWarnings("unchecked") // because font.getEffects() is dumb
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -61,6 +49,21 @@ public abstract class Gameplay extends BasicGameState {
 		font.addAsciiGlyphs();
 		font.getEffects().add(new ColorEffect()); // Create a default white
 		font.loadGlyphs();
+		
+		// load background image
+		bg = new Image("res/bg.gif");
+	}
+	
+	@Override
+	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		// initialize variables
+		resetLevel(gc);
+		Score.reset();
+	}
+
+	@Override
+	public void leave(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
+		System.out.println("Leaving state " + getID());
 	}
 
 	@Override
@@ -188,7 +191,7 @@ public abstract class Gameplay extends BasicGameState {
 		}
 	}
 
-	protected void reset(GameContainer gc) throws SlickException {
+	protected void resetLevel(GameContainer gc) throws SlickException {
 		Level.generateLevel(gc);
 		winDelay = 500;
 		levelComplete = false;

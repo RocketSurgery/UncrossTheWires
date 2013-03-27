@@ -9,7 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class MostSolved extends Gameplay {
 
 	public static int timeLimit = 30000; // in miliseconds
-	public static final int MIN_TIME = 30000;
+	public static final int MIN_TIME = 30 * 1000;
 	public static boolean changingDifficulty = false;
 
 	@Override
@@ -22,7 +22,7 @@ public class MostSolved extends Gameplay {
 		super.enter(gc, sbg);
 
 		// initialize variables
-		reset(gc);
+		resetLevel(gc);
 		Timer.set(timeLimit);
 	}
 
@@ -35,10 +35,10 @@ public class MostSolved extends Gameplay {
 
 		// if level complete pause then reset
 		if (levelComplete) {
-			Score.update(1);
-			if (winDelay <= 0)
-				reset(gc);
-			else
+			if (winDelay <= 0) {
+				resetLevel(gc);
+				Score.update(1);
+			} else
 				winDelay -= delta;
 		} else {
 			Timer.decrease(delta);
