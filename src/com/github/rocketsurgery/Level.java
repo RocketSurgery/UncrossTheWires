@@ -20,7 +20,7 @@ public class Level {
 															"Lowest Score", 
 															"Most Solved"
 															};
-	private static final Integer[] GAME_MODE_STATE_VALUES = 	{ // must match gameModes
+	private static final Integer[] GAME_MODE_STATE_VALUES = { // must match gameModes
 															UncrossTheWires.LOWEST_SCORE,
 															UncrossTheWires.MOST_SOLVED
 															};
@@ -42,18 +42,21 @@ public class Level {
 			// generates coordinates between 0 and xSize/ySize inclusive
 			float x = rand.nextInt((int) X_SIZE + 1);
 			float y = rand.nextInt((int) Y_SIZE + 1);
-
+			
+			// create the node
+			Node tempNode = Node.createNode(x, y, X_SIZE, Y_SIZE, gc);
+			
 			// test to see if node already exists
 			boolean alreadyExists = false;
 			for (Node node : nodes)
-				if (node.getCenterX() == x && node.getCenterY() == y)
+				if (node.matches(tempNode))
 					alreadyExists = true;
 
 			// generate don't itterate if node already exists
 			if (alreadyExists) {
 				i--;
 			} else
-				nodes.add(Node.createNode(x, y, X_SIZE, Y_SIZE, gc));
+				nodes.add(tempNode);
 		}
 
 		for (Node node : nodes) {

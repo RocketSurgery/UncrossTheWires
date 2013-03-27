@@ -35,6 +35,12 @@ public class Node extends Circle implements DisplayElement {
 		return new Node(centerX, centerY);
 	}
 	
+	// returns true if this node and n have the same center point
+	// used in level generation to prevent overlapping nodes
+	public boolean matches(Node n) {
+		return this.getCenterX() == n.getCenterX() && this.getCenterY() == n.getCenterY();
+	}
+	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(nodeColor);
