@@ -14,12 +14,6 @@ public class MainMenu extends Menu {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		super.init(gc, sbg);
-		
-		// create menus
-		menuOptions = new MenuOption[NUM_OPTIONS];
-		menuOptions[GAME_MODE] = new GameModes(gc);
-		menuOptions[DIFFICULTY] = new Difficulty(gc);
-		menuOptions[START] = new Start(gc);
 	}
 
 	@Override
@@ -27,10 +21,18 @@ public class MainMenu extends Menu {
 		return UncrossTheWires.MAIN_MENU;
 	}
 	
+	@Override
+	protected void initializeMenus(GameContainer gc) {
+		menuOptions = new MenuOption[NUM_OPTIONS];
+		menuOptions[GAME_MODE] = new GameModes(gc);
+		menuOptions[DIFFICULTY] = new Difficulty(gc);
+		menuOptions[START] = new Start(gc);
+	}
+	
 	private static class GameModes extends MenuOption {
 
 		GameModes(GameContainer gc) {
-			super(calcXCenterline(gc), calcYCenterline(GAME_MODE, NUM_OPTIONS, gc), Level.getGameModes(), true);
+			super(calcXCenterline(gc), calcYCenterline(GAME_MODE, NUM_OPTIONS, gc), Level.getGameModes());
 		}
 
 		@Override
@@ -52,65 +54,60 @@ public class MainMenu extends Menu {
 			else if (prevButton.contains(x, y))
 				previousOption();
 		}
+
+		@Override
+		public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+			
+		}
 		
 	}
 	
 	private static class Difficulty extends MenuOption {
 
 		Difficulty(GameContainer gc) {
-			super(calcXCenterline(gc), calcYCenterline(DIFFICULTY, NUM_OPTIONS, gc), null, true);
-			options = new String[1];
-			options[0] = (new Integer(Level.getDifficulty())).toString();
+			super(calcXCenterline(gc), calcYCenterline(DIFFICULTY, NUM_OPTIONS, gc), generateOptions());
 		}
 
 		@Override
 		public void nextOption() {
+			optionIndex = (optionIndex + 1 == options.length) ? optionIndex : optionIndex + 1;
 			Level.changeDifficulty(1);
-			options[0] = (new Integer(Level.getDifficulty())).toString();
 		}
 
 		@Override
 		public void previousOption() {
+			optionIndex = (optionIndex - 1 < 0) ? 0 : optionIndex - 1; 
 			Level.changeDifficulty(-1);
-			options[0] = (new Integer(Level.getDifficulty())).toString();
 		}
 
 		@Override
-		public void executeBehavior(int x, int y) {
+		public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 			
 		}
 		
+		private static String[] generateOptions() {
+			String[] result = new String[Level.MAX_DIFFICULTY - Level.MIN_DIFFICULTY];
+			for (int i = 0; i < result.length; i++)
+				result[i] = (new Integer(i + Level.MIN_DIFFICULTY)).toString();
+			return result;
+		}
 	}
 
 	private static class Start extends MenuOption {
-
-		private boolean executeBehavior = false;
-		
-		private static final String[] text = {"Start"};
 		
 		Start(GameContainer gc) {
-			super(calcXCenterline(gc), calcYCenterline(START, NUM_OPTIONS, gc), text, false);
+			super(calcXCenterline(gc), calcYCenterline(START, NUM_OPTIONS, gc), "Start");
 		}
-
-		@Override
-		public boolean contains(float x, float y) {
-			return true;
-		}
-		
-		@Override
-		public void executeBehavior(int x, int y) {
-			if (nextButton.contains(x, y))
-				executeBehavior = true;
-		}
-		
+	
 		@Override
 		public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-			if (executeBehavior) {
-				executeBehavior = false;
+			if (executeFlag) {
+				executeFlag = false;
 				sbg.enterState(Level.getGameModeStateValues()[Level.getSelectedMode()]);
 			}
 		}
 		
 	}
+
 
 }

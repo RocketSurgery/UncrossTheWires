@@ -27,7 +27,7 @@ public class Level {
 	private static int selectedMode = 0;
 	
 	public static final int MIN_DIFFICULTY = 10;
-	public static final int MAX_DIFFICULTY = 500;
+	public static final int MAX_DIFFICULTY = 120;
 	private static int difficulty = MIN_DIFFICULTY;
 
 	public static void generateLevel(GameContainer gc) throws SlickException {
@@ -49,6 +49,7 @@ public class Level {
 				if (node.getCenterX() == x && node.getCenterY() == y)
 					alreadyExists = true;
 
+			// generate don't itterate if node already exists
 			if (alreadyExists) {
 				i--;
 			} else

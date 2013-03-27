@@ -19,8 +19,7 @@ public class Node extends Circle implements DisplayElement {
 	
 	private ArrayList<Wire> wires;
 	
-	boolean hasImage = true;
-	private static Image img;
+	private static Image img = null;
 	
 	private Node(float centerPointX, float centerPointY) throws SlickException {
 		super(centerPointX, centerPointY, sizeOnScreen);
@@ -41,7 +40,7 @@ public class Node extends Circle implements DisplayElement {
 		g.setColor(nodeColor);
 		g.setAntiAlias(false);
 		
-		if (hasImage) {
+		if (img != null) {
 			g.drawImage(img, getCenterX() - sizeOnScreen, getCenterY() - sizeOnScreen);
 		} else {
 			g.fill(this);

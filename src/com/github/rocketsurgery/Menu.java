@@ -36,6 +36,9 @@ public abstract class Menu extends BasicGameState {
 		font.addAsciiGlyphs();
 		font.getEffects().add(new ColorEffect()); // Create a default white
 		font.loadGlyphs();
+		
+		// initialize menus
+		initializeMenus(gc);
 	}
 
 	@Override
@@ -92,42 +95,52 @@ public abstract class Menu extends BasicGameState {
 
 	}
 
+	protected abstract void initializeMenus(GameContainer gc);
+	
 	protected abstract static class MenuOption implements DisplayElement {
 
 		protected String[] options;
+		protected String option;
 		protected int optionIndex;
+		protected boolean executeFlag = false;
+		
 		protected final float xCenterline, yCenterline;
 		protected final Polygon nextButton, prevButton;
 		protected final boolean hasButtons;
 
-		MenuOption(float xCenter, float yCenter, String[] ops, boolean buttons) {
+		MenuOption(float xCenter, float yCenter, String[] ops) {
 			options = ops;
 			xCenterline = xCenter;
 			yCenterline = yCenter;
 			optionIndex = 0;
-			hasButtons = buttons;
+			hasButtons = true;
 			
-			if (hasButtons) {
-				nextButton = new Polygon();
-				nextButton.addPoint(xCenter + 300, yCenter - 10);
-				nextButton.addPoint(xCenter + 300, yCenter + 10);
-				nextButton.addPoint(xCenter + 320, yCenter);
-				
-				prevButton = new Polygon();
-				prevButton.addPoint(xCenter - 300, yCenter - 10);
-				prevButton.addPoint(xCenter - 300, yCenter + 10);
-				prevButton.addPoint(xCenter - 320, yCenter);
-			} else {
-				// TODO Option.MenuOption() properly instantiate buttonless menu
-				nextButton = new Polygon();
-				nextButton.addPoint(xCenter + 300, yCenter - 10);
-				nextButton.addPoint(xCenter + 300, yCenter + 10);
-				nextButton.addPoint(xCenter + 320, yCenter);
-				
-				prevButton = null;
-			}
+			nextButton = new Polygon();
+			nextButton.addPoint(xCenter + 300, yCenter - 10);
+			nextButton.addPoint(xCenter + 300, yCenter + 10);
+			nextButton.addPoint(xCenter + 320, yCenter);
+			
+			prevButton = new Polygon();
+			prevButton.addPoint(xCenter - 300, yCenter - 10);
+			prevButton.addPoint(xCenter - 300, yCenter + 10);
+			prevButton.addPoint(xCenter - 320, yCenter);
 		}
 
+		MenuOption(float xCenter, float yCenter, String op) {
+			option = op;
+			xCenterline = xCenter;
+			yCenterline = yCenter;
+			optionIndex = 0;
+			hasButtons = false;
+			
+			nextButton = new Polygon();
+			nextButton.addPoint(xCenter + 300, yCenter - 10);
+			nextButton.addPoint(xCenter + 300, yCenter + 10);
+			nextButton.addPoint(xCenter + 320, yCenter);
+			
+			prevButton = null;
+		}
+		
 		public void nextOption() {
 			optionIndex = (optionIndex + 1) % options.length;
 		}
@@ -137,10 +150,14 @@ public abstract class Menu extends BasicGameState {
 		}
 
 		public void executeBehavior(int x, int y) {
-			if (nextButton.contains(x, y))
-				nextOption();
-			else if (hasButtons && prevButton.contains(x, y))
-				previousOption();
+			if (hasButtons) {
+				if (nextButton.contains(x, y))
+					nextOption();
+				else if (prevButton.contains(x, y))
+					previousOption();
+			} else {
+				executeFlag = true;
+			}
 		}
 
 		public boolean contains(float x, float y) {
@@ -152,14 +169,20 @@ public abstract class Menu extends BasicGameState {
 
 		@Override
 		public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-			// TODO Menu.Option.render() write complete method
 			g.setColor(textColor);
 			g.setFont(font);
 			
+
 			// draw text
-			g.drawString(options[optionIndex], xCenterline - font.getWidth(options[optionIndex]) / 2, yCenterline - font.getHeight(options[optionIndex]) / 2);
+			if (hasButtons) {
+				g.drawString(options[optionIndex], xCenterline - font.getWidth(options[optionIndex]) / 2,
+						yCenterline - font.getHeight(options[optionIndex]) / 2);
+			} else {
+				g.drawString(option, xCenterline - font.getWidth(option) / 2,
+						yCenterline - font.getHeight(option) / 2);
+			}
 			
-			// TODO Menu.Option.render() draw buttons
+			// draw buttons
 			g.setColor(textColor);
 			if (hasButtons) {
 				g.fill(nextButton);
@@ -167,11 +190,6 @@ public abstract class Menu extends BasicGameState {
 			} else {
 				g.fill(nextButton);
 			}
-		}
-
-		@Override
-		public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-			// default implementation is empty
 		}
 
 		// utility methods
