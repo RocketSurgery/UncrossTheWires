@@ -131,7 +131,7 @@ public abstract class Menu extends BasicGameState {
 			xCenterline = xCenter;
 			yCenterline = yCenter;
 			optionIndex = 0;
-			hasButtons = false;
+			hasButtons = true;
 			
 			nextButton = new Polygon();
 			nextButton.addPoint(xCenter + 300, yCenter - 10);
@@ -139,6 +139,29 @@ public abstract class Menu extends BasicGameState {
 			nextButton.addPoint(xCenter + 320, yCenter);
 			
 			prevButton = null;
+		}
+		
+		MenuOption(float xCenter, float yCenter, String op, boolean buttons) {
+			option = op;
+			xCenterline = xCenter;
+			yCenterline = yCenter;
+			optionIndex = 0;
+			
+			if (buttons) {
+				hasButtons = true;
+				
+				nextButton = new Polygon();
+				nextButton.addPoint(xCenter + 300, yCenter - 10);
+				nextButton.addPoint(xCenter + 300, yCenter + 10);
+				nextButton.addPoint(xCenter + 320, yCenter);
+				
+				prevButton = null;
+			} else {
+				hasButtons = false;
+				
+				nextButton = null;
+				prevButton = null;
+			}
 		}
 		
 		public void nextOption() {
@@ -151,20 +174,24 @@ public abstract class Menu extends BasicGameState {
 
 		public void executeBehavior(int x, int y) {
 			if (hasButtons) {
-				if (nextButton.contains(x, y))
-					nextOption();
-				else if (prevButton.contains(x, y))
-					previousOption();
-			} else {
-				executeFlag = true;
+				if (prevButton != null) {
+					if (nextButton.contains(x, y))
+						nextOption();
+					else if (prevButton.contains(x, y))
+						previousOption();
+				} else {
+					executeFlag = true;
+				}
 			}
 		}
 
 		public boolean contains(float x, float y) {
-			if (hasButtons)
+			if (hasButtons && prevButton != null)
 				return nextButton.contains(x, y) || prevButton.contains(x, y);
-			else
+			else if (hasButtons && prevButton == null)
 				return nextButton.contains(x, y);
+			else
+				return false;
 		}
 
 		@Override
@@ -174,7 +201,7 @@ public abstract class Menu extends BasicGameState {
 			
 
 			// draw text
-			if (hasButtons) {
+			if (hasButtons && prevButton != null) {
 				g.drawString(options[optionIndex], xCenterline - font.getWidth(options[optionIndex]) / 2,
 						yCenterline - font.getHeight(options[optionIndex]) / 2);
 			} else {
@@ -185,10 +212,12 @@ public abstract class Menu extends BasicGameState {
 			// draw buttons
 			g.setColor(textColor);
 			if (hasButtons) {
-				g.fill(nextButton);
-				g.fill(prevButton);
-			} else {
-				g.fill(nextButton);
+				if (prevButton != null) {
+					g.fill(nextButton);
+					g.fill(prevButton);
+				} else {
+					g.fill(nextButton);
+				}
 			}
 		}
 
