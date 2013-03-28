@@ -32,7 +32,7 @@ public abstract class Menu extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		// load font
-		font = new UnicodeFont("cubic.ttf", 40, false, false);
+		font = new UnicodeFont("font.ttf", 40, false, false);
 		font.addAsciiGlyphs();
 		font.getEffects().add(new ColorEffect()); // Create a default white
 		font.loadGlyphs();

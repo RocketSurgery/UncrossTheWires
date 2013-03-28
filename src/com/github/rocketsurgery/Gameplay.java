@@ -39,19 +39,19 @@ public abstract class Gameplay extends BasicGameState {
 
 	// graphics
 	protected UnicodeFont font;
-	protected Image bg;
+	protected Image backgroundImage;
 
 	@SuppressWarnings("unchecked") // because font.getEffects() is dumb
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		// load font
-		font = new UnicodeFont("cubic.ttf", 40, false, false);
+		font = new UnicodeFont("font.ttf", 40, false, false);
 		font.addAsciiGlyphs();
 		font.getEffects().add(new ColorEffect()); // Create a default white
 		font.loadGlyphs();
 		
 		// load background image
-		bg = new Image("res/bg.gif");
+		backgroundImage = new Image("res/bg.gif");
 	}
 	
 	@Override
@@ -69,7 +69,7 @@ public abstract class Gameplay extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		// draw background
-		g.drawImage(bg, 0, 0, (float) gc.getWidth(), (float) gc.getHeight(), 0, 0, 64, 64);
+		g.drawImage(backgroundImage, 0, 0, (float) gc.getWidth(), (float) gc.getHeight(), 0, 0, 64, 64);
 
 		// draw selection
 		g.setColor(selectionColor);
