@@ -1,8 +1,6 @@
 package com.github.rocketsurgery;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -42,17 +40,6 @@ public class MostSolved extends Gameplay {
 		} else {
 			Timer.decrease(delta);
 		}
-	}
-	
-	@Override
-	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		super.render(gc, sbg, g);
-		
-		// draw timer
-		g.setColor(Color.red);
-		g.setFont(font);
-		String timeString = "" + (float) Timer.getTime() / 1000;
-		g.drawString(timeString, gc.getWidth() - (font.getWidth("." + Integer.MAX_VALUE)), 25);
 	}
 
 }

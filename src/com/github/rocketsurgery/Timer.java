@@ -2,7 +2,7 @@ package com.github.rocketsurgery;
 
 public abstract class Timer {
 
-	private static long time;
+	private static long time = 0;
 	
 	public static void decrease(long delta) {
 		time = (time > 0) ? time - delta : 0;

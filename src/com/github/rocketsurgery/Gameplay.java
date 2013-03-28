@@ -38,6 +38,8 @@ public abstract class Gameplay extends BasicGameState {
 	// graphics
 	protected UnicodeFont font;
 	protected Image backgroundImage;
+	protected boolean displayScore = true;
+	protected boolean displayTime = true;
 
 	protected float selectionCircleSize = MIN_SELEC_SIZE;
 	protected float hoverCircleSize = 0f;
@@ -62,6 +64,7 @@ public abstract class Gameplay extends BasicGameState {
 		// initialize variables
 		resetLevel(gc);
 		Score.reset();
+		Timer.reset();
 	}
 
 	@Override
@@ -98,7 +101,15 @@ public abstract class Gameplay extends BasicGameState {
 		// draw wires
 		for (Wire wire : Level.getWires())
 			wire.render(gc, sbg, g);
-
+		
+		// draw time
+		g.setColor(Color.red);
+		g.setFont(font);
+		g.drawString(Float.toString(Timer.getTime() / 1000f), 10, 15);
+		
+		// draw score
+		g.drawString(Integer.toString(Score.getScore()), gc.getWidth() / 2, 15);
+		
 	}
 
 	@Override
