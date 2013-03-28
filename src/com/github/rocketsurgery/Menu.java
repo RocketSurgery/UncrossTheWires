@@ -3,6 +3,7 @@ package com.github.rocketsurgery;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
@@ -23,6 +24,7 @@ public abstract class Menu extends BasicGameState {
 	public static final Color TEXT_COLOR = Color.white;
 
 	// graphics
+	protected Image backgroundImage;
 	protected static UnicodeFont font;
 	protected String titleText = "Uncross The Wires";
 
@@ -37,6 +39,9 @@ public abstract class Menu extends BasicGameState {
 			font.getEffects().add(new ColorEffect()); // Create a default white
 			font.loadGlyphs();
 		}
+
+		// load background
+		backgroundImage = new Image("res/bg.gif");
 
 		// initialize menus
 		initializeMenus(gc);
@@ -59,8 +64,8 @@ public abstract class Menu extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		// draw background
-		g.setColor(BG_COLOR);
-		g.fillRect(0, 0, gc.getWidth(), gc.getHeight());
+		g.drawImage(backgroundImage, 0, 0, (float) gc.getWidth(), (float) gc.getHeight(), 0, 0, backgroundImage.getWidth(),
+				backgroundImage.getHeight());
 
 		// draw title
 		g.setColor(TEXT_COLOR);
@@ -114,7 +119,7 @@ public abstract class Menu extends BasicGameState {
 		protected static final float BUTTON_OFFSET = 300;
 		protected static final float BUTTON_HEIGHT = 40;
 		protected static final float BUTTON_WIDTH = 40;
-		
+
 		// graphics
 		protected final float xCenterline, yCenterline;
 		protected final Polygon nextButton, prevButton;
@@ -226,7 +231,7 @@ public abstract class Menu extends BasicGameState {
 		}
 
 		// utility methods
-		
+
 		protected static float calcYCenterline(float relPos, GameContainer gc) {
 			return relPos * gc.getHeight();
 		}

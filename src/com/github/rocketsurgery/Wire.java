@@ -13,7 +13,7 @@ public class Wire extends Line implements DisplayElement {
 
 	// wire
 	private Node end1, end2;
-	private static int colorIterator = 0;
+//	private static int colorIterator = 0;
 
 	// graphical constants
 	private static final float wireWidth = 5f;
@@ -32,23 +32,22 @@ public class Wire extends Line implements DisplayElement {
 		// int colorIndex = rand.nextInt(3);
 
 		// determine color
-		switch (colorIterator) {
-		case 0:
-			wireColor = Color.red;
-			break;
-		case 1:
-			wireColor = Color.blue;
-			break;
-		case 2:
-			wireColor = Color.green;
-			break;
-		default:
-			throw new IllegalArgumentException();
-		}
-		colorIterator = ++colorIterator % 3;
+		// switch (colorIterator) {
+		// case 0:
+		// wireColor = Color.red;
+		// break;
+		// case 1:
+		// wireColor = Color.blue;
+		// break;
+		// case 2:
+		// wireColor = Color.green;
+		// break;
+		// default:
+		// throw new IllegalArgumentException();
+		// }
+		// colorIterator = ++colorIterator % 3;
 
-		// wireColor = new Color
-		// ((float)Math.random(),(float)Math.random(),(float)Math.random());
+		wireColor = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
 	}
 
 	// resets endpoints of Line superclass to match attached nodes
@@ -74,10 +73,11 @@ public class Wire extends Line implements DisplayElement {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 
 	}
-	
+
 	// utility methods
-	
-	// overrides Line.intersects() to return false if they have a shared endpoint
+
+	// overrides Line.intersects() to return false if they have a shared
+	// endpoint
 	// returns true if lines intesect in some way other than sharing an endpoint
 	@Override
 	public boolean intersects(Shape shape) {
