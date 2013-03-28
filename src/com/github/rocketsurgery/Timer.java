@@ -23,4 +23,8 @@ public abstract class Timer {
 	public static void set(long t) {
 		time = t;
 	}
+	
+	public static void reset() {
+		set(0);
+	}
 }

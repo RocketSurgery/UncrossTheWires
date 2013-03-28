@@ -22,7 +22,6 @@ public class MostSolved extends Gameplay {
 		super.enter(gc, sbg);
 
 		// initialize variables
-		resetLevel(gc);
 		Timer.set(timeLimit);
 	}
 
@@ -34,12 +33,12 @@ public class MostSolved extends Gameplay {
 		}
 
 		// if level complete pause then reset
-		if (levelComplete) {
-			if (winDelay <= 0) {
+		if (Level.isSolved()) {
+			if (delay <= 0) {
 				resetLevel(gc);
 				Score.update(1);
 			} else
-				winDelay -= delta;
+				delay -= delta;
 		} else {
 			Timer.decrease(delta);
 		}

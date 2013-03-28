@@ -13,6 +13,8 @@ public class ScoreMenu extends Menu {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		super.init(gc, sbg);
+		
+		this.titleText = "Game Over";
 	}
 	
 	@Override
@@ -40,7 +42,7 @@ public class ScoreMenu extends Menu {
 
 		@Override
 		public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-			this.option = Integer.toString(Score.getScore());
+			this.options[0] = Integer.toString(Score.getScore());
 		}
 		
 	}

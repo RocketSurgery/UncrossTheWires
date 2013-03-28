@@ -14,11 +14,6 @@ public class LowestScore extends Gameplay {
 	}
 
 	@Override
-	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		super.enter(gc, sbg);
-	}
-
-	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		super.update(gc, sbg, delta);
 
@@ -27,15 +22,14 @@ public class LowestScore extends Gameplay {
 			Score.update(1000);
 			hasSwapped = false;
 		}
-		
 		Score.update(delta);
 		
 		// if level complete pause then reset
-		if (levelComplete) {
-			if (winDelay <= 0)
+		if (Level.isSolved()) {
+			if (delay <= 0)
 				sbg.enterState(UncrossTheWires.SCORE_MENU);
 			else
-				winDelay -= delta;
+				delay -= delta;
 		}
 	}
 	

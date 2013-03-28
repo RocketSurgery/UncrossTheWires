@@ -8,7 +8,7 @@ import java.util.Scanner;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
-public class Level {
+public abstract class Level {
 
 	// values for generating the level
 	private static List<Wire> wires;
@@ -83,6 +83,13 @@ public class Level {
 		}
 
 		// test if it's already solved
+		
+
+		if (isSolved())
+			generateLevel(gc); //if the level is already solved, generate a new one
+	}
+	
+	public static boolean isSolved() {
 		boolean levelComplete = true;
 		for (int i = 0; i < wires.size() - 1; i++) {
 			for (int j = i + 1; j < wires.size(); j++) {
@@ -92,12 +99,10 @@ public class Level {
 				}
 			}
 		}
-
-		if (levelComplete)
-			generateLevel(gc); //if the level is already solved, generate a new one
+		return levelComplete;
 	}
 	
-	// methods for other classes to change data
+	// methods for other classes to access data
 	public static List<Wire> getWires() {
 		return wires;
 	}
@@ -112,10 +117,6 @@ public class Level {
 	
 	public static Integer[] getGameModeStateValues() {
 		return GAME_MODE_STATE_VALUES;
-	}
-
-	public static int getDifficulty() {
-		return difficulty;
 	}
 
 	public static void changeDifficulty(int diff) {

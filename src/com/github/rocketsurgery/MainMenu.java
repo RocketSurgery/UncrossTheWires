@@ -14,6 +14,8 @@ public class MainMenu extends Menu {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		super.init(gc, sbg);
+		
+		this.titleText = "Uncross The Wires";
 	}
 
 	@Override

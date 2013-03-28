@@ -13,22 +13,37 @@ import org.newdawn.slick.state.StateBasedGame;
 
 @SuppressWarnings("serial")
 public class Node extends Circle implements DisplayElement {
-	
-	public static final float sizeOnScreen = 15f;
-	public static final Color nodeColor = Color.white;
-	
+
+	// node
 	private ArrayList<Wire> wires;
 	
-	private static Image img = null;
+	// graphical constants
+	public static final float SIZE = 15f;
+	public static final Color NODE_COLOR = Color.white;
+	
+	// graphics
+	private static Image img;
 	
 	private Node(float centerPointX, float centerPointY) throws SlickException {
-		super(centerPointX, centerPointY, sizeOnScreen);
-		wires = new ArrayList<>();
+		super(centerPointX, centerPointY, SIZE);
 		
+		// initialize variables
+		wires = new ArrayList<>();
 		if (img == null)
 			img = new Image("res/nodeSprite.gif");
 	}
 	
+	private Node(float centerPointX, float centerPointY, ArrayList<Wire> w) throws SlickException {
+		super(centerPointX, centerPointY, SIZE);
+		
+		// initialize variables
+		wires = w;
+		if (img == null)
+			img = new Image("res/nodeSprite.gif");
+	}
+
+	// static method used to generate new nodes
+	// constructor is kept private because the centerpoints must be determined based on GameContainer
 	public static Node createNode(float x, float y, float xSize, float ySize, GameContainer gc) throws SlickException {
 		float centerX = x / xSize * (gc.getWidth() - 2 * Gameplay.PADDING) + Gameplay.PADDING;
 		float centerY = y / ySize * (gc.getHeight() - 2 * Gameplay.PADDING) + Gameplay.PADDING;
@@ -43,16 +58,23 @@ public class Node extends Circle implements DisplayElement {
 	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.setColor(nodeColor);
+		g.setColor(NODE_COLOR);
 		g.setAntiAlias(false);
 		
 		if (img != null) {
-			g.drawImage(img, getCenterX() - sizeOnScreen, getCenterY() - sizeOnScreen);
+			g.drawImage(img, getCenterX() - SIZE, getCenterY() - SIZE);
 		} else {
 			g.fill(this);
 		}
 	}
 	
+	@Override
+	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+
+	}
+	
+	// adds wire to array of connected wires
+	// returns false if wire is already in wires
 	public boolean attach(Wire wire) {
 		if (wires.contains(wire))
 			return false;
@@ -60,6 +82,7 @@ public class Node extends Circle implements DisplayElement {
 		return true;
 	}
 	
+	// swaps coordinates with other and updates attached wires
 	public void swapLocations(Node other) {
 		// swap locations
 		float tempX = this.getCenterX();
@@ -79,16 +102,12 @@ public class Node extends Circle implements DisplayElement {
 	public List<Wire> getWires() {
 		return wires;
 	}
-		
+	
+	// corrected contains method
+	// necessary because Circle.contains() is off-center
 	@Override
 	public boolean contains(float x, float y) {
-		return Math.sqrt(Math.pow(this.getCenterX() - x, 2) + Math.pow(this.getCenterY() - y, 2)) <= sizeOnScreen;
-	}
-	
-	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-		// TODO Auto-generated method stub
-		
+		return Math.sqrt(Math.pow(this.getCenterX() - x, 2) + Math.pow(this.getCenterY() - y, 2)) <= SIZE;
 	}
 
 }
