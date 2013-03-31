@@ -3,3 +3,4 @@ bin
 .classpath
 .settings
 deploy/
+lwjgl-2.8.5
